@@ -1,4 +1,4 @@
-import { StyleSheet, View, ToastAndroid } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { colors } from '../../constants/colors';
 import LoginInput from '../../components/ui/LoginInput';
@@ -10,7 +10,8 @@ import { getLocales } from 'expo-localization';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
-const Login = () => {
+
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -20,6 +21,10 @@ const Login = () => {
   };
   const passwordChangeHandler = (password) => {
     setPassword(password);
+  };
+
+  const handleRegister = () => {
+    navigation.navigate('Register');
   };
 
   const handleLogin = () => {
@@ -54,13 +59,16 @@ const Login = () => {
         inputHandler={emailChangeHandler}
         placeHolder={'Email'}
       />
-      <LoginInput
-        secureTextEntry={true}
-        keyboardType="password"
-        value={password}
-        inputHandler={passwordChangeHandler}
-        placeHolder={'Şifre'}
-      />
+      <View>
+        <LoginInput
+          secureTextEntry={true}
+          keyboardType="password"
+          value={password}
+          inputHandler={passwordChangeHandler}
+          placeHolder={'Şifre'}
+        />
+      </View>
+
       <ForgetPasswordText />
       <SignButton
         title="Giriş Yap"
@@ -78,6 +86,16 @@ const Login = () => {
         title="Kayıt Ol"
         icon={registerIcon}
         color={colors.sign_button}
+        onPress={handleRegister}
+      />
+      <SignButton
+        title="Test Verisi Gir"
+        icon={registerIcon}
+        color={colors.sign_button}
+        onPress={() => {
+          setEmail('abdullahsevmez@gmail.com');
+          setPassword('123456');
+        }}
       />
     </View>
   );

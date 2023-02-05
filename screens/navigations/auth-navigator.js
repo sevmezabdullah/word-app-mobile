@@ -14,7 +14,11 @@ const AuthNavigator = () => {
         name="Login"
         component={Login}
       />
-      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Register"
+        component={Register}
+      />
     </Stack.Navigator>
   );
 };

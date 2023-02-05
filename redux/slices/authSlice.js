@@ -2,17 +2,21 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
+
 const AUTH_URL = 'http://192.168.1.115:3000/users/login';
+const REGISTER_URL = 'http://192.168.1.115:3000/users/register';
+const LOGOUT_URL = 'http://192.168.1.115:3000/users/logout';
+
 const initialState = {
-  isLoggedIn: false,
   email: null,
   userName: null,
   status: 'idle',
   token: null,
   message: '',
+  isVerify: false,
 };
 function showToast(message) {
-  ToastAndroid.show(message, ToastAndroid.SHORT);
+  ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
 }
 const storeToken = async (token) => {
   try {
@@ -24,7 +28,11 @@ const storeToken = async (token) => {
 };
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
-  storeToken(response.data.token);
+
+  if (response.data.isVerify) {
+    await AsyncStorage.setItem('email', authInfo.email);
+    storeToken(response.data.token);
+  }
 
   return response.data;
 });
@@ -32,34 +40,46 @@ export const checkToken = createAsyncThunk('auth/checkToken', async () => {
   return AsyncStorage.getItem('token');
 });
 export const logout = createAsyncThunk('auth/logout', async () => {
+  const email = await AsyncStorage.getItem('email');
+  const response = await axios.post(LOGOUT_URL, {
+    userEmail: email,
+  });
   await AsyncStorage.removeItem('token');
+  await AsyncStorage.removeItem('email');
+  return response.data;
+});
+
+export const register = createAsyncThunk('auth/register', async (user) => {
+  const response = await axios.post(REGISTER_URL, user);
+
+  return response.data;
 });
 
 const authSlice = createSlice({
   name: 'userAuth',
   initialState,
-  reducers: {
-    setSignIn: (state, action) => {
-      state.email = action.payload.email;
-      state.isLoggedIn = action.payload.isLoggedIn;
-      state.userName = action.payload.userName;
-    },
-    setSignOut: (state) => {
-      state.email = null;
-      state.userName = null;
-      state.isLoggedIn = false;
-    },
-  },
+
   extraReducers(builder) {
     builder
       .addCase(signIn.pending, (state, action) => {
         state.status = 'loading';
       })
       .addCase(signIn.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        showToast(action.payload.message);
-        state.message = action.payload.message;
-        state.status = 'success';
+        if (
+          action.payload.token !== undefined ||
+          action.payload.token !== null
+        ) {
+          state.token = action.payload.token;
+          state.isVerify = action.payload.isVerify;
+          showToast(action.payload.message);
+          state.message = action.payload.message;
+          state.status = 'success';
+          if (!state.isVerify) {
+            state.token = null;
+          }
+        } else {
+          showToast(action.payload.message);
+        }
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.token = null;
@@ -75,11 +95,11 @@ const authSlice = createSlice({
         } catch (error) {
           state.token = null;
         }
-      });
+      })
+      .addCase(register.fulfilled, (state, action) => {})
+      .addCase(register.rejected, (state, action) => {});
   },
 });
-
-export const { setSignIn, setSignOut } = authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.userAuth.isLoggedIn;
 export const token = (state) => state.userAuth.token;

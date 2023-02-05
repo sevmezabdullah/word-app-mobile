@@ -29,4 +29,9 @@ const styles = StyleSheet.create({
     height: 60,
   },
   container: {},
+  prefix: {
+    paddingHorizontal: 10,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 });
