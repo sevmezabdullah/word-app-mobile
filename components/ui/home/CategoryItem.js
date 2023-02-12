@@ -7,11 +7,10 @@ const CategoryItem = ({ item }) => {
   const icon = <Icon name="trophy" color={'orange'} size={18} />;
   const cards = <Cards name="cards-outline" color={'black'} size={18} />;
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ width: 130 }}>
       <Card
         style={{
           margin: 3,
-
           elevation: 8,
           alignItems: 'center',
           justifyContent: 'center',
@@ -19,7 +18,7 @@ const CategoryItem = ({ item }) => {
       >
         <Card.Content>
           <Image
-            style={{ width: 100, height: 80, borderRadius: 5 }}
+            style={{ width: 80, height: 80, borderRadius: 5 }}
             source={{
               uri: item.imageUri,
             }}

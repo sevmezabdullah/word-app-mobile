@@ -31,7 +31,12 @@ const Home = () => {
         <LoginInput placeHolder="Aramak istediğiniz kategoriyi girin" />
         <FlatList
           numColumns={3}
-          style={{ marginTop: 20, display: 'flex', height: '87%' }}
+          style={{
+            marginTop: 20,
+            marginHorizontal: 4,
+            display: 'flex',
+            height: '87%',
+          }}
           scrollEnabled={true}
           keyExtractor={(item, index) => index.toString()}
           data={categoryList}
