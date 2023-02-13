@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { colors } from '../../constants/colors';
-import LoginInput from '../../components/ui/LoginInput';
-import ForgetPasswordText from '../../components/ui/ForgetPasswordText';
-import SignButton from '../../components/ui/SignButton';
+import LoginInput from '../../components/ui/auth/LoginInput';
+import ForgetPasswordText from '../../components/ui/auth/ForgetPasswordText';
+import SignButton from '../../components/ui/auth/SignButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../redux/slices/authSlice';
 import { getLocales } from 'expo-localization';

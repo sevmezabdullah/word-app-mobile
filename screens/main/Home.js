@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import React from 'react';
 
 import { useEffect } from 'react';
@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCategories } from '../../redux/slices/categorySlice';
 import io from 'socket.io-client';
 import { colors } from '../../constants/colors';
-import LoginInput from '../../components/ui/LoginInput';
+import LoginInput from '../../components/ui/auth/LoginInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryItem from '../../components/ui/home/CategoryItem';
 const Home = () => {
@@ -18,6 +18,7 @@ const Home = () => {
 
   const categoryList = useSelector((state) => state.category.categories);
   const categoryStatus = useSelector((state) => state.category.status);
+  const user = useSelector((state) => state.userAuth.user);
 
   useEffect(() => {
     if (categoryStatus === 'idle') {

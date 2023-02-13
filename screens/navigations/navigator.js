@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const AppRoute = () => {
   const token = useSelector((state) => state.userAuth.token);
-  const isVerify = useSelector((state) => state.userAuth.isVerify);
 
   const dispatch = useDispatch();
   React.useEffect(() => {

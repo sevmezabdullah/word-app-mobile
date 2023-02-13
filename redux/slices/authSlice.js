@@ -8,8 +8,7 @@ const REGISTER_URL = 'http://192.168.1.115:3000/users/register';
 const LOGOUT_URL = 'http://192.168.1.115:3000/users/logout';
 
 const initialState = {
-  email: null,
-  userName: null,
+  user: null,
   status: 'idle',
   token: null,
   message: '',
@@ -28,7 +27,6 @@ const storeToken = async (token) => {
 };
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
-
   if (response.data.isVerify) {
     await AsyncStorage.setItem('email', authInfo.email);
     storeToken(response.data.token);
@@ -51,7 +49,6 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const register = createAsyncThunk('auth/register', async (user) => {
   const response = await axios.post(REGISTER_URL, user);
-
   return response.data;
 });
 
@@ -64,6 +61,10 @@ const authSlice = createSlice({
       .addCase(signIn.pending, (state, action) => {
         state.status = 'loading';
       })
+      .addCase(signIn.rejected, (state, action) => {
+        state.status = 'error';
+        showToast('Hesap bulunamadı');
+      })
       .addCase(signIn.fulfilled, (state, action) => {
         if (
           action.payload.token !== undefined ||
@@ -71,6 +72,7 @@ const authSlice = createSlice({
         ) {
           state.token = action.payload.token;
           state.isVerify = action.payload.isVerify;
+          state.user = action.payload;
           showToast(action.payload.message);
           state.message = action.payload.message;
           state.status = 'success';
@@ -101,10 +103,6 @@ const authSlice = createSlice({
   },
 });
 
-export const selectIsLoggedIn = (state) => state.userAuth.isLoggedIn;
 export const token = (state) => state.userAuth.token;
-export const selectEmail = (state) => state.userAuth.email;
-export const selectUserName = (state) => state.userAuth.userName;
 export const message = (state) => state.userAuth.message;
-
 export default authSlice.reducer;

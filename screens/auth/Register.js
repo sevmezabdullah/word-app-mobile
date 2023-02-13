@@ -1,12 +1,11 @@
 import { StyleSheet, View, StatusBar } from 'react-native';
 import { colors } from '../../constants/colors';
 import React, { useState, useEffect } from 'react';
-import LoginInput from '../../components/ui/LoginInput';
-import SignButton from '../../components/ui/SignButton';
+import LoginInput from '../../components/ui/auth/LoginInput';
+import SignButton from '../../components/ui/auth/SignButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { useToast } from 'react-native-toast-notifications';
 import { register } from '../../redux/slices/authSlice';
 import { getLocales } from 'expo-localization';
 const Register = ({ navigation }) => {
