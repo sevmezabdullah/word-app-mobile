@@ -6,6 +6,7 @@ import { ToastAndroid } from 'react-native';
 const AUTH_URL = 'http://192.168.1.115:3000/users/login';
 const REGISTER_URL = 'http://192.168.1.115:3000/users/register';
 const LOGOUT_URL = 'http://192.168.1.115:3000/users/logout';
+const UPDATE_LANG = 'http://192.168.1.115:3000/users/updateLang';
 
 const initialState = {
   user: null,
@@ -25,13 +26,20 @@ const storeToken = async (token) => {
     // saving error
   }
 };
+
+export const updateLang = createAsyncThunk(
+  'auth/updateLang',
+  async (currentLang, nativeLang) => {
+    const response = await axios.put(UPDATE_LANG, { currentLang, nativeLang });
+    return response.data;
+  }
+);
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
   if (response.data.isVerify) {
     await AsyncStorage.setItem('email', authInfo.email);
     storeToken(response.data.token);
   }
-
   return response.data;
 });
 export const checkToken = createAsyncThunk('auth/checkToken', async () => {
