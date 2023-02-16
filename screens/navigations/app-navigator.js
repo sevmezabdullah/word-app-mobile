@@ -6,11 +6,21 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../main/Profile';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Challange from '../main/Challange';
-import Settings from '../main/Settings';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import ChooseLang from '../main/ChooseLang';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
+  const user = useSelector((state) => state.userAuth.user);
+
+  if (user !== null) {
+    if (user.currentLang === null) {
+      return <ChooseLang />;
+    }
+  }
+
   return (
     <>
       <Tab.Navigator initialRouteName="Home">

@@ -27,10 +27,22 @@ const storeToken = async (token) => {
   }
 };
 
+const storeUser = async (user) => {
+  try {
+    const jsonUser = JSON.stringify(user);
+    await AsyncStorage.setItem('user', jsonUser);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateLang = createAsyncThunk(
   'auth/updateLang',
-  async (currentLang, nativeLang) => {
-    const response = await axios.put(UPDATE_LANG, { currentLang, nativeLang });
+  async (userPref) => {
+    const response = await axios.put(UPDATE_LANG, userPref);
+
+    //console.log(response.data);
+
     return response.data;
   }
 );
@@ -39,6 +51,7 @@ export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   if (response.data.isVerify) {
     await AsyncStorage.setItem('email', authInfo.email);
     storeToken(response.data.token);
+    storeUser(response.data);
   }
   return response.data;
 });
@@ -94,6 +107,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state, action) => {
         state.token = null;
         state.status = 'idle';
+        state.user = null;
       })
       .addCase(checkToken.fulfilled, (state, action) => {
         try {
@@ -107,7 +121,11 @@ const authSlice = createSlice({
         }
       })
       .addCase(register.fulfilled, (state, action) => {})
-      .addCase(register.rejected, (state, action) => {});
+      .addCase(register.rejected, (state, action) => {})
+      .addCase(updateLang.fulfilled, (state, action) => {
+        state.user.currentLang = action.payload.currentLang;
+        state.user.nativeLang = action.payload.nativeLang;
+      });
   },
 });
 

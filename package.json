@@ -25,6 +25,7 @@
     "lottie-react-native": "5.1.4",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-dropdown-picker": "^2.1.1",
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.1.4",
