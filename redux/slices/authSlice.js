@@ -2,11 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
+import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = 'http://192.168.1.115:3000/users/login';
-const REGISTER_URL = 'http://192.168.1.115:3000/users/register';
-const LOGOUT_URL = 'http://192.168.1.115:3000/users/logout';
-const UPDATE_LANG = 'http://192.168.1.115:3000/users/updateLang';
+const AUTH_URL = emulatorUrls.AUTH_URL;
+const REGISTER_URL = emulatorUrls.REGISTER_URL;
+const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
+const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
 
 const initialState = {
   user: null,
@@ -36,13 +37,15 @@ const storeUser = async (user) => {
   }
 };
 
+export const getUser = createAsyncThunk('auth/getUser', async () => {
+  const user = JSON.parse(await AsyncStorage.getItem('user'));
+  return user;
+});
+
 export const updateLang = createAsyncThunk(
   'auth/updateLang',
   async (userPref) => {
     const response = await axios.put(UPDATE_LANG, userPref);
-
-    //console.log(response.data);
-
     return response.data;
   }
 );
@@ -65,6 +68,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   });
   await AsyncStorage.removeItem('token');
   await AsyncStorage.removeItem('email');
+  await AsyncStorage.removeItem('user');
   return response.data;
 });
 
@@ -125,6 +129,9 @@ const authSlice = createSlice({
       .addCase(updateLang.fulfilled, (state, action) => {
         state.user.currentLang = action.payload.currentLang;
         state.user.nativeLang = action.payload.nativeLang;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.user = action.payload;
       });
   },
 });

@@ -10,9 +10,7 @@ const ChooseLang = () => {
   const [nativeLang, setNativeLang] = useState('tr');
 
   const user = useSelector((state) => state.userAuth.user);
-  console.log(user);
   const dispatch = useDispatch();
-
   return (
     <View>
       <View style={styles.lottieContainer}></View>
@@ -21,7 +19,7 @@ const ChooseLang = () => {
         <View style={styles.nativeLang}>
           <DropDownPicker
             items={[
-              { label: 'Turkish', value: 'tr' },
+              { label: '🇹🇷' + ' Turkish', value: 'tr' },
               { label: 'Deutsch', value: 'de' },
               { label: 'French', value: 'fr' },
             ]}
@@ -32,6 +30,7 @@ const ChooseLang = () => {
             }}
           />
         </View>
+
         <View style={styles.currentLang}>
           <DropDownPicker
             items={[
@@ -69,6 +68,6 @@ export default ChooseLang;
 
 const styles = StyleSheet.create({
   lottieContainer: {},
-  currentLang: { paddingTop: 40, margin: 10 },
+  currentLang: { paddingTop: 40 },
   nativeLang: { paddingTop: 20, margin: 10 },
 });

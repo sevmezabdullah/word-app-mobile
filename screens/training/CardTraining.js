@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-const Challange = () => {
+const CardTraining = ({ navigation }) => {
   return <View></View>;
 };
 
-export default Challange;
+export default CardTraining;
 
 const styles = StyleSheet.create({});

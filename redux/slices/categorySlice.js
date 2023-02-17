@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-const CATEGORY_URL = 'http://192.168.1.115:3000/category/categories';
+
+import { emulatorUrls } from '../../constants/uri';
+const CATEGORY_URL = emulatorUrls.GET_CATEGORIES;
 const initialState = {
   categories: [],
   status: 'idle',

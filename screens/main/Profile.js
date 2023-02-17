@@ -9,20 +9,7 @@ import Settings from './Settings';
 import ProfileMain from './ProfileMain';
 const Stack = createNativeStackNavigator();
 const Profile = ({ navigation }) => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Profile"
-        component={ProfileMain}
-      />
-      <Stack.Screen
-        options={{ headerShown: true, headerTitle: 'Ayarlar' }}
-        name="Settings"
-        component={Settings}
-      />
-    </Stack.Navigator>
-  );
+  return <Stack.Navigator></Stack.Navigator>;
 };
 
 export default Profile;
