@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
 import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = emulatorUrls.AUTH_URL;
-const REGISTER_URL = emulatorUrls.REGISTER_URL;
-const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
-const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
+const AUTH_URL = localUrls.AUTH_URL;
+const REGISTER_URL = localUrls.REGISTER_URL;
+const LOGOUT_URL = localUrls.LOGOUT_URL;
+const UPDATE_LANG = localUrls.UPDATE_LANG;
 
 const initialState = {
   user: null,
@@ -53,7 +53,6 @@ export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
   if (response.data.isVerify) {
     await AsyncStorage.setItem('email', authInfo.email);
-    storeToken(response.data.token);
     storeUser(response.data);
   }
   return response.data;
@@ -66,9 +65,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   const response = await axios.post(LOGOUT_URL, {
     userEmail: email,
   });
-  await AsyncStorage.removeItem('token');
-  await AsyncStorage.removeItem('email');
-  await AsyncStorage.removeItem('user');
+  await AsyncStorage.clear();
   return response.data;
 });
 
@@ -101,6 +98,7 @@ const authSlice = createSlice({
           showToast(action.payload.message);
           state.message = action.payload.message;
           state.status = 'success';
+          storeToken(action.payload.token);
           if (!state.isVerify) {
             state.token = null;
           }
@@ -112,6 +110,9 @@ const authSlice = createSlice({
         state.token = null;
         state.status = 'idle';
         state.user = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        console.log('Çıkış hatası');
       })
       .addCase(checkToken.fulfilled, (state, action) => {
         try {
