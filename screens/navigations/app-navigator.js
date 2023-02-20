@@ -6,7 +6,7 @@ import ChooseLang from '../main/ChooseLang';
 import TabNavigator from './tab-navigator';
 import CardTraining from '../training/CardTraining';
 import Settings from '../main/Settings';
-import ProfileMain from '../main/ProfileMain';
+
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {

@@ -29,10 +29,7 @@ const Challange = () => {
           title="Rakiplere Karşı"
           icon="../../../assets/quiz.png"
         />
-        <ChallengeButton
-          title="Kelime Tanıma"
-          icon="../../../assets/quiz.png"
-        />
+        <ChallengeButton title="Zamana Karşı" icon="../../../assets/quiz.png" />
       </View>
     </View>
   );
