@@ -12,6 +12,7 @@ const initialState = {
   status: 'idle',
   category: null,
   words: [],
+  wordLoading: 'idle',
 };
 export const getCategories = createAsyncThunk('category/getAll', async () => {
   const token = await AsyncStorage.getItem('token');
@@ -80,6 +81,10 @@ const categorySlice = createSlice({
       })
       .addCase(getWordsByCategoryId.fulfilled, (state, action) => {
         state.words = action.payload;
+        state.wordLoading = 'fullfilled';
+      })
+      .addCase(getWordsByCategoryId.pending, (state, action) => {
+        state.wordLoading = 'loading';
       });
   },
 });
