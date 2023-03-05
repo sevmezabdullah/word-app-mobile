@@ -21,7 +21,7 @@ const CategoryItem = ({ item, lang }) => {
           <Image
             style={{ width: 80, height: 80, borderRadius: 5 }}
             source={{
-              uri: item.imageUri,
+              uri: item.logo,
             }}
           />
           <Text style={{ textAlign: 'center' }}>{item.titles[lang]}</Text>

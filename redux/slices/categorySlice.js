@@ -3,30 +3,45 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { emulatorUrls, localUrls } from '../../constants/uri';
-const CATEGORY_URL = emulatorUrls.GET_CATEGORIES;
-const GET_CATEGORY_ID = emulatorUrls.GET_BY_ID;
+const CATEGORY_URL = localUrls.GET_CATEGORIES;
+const GET_CATEGORY_ID = localUrls.GET_BY_ID;
 
 const initialState = {
   categories: [],
   categoriesContainer: [],
   status: 'idle',
   category: null,
+  words: [],
 };
 export const getCategories = createAsyncThunk('category/getAll', async () => {
   const token = await AsyncStorage.getItem('token');
   const response = await axios.get(CATEGORY_URL, {
     headers: {
       Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     },
   });
 
   return response.data;
 });
 
+export const getWordsByCategoryId = createAsyncThunk(
+  'category/getByIdWord',
+  async (id) => {
+    const response = await axios.get(localUrls.GET_WORDS_BY_CATEGORY_ID + id, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  }
+);
+
 export const getCategoryById = createAsyncThunk(
   'category/byId',
   async (categoryId) => {
     const response = await axios.get(GET_CATEGORY_ID + '/' + categoryId);
+
     return response.data;
   }
 );
@@ -55,12 +70,16 @@ const categorySlice = createSlice({
       .addCase(getCategories.fulfilled, (state, action) => {
         state.categories = action.payload;
         state.categoriesContainer = action.payload;
+        state.status = 'fullfilled';
       })
       .addCase(getCategories.rejected, (state, action) => {
         console.log('Kategori Hatası');
       })
       .addCase(getCategoryById.fulfilled, (state, action) => {
         state.category = action.payload;
+      })
+      .addCase(getWordsByCategoryId.fulfilled, (state, action) => {
+        state.words = action.payload;
       });
   },
 });

@@ -6,7 +6,6 @@ import QuizImage from '../../assets/quiz.png';
 import BotImage from '../../assets/against_bot.png';
 
 const QUIZ_IMAGE = Image.resolveAssetSource(QuizImage).uri;
-const BOT_IMAGE = Image.resolveAssetSource(BotImage).uri;
 
 const Challange = () => {
   return (
@@ -19,16 +18,6 @@ const Challange = () => {
         }}
       >
         <ChallengeButton title="Quiz" icon={QUIZ_IMAGE} />
-        <ChallengeButton title="Botlara Karşı" icon={BOT_IMAGE} />
-      </View>
-
-      <View
-        style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }}
-      >
-        <ChallengeButton
-          title="Rakiplere Karşı"
-          icon="../../../assets/quiz.png"
-        />
         <ChallengeButton title="Zamana Karşı" icon="../../../assets/quiz.png" />
       </View>
     </View>
