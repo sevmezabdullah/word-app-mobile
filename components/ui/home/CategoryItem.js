@@ -3,9 +3,21 @@ import React from 'react';
 import { Card, Text } from 'react-native-paper';
 import Icon from '@expo/vector-icons/Entypo';
 import Cards from '@expo/vector-icons/MaterialCommunityIcons';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 const CategoryItem = ({ item, lang }) => {
   const icon = <Icon name="trophy" color={'orange'} size={18} />;
   const cards = <Cards name="cards-outline" color={'black'} size={18} />;
+  const user = useSelector((state) => state.userAuth.user);
+  const [title, setTitle] = useState('');
+  useEffect(() => {
+    item.titles.forEach((titleP) => {
+      if (titleP.langCode === user.currentLang) {
+        setTitle(titleP.meaning);
+      }
+    });
+  }, [item]);
 
   return (
     <View style={{ width: 130 }}>
@@ -24,7 +36,7 @@ const CategoryItem = ({ item, lang }) => {
               uri: item.logo,
             }}
           />
-          <Text style={{ textAlign: 'center' }}>{item.titles[lang]}</Text>
+          <Text style={{ textAlign: 'center' }}>{title}</Text>
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >

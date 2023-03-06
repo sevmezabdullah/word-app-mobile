@@ -23,4 +23,4 @@ export const localUrls = {
   GET_WORDS_BY_CATEGORY_ID: 'http://192.168.1.115:3000/category/getWords/',
 };
 
-export const socketURL = 'http://192.168.1.115:3000';
+export const socketURL = 'http://10.0.2.2:3000';

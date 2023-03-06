@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dialog from 'react-native-dialog';
@@ -20,6 +26,7 @@ const CardTraining = ({ route, navigation }) => {
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
 
+  const [swiping, setSwiping] = useState(0);
   const [knownWords, setKnownWords] = useState([]);
   const unknownWords = [];
   const wordArr = [];
@@ -58,6 +65,9 @@ const CardTraining = ({ route, navigation }) => {
           </View>
           <View styles={styles.container}>
             <Swiper
+              onSwiping={(data) => {
+                setSwiping(data);
+              }}
               onTapCard={() => {}}
               onSwipedRight={(index) => {
                 console.log('Saga atıldı.', card[index]._id);
@@ -71,6 +81,7 @@ const CardTraining = ({ route, navigation }) => {
                 console.log(cardIndex);
               }}
               onSwipedAll={() => {
+                console.log(knownWords);
                 setKnownWords(wordArr);
                 setFinished(true);
               }}
@@ -125,6 +136,7 @@ const CardTraining = ({ route, navigation }) => {
                 />
               </Dialog.Container>
             </View>
+
             <View>
               <Dialog.Container visible={finished}>
                 <Dialog.Title>Sonuç</Dialog.Title>
@@ -148,8 +160,18 @@ const CardTraining = ({ route, navigation }) => {
     }
   } else {
     return (
-      <View>
-        <Text>card words gelmiyor</Text>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View
+          style={{
+            alignContent: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <ActivityIndicator size="large" color="#0000ff" />
+          {/*     <Text>card words gelmiyor</Text> */}
+        </View>
       </View>
     );
   }
