@@ -25,7 +25,11 @@ const AppNavigator = () => {
         name="Tabs"
         component={TabNavigator}
       />
-      <Stack.Screen name="CardTraining" component={CardTraining} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="CardTraining"
+        component={CardTraining}
+      />
       <Stack.Screen
         options={{ headerShown: true, headerTitle: 'Ayarlar' }}
         name="Settings"

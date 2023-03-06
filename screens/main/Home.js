@@ -9,7 +9,10 @@ import { colors } from '../../constants/colors';
 import LoginInput from '../../components/ui/auth/LoginInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryItem from '../../components/ui/home/CategoryItem';
-
+import {
+  getCategoryById,
+  getWordsByCategoryId,
+} from '../../redux/slices/categorySlice';
 import { getUser } from '../../redux/slices/authSlice';
 import { handleSearch } from '../../redux/slices/categorySlice';
 const Home = ({ navigation }) => {
