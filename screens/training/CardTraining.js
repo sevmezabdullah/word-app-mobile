@@ -14,6 +14,11 @@ import {
 } from '../../redux/slices/categorySlice';
 import Swiper from 'react-native-deck-swiper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  addKnownWord,
+  addUnknownWord,
+  resetArr,
+} from '../../redux/slices/wordSlice';
 
 const CardTraining = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -26,10 +31,10 @@ const CardTraining = ({ route, navigation }) => {
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
 
+  const knownWords = useSelector((state) => state.word.knownWords);
+  const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
   const [swipingKnown, setSwipingKnown] = useState(20);
-  const [knownWords, setKnownWords] = useState([]);
-  const [unknownWords, setUnknownWords] = useState([]);
 
   const [finished, setFinished] = useState(false);
   useEffect(() => {
@@ -41,18 +46,19 @@ const CardTraining = ({ route, navigation }) => {
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
   }, [categoryId]);
-
-  const addWord = (index, state) => {
+  const wordArr = [];
+  const addWord = (index, isRight) => {
     const cardId = card[index]._id;
-    state((arr) => [...arr, cardId]);
-    console.log(knownWords);
-    console.log(unknownWords);
+    if (isRight) {
+      dispatch(addKnownWord(cardId));
+    } else {
+      dispatch(addUnknownWord(cardId));
+    }
     resetActions();
   };
 
   const resetActions = () => {
     setSwipingKnown(20);
-
     setSwipingUnknown(20);
   };
   if (category !== null && card.length > 0) {
@@ -80,7 +86,6 @@ const CardTraining = ({ route, navigation }) => {
               onSwiping={(data) => {
                 setSwipingUnknown(data);
                 if (data < 0) {
-                  setKnownWords(0);
                   setSwipingUnknown(data * -1);
                 } else {
                   setSwipingUnknown(0);
@@ -90,10 +95,10 @@ const CardTraining = ({ route, navigation }) => {
               onSwipedAborted={resetActions}
               onTapCard={() => {}}
               onSwipedRight={(index) => {
-                addWord(index, setKnownWords);
+                addWord(index, true);
               }}
               onSwipedLeft={(index) => {
-                addWord(index, setUnknownWords);
+                addWord(index, false);
               }}
               onSwipedAll={() => {
                 setFinished(true);
@@ -154,15 +159,15 @@ const CardTraining = ({ route, navigation }) => {
               <Dialog.Container visible={finished}>
                 <Dialog.Title>Sonuç</Dialog.Title>
                 <Dialog.Description>
-                  {knownWords.length || 0} kelime bilinenler destesine eklendi.
+                  {knownWords.length} kelime bilinenler destesine eklendi.
                 </Dialog.Description>
                 <Dialog.Description>
-                  {unknownWords.length || 0} kelime bilinmeyenler destesine
-                  eklendi.
+                  {unKnownWords.length} kelime bilinmeyenler destesine eklendi.
                 </Dialog.Description>
                 <Dialog.Button
                   onPress={() => {
                     navigation.navigate('Tabs');
+                    dispatch(resetArr());
                   }}
                   label="Kapat"
                 />
