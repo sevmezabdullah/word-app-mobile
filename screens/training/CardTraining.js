@@ -19,7 +19,7 @@ import {
   addUnknownWord,
   resetArr,
 } from '../../redux/slices/wordSlice';
-import { addWordUser } from '../../redux/slices/authSlice';
+import { addAwardtoUser, addWordUser } from '../../redux/slices/authSlice';
 
 const CardTraining = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -173,6 +173,16 @@ const CardTraining = ({ route, navigation }) => {
                 <Dialog.Button
                   onPress={() => {
                     navigation.navigate('Tabs');
+
+                    if (card.length === knownWords.length) {
+                      dispatch(
+                        addAwardtoUser({
+                          awardId: category.awardId,
+                          userId: user.id,
+                        })
+                      );
+                      console.log('Bütün kartlar bilindi.');
+                    }
 
                     knownWords.forEach((word) => {
                       dispatch(

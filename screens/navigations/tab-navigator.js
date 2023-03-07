@@ -5,7 +5,7 @@ const Tab = createBottomTabNavigator();
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Challange from '../main/Challange';
+import Challenge from '../main/Challange';
 import ProfileMain from '../main/ProfileMain';
 import Home from '../main/Home';
 const TabNavigator = () => {
@@ -24,8 +24,8 @@ const TabNavigator = () => {
         component={Home}
       />
       <Tab.Screen
-        name="Challange"
-        component={Challange}
+        name="Challenge"
+        component={Challenge}
         options={{
           headerShown: false,
           tabBarLabel: 'Meydan Oku',

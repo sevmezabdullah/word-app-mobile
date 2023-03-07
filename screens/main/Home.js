@@ -10,7 +10,7 @@ import LoginInput from '../../components/ui/auth/LoginInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryItem from '../../components/ui/home/CategoryItem';
 
-import { getUser } from '../../redux/slices/authSlice';
+import { getUser, getUserDeck } from '../../redux/slices/authSlice';
 import { handleSearch } from '../../redux/slices/categorySlice';
 const Home = ({ navigation }) => {
   const [searchCategory, setSearchCategory] = useState('');
@@ -50,10 +50,15 @@ const Home = ({ navigation }) => {
     }
 
     if (user === null) {
-      dispatch(getUser()).unwrap();
+      /*       */
     }
-
+    dispatch(getUser()).unwrap();
     fetchCategories();
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(getUserDeck({ userId: user.id })).unwrap();
+      console.log('home');
+    });
+    return unsubscribe;
   }, [dispatch]);
 
   navigation.addListener('focus', fetchCategories);

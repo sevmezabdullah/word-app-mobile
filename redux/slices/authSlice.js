@@ -4,11 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
 import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = emulatorUrls.AUTH_URL;
-const REGISTER_URL = emulatorUrls.REGISTER_URL;
-const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
-const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
-const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
+const AUTH_URL = localUrls.AUTH_URL;
+const REGISTER_URL = localUrls.REGISTER_URL;
+const LOGOUT_URL = localUrls.LOGOUT_URL;
+const UPDATE_LANG = localUrls.UPDATE_LANG;
+const ADD_WORD_USER = localUrls.ADD_WORD_USER;
+const ADD_AWARD = localUrls.ADD_AWARD;
+const GET_USER_DECK = localUrls.GET_USER_DECK;
 
 const initialState = {
   user: null,
@@ -83,6 +85,23 @@ export const addWordUser = createAsyncThunk(
   }
 );
 
+export const addAwardtoUser = createAsyncThunk(
+  'auth/addAward',
+  async ({ awardId, userId }) => {
+    const response = await axios.post(ADD_AWARD, { awardId, userId });
+    return response.data;
+  }
+);
+
+export const getUserDeck = createAsyncThunk(
+  'auth/getUserDeck',
+  async ({ userId }) => {
+    const response = await axios.get(GET_USER_DECK + userId);
+
+    return response.data;
+  }
+);
+
 const authSlice = createSlice({
   name: 'userAuth',
   initialState,
@@ -145,6 +164,9 @@ const authSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload;
+      })
+      .addCase(getUserDeck.fulfilled, (state, action) => {
+        state.user.categoryAwardsIds = action.payload.categoryAwardsIds;
       });
   },
 });

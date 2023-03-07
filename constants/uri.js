@@ -1,4 +1,3 @@
-const host = '10.0.2.2';
 export const productionUrls = {
   AUTH_URL: '',
   REGISTER_URL: '',
@@ -14,6 +13,8 @@ export const emulatorUrls = {
   GET_CATEGORIES: 'http://10.0.2.2:3000/category/categories',
   GET_BY_ID: 'http://10.0.2.2:3000/category',
   GET_WORDS_BY_CATEGORY_ID: 'http://10.0.2.2:3000/category/getWords/',
+  ADD_AWARD: 'http://10.0.2.2:3000/users/addAwardToUser',
+  GET_USER_DECK: 'http://10.0.2.2:3000/users/getUserAwardDeck',
 };
 export const localUrls = {
   AUTH_URL: 'http://192.168.1.115:3000/users/login',
@@ -23,6 +24,8 @@ export const localUrls = {
   GET_CATEGORIES: 'http://192.168.1.115:3000/category/categories',
   GET_BY_ID: 'http://192.168.1.115:3000/category',
   GET_WORDS_BY_CATEGORY_ID: 'http://192.168.1.115:3000/category/getWords/',
+  ADD_AWARD: 'http://192.168.1.115:3000/users/addAwardToUser',
+  GET_USER_DECK: 'http://192.168.1.115:3000/users/getUserAwardDeck/',
 };
 
-export const socketURL = 'http://10.0.2.2:3000';
+export const socketURL = 'http://192.168.1.115:3000';

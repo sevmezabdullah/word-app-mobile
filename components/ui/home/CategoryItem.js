@@ -40,7 +40,15 @@ const CategoryItem = ({ item, lang }) => {
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
-            <View>{icon}</View>
+            <View
+              style={{
+                opacity: user.categoryAwardsIds.includes(item.awardId)
+                  ? 1
+                  : 0.2,
+              }}
+            >
+              {icon}
+            </View>
             <View style={{ flexDirection: 'row' }}>
               {cards}
               <Text>{item.words.length}</Text>
