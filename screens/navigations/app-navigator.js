@@ -6,6 +6,7 @@ import ChooseLang from '../main/ChooseLang';
 import TabNavigator from './tab-navigator';
 import CardTraining from '../training/CardTraining';
 import Settings from '../main/Settings';
+import QuizTraining from '../training/QuizTraining';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,11 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
         name="CardTraining"
         component={CardTraining}
+      />
+      <Stack.Screen
+        options={{ headerShown: true }}
+        name="Quiz"
+        component={QuizTraining}
       />
       <Stack.Screen
         options={{ headerShown: true, headerTitle: 'Ayarlar' }}

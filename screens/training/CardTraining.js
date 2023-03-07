@@ -19,6 +19,7 @@ import {
   addUnknownWord,
   resetArr,
 } from '../../redux/slices/wordSlice';
+import { addWordUser } from '../../redux/slices/authSlice';
 
 const CardTraining = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const CardTraining = ({ route, navigation }) => {
   const nativeLang = user.nativeLang;
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
-
+  const [isFlipped, setIsFlipped] = useState(false);
   const knownWords = useSelector((state) => state.word.knownWords);
   const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
@@ -46,7 +47,7 @@ const CardTraining = ({ route, navigation }) => {
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
   }, [categoryId]);
-  const wordArr = [];
+
   const addWord = (index, isRight) => {
     const cardId = card[index]._id;
     if (isRight) {
@@ -61,6 +62,7 @@ const CardTraining = ({ route, navigation }) => {
     setSwipingKnown(20);
     setSwipingUnknown(20);
   };
+
   if (category !== null && card.length > 0) {
     if (wordLoading === 'loading') {
       return (
@@ -93,7 +95,9 @@ const CardTraining = ({ route, navigation }) => {
                 }
               }}
               onSwipedAborted={resetActions}
-              onTapCard={() => {}}
+              onTapCard={() => {
+                setIsFlipped(!isFlipped);
+              }}
               onSwipedRight={(index) => {
                 addWord(index, true);
               }}
@@ -103,7 +107,7 @@ const CardTraining = ({ route, navigation }) => {
               onSwipedAll={() => {
                 setFinished(true);
               }}
-              swipeBackCard={true}
+              swipeBackCard={false}
               verticalSwipe={false}
               showSecondCard={true}
               cardIndex={0}
@@ -128,11 +132,13 @@ const CardTraining = ({ route, navigation }) => {
                 return (
                   <>
                     <View>
-                      <View style={styles.card}>
-                        <Text style={styles.text}>{tWord.meaning}</Text>
-                        <Text style={styles.sentences}>
-                          {tSentences.meaning}
-                        </Text>
+                      <View>
+                        <View style={styles.card}>
+                          <Text style={styles.text}>{tWord.meaning}</Text>
+                          <Text style={styles.sentences}>
+                            {tSentences.meaning}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </>
@@ -167,6 +173,15 @@ const CardTraining = ({ route, navigation }) => {
                 <Dialog.Button
                   onPress={() => {
                     navigation.navigate('Tabs');
+
+                    knownWords.forEach((word) => {
+                      dispatch(
+                        addWordUser({
+                          knownWords: { word, date: getCurrentDate() },
+                          id: user.id,
+                        })
+                      );
+                    });
                     dispatch(resetArr());
                   }}
                   label="Kapat"
@@ -220,7 +235,15 @@ const CardTraining = ({ route, navigation }) => {
     );
   }
 };
+const getCurrentDate = () => {
+  var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
+  var year = new Date().getFullYear();
 
+  //Alert.alert(date + '-' + month + '-' + year);
+  // You can turn it in to your desired format
+  return date + '-' + month + '-' + year; //format: d-m-y;
+};
 export default CardTraining;
 
 const styles = StyleSheet.create({

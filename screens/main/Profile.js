@@ -9,7 +9,11 @@ import Settings from './Settings';
 import ProfileMain from './ProfileMain';
 const Stack = createNativeStackNavigator();
 const Profile = ({ navigation }) => {
-  return <Stack.Navigator></Stack.Navigator>;
+  return (
+    <View>
+      <Text>Data</Text>
+    </View>
+  );
 };
 
 export default Profile;

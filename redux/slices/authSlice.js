@@ -8,6 +8,7 @@ const AUTH_URL = emulatorUrls.AUTH_URL;
 const REGISTER_URL = emulatorUrls.REGISTER_URL;
 const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
 const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
+const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
 
 const initialState = {
   user: null,
@@ -74,6 +75,14 @@ export const register = createAsyncThunk('auth/register', async (user) => {
   return response.data;
 });
 
+export const addWordUser = createAsyncThunk(
+  'auth/addWord',
+  async ({ knownWords, id }) => {
+    const response = await axios.post(ADD_WORD_USER, { knownWords, id });
+    return response.data;
+  }
+);
+
 const authSlice = createSlice({
   name: 'userAuth',
   initialState,
@@ -82,6 +91,9 @@ const authSlice = createSlice({
     builder
       .addCase(signIn.pending, (state, action) => {
         state.status = 'loading';
+      })
+      .addCase(addWordUser.fulfilled, (state, action) => {
+        //  state.user.knownWords = action.payload.knownWords;
       })
       .addCase(signIn.rejected, (state, action) => {
         state.status = 'error';

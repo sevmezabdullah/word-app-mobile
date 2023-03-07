@@ -1,3 +1,4 @@
+const host = '10.0.2.2';
 export const productionUrls = {
   AUTH_URL: '',
   REGISTER_URL: '',
@@ -6,6 +7,7 @@ export const productionUrls = {
 };
 export const emulatorUrls = {
   AUTH_URL: 'http://10.0.2.2:3000/users/login',
+  ADD_WORD_USER: 'http://10.0.2.2:3000/users/addWordToKnown',
   REGISTER_URL: 'http://10.0.2.2:3000/users/register',
   LOGOUT_URL: 'http://10.0.2.2:3000/users/logout',
   UPDATE_LANG: 'http://10.0.2.2:3000/users/updateLang',
