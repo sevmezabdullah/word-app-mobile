@@ -29,8 +29,8 @@ const CardTraining = ({ route, navigation }) => {
   const [swipingUnknown, setSwipingUnknown] = useState(20);
   const [swipingKnown, setSwipingKnown] = useState(20);
   const [knownWords, setKnownWords] = useState([]);
-  const unknownWords = [];
-  const wordArr = [];
+  const [unknownWords, setUnknownWords] = useState([]);
+
   const [finished, setFinished] = useState(false);
   useEffect(() => {
     dispatch(getCategoryById(categoryId)).unwrap();
@@ -41,6 +41,14 @@ const CardTraining = ({ route, navigation }) => {
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
   }, [categoryId]);
+
+  const addWord = (index, state) => {
+    const cardId = card[index]._id;
+    state((arr) => [...arr, cardId]);
+    console.log(knownWords);
+    console.log(unknownWords);
+    resetActions();
+  };
 
   const resetActions = () => {
     setSwipingKnown(20);
@@ -79,25 +87,19 @@ const CardTraining = ({ route, navigation }) => {
                   setSwipingKnown(data);
                 }
               }}
-              onSwipedAborted={() => {
-                resetActions();
-              }}
+              onSwipedAborted={resetActions}
               onTapCard={() => {}}
               onSwipedRight={(index) => {
-                const cardId = card[index]._id;
-                wordArr.push(cardId);
-                resetActions();
+                addWord(index, setKnownWords);
               }}
               onSwipedLeft={(index) => {
-                resetActions();
+                addWord(index, setUnknownWords);
               }}
               onSwipedAll={() => {
-                setKnownWords(wordArr);
                 setFinished(true);
               }}
               swipeBackCard={true}
               verticalSwipe={false}
-              infinite={true}
               showSecondCard={true}
               cardIndex={0}
               backgroundColor={'#4FD0E9'}
@@ -152,10 +154,11 @@ const CardTraining = ({ route, navigation }) => {
               <Dialog.Container visible={finished}>
                 <Dialog.Title>Sonuç</Dialog.Title>
                 <Dialog.Description>
-                  {knownWords.length} kelime bilinenler destesine eklendi.
+                  {knownWords.length || 0} kelime bilinenler destesine eklendi.
                 </Dialog.Description>
                 <Dialog.Description>
-                  {unknownWords.length} kelime bilinmeyenler destesine eklendi.
+                  {unknownWords.length || 0} kelime bilinmeyenler destesine
+                  eklendi.
                 </Dialog.Description>
                 <Dialog.Button
                   onPress={() => {
