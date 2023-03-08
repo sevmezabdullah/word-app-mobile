@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/slices/authSlice';
 import SettingButton from '../../components/ui/settings/SettingButton';
-import { Modal, Provider, Portal } from 'react-native-paper';
+import { Modal, Provider, Portal, Dialog } from 'react-native-paper';
 import LoginInput from '../../components/ui/auth/LoginInput';
+
 const Settings = () => {
   const dispatch = useDispatch();
 
@@ -47,27 +48,8 @@ const Settings = () => {
     ]);
   };
   return (
-    <Provider>
+    <>
       <View>
-        <Portal>
-          <Modal
-            visible={visiblePasswordModal}
-            contentContainerStyle={containerStyle}
-            onDismiss={hidePasswordModal}
-          >
-            <View
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={styles.label}>Şifre Değiştir</Text>
-              <TextInput placeholder="Şifre" style={styles.input} />
-              <TextInput placeholder="Şifre Tekrar" style={styles.input} />
-            </View>
-          </Modal>
-        </Portal>
-
         <SettingButton
           title="Şifre Değiştir"
           onPress={() => {
@@ -102,7 +84,37 @@ const Settings = () => {
           icon="logout"
         />
       </View>
-    </Provider>
+      <Dialog
+        visible={visiblePasswordModal}
+        onDismiss={() => {
+          setVisiblePasswordModal(false);
+        }}
+      >
+        <Dialog.Title>Şifre Değiştir</Dialog.Title>
+        <Dialog.Content>
+          <View
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <TextInput placeholder="Şifre" style={styles.input} />
+            <TextInput placeholder="Şifre Tekrar" style={styles.input} />
+          </View>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <View style={{ margin: 5 }}>
+            <Button
+              onPress={() => {
+                setVisiblePasswordModal(false);
+              }}
+              title="Kapat"
+            />
+          </View>
+          <Button title="Değiştir" />
+        </Dialog.Actions>
+      </Dialog>
+    </>
   );
 };
 

@@ -16,8 +16,13 @@ const Challenge = ({ navigation }) => {
     setDifficulty(false);
   };
   const gotoQuiz = (difficulty) => {
-    navigation.navigate('Quiz', { difficulty: difficulty });
+    if (quizType === 'classic')
+      navigation.navigate('Quiz', { difficulty: difficulty });
+
+    if (quizType === 'timed')
+      navigation.navigate('TimedQuiz', { difficulty: difficulty });
   };
+  const [quizType, setQuizType] = useState('classic');
   return (
     <View style={styles.container}>
       <View
@@ -29,12 +34,20 @@ const Challenge = ({ navigation }) => {
       >
         <ChallengeButton
           onPress={() => {
+            setQuizType('classic');
             setDifficulty(true);
           }}
           title="Quiz"
           icon={QUIZ_IMAGE}
         />
-        <ChallengeButton title="Zamana Karşı" icon={AGAINST_TIME} />
+        <ChallengeButton
+          title="Zamana Karşı"
+          onPress={() => {
+            setQuizType('timed');
+            setDifficulty(true);
+          }}
+          icon={AGAINST_TIME}
+        />
       </View>
       <Dialog visible={difficulty}>
         <Dialog.Title>Zorluk Seçimi</Dialog.Title>

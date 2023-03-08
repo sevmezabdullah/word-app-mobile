@@ -55,13 +55,15 @@ const categorySlice = createSlice({
       const category = action.payload.text;
       const nativeLangCode = action.payload.nativeLang;
       if (category.length > 0) {
-        const filteredList = state.categories.filter((categoryItem) =>
-          categoryItem.titles[nativeLangCode]
-            .toLowerCase()
-            .includes(category.toLowerCase())
-        );
-        state.categories = filteredList;
+        const filteredList = state.categories.filter((categoryItem) => {
+          console.log('item', categoryItem._id);
+        });
+
+        // state.categories = filteredList;
       }
+
+      console.log(category);
+      console.log(nativeLangCode);
     },
     clearSearch: (state, action) => {
       state.categories = state.categoriesContainer;
