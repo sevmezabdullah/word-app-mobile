@@ -20,6 +20,7 @@ import {
   resetArr,
 } from '../../redux/slices/wordSlice';
 import { addAwardtoUser, addWordUser } from '../../redux/slices/authSlice';
+import FlipCard from 'react-native-flip-card';
 
 const CardTraining = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const CardTraining = ({ route, navigation }) => {
   const nativeLang = user.nativeLang;
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
+
   const knownWords = useSelector((state) => state.word.knownWords);
   const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
@@ -66,12 +67,21 @@ const CardTraining = ({ route, navigation }) => {
   if (category !== null && card.length > 0) {
     if (wordLoading === 'loading') {
       return (
-        <View>
-          <Text>Yükleniyor</Text>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View
+            style={{
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+            }}
+          >
+            <ActivityIndicator size="large" color="#0000ff" />
+            {/*     <Text>card words gelmiyor</Text> */}
+          </View>
         </View>
       );
-    }
-    if (wordLoading === 'fullfilled') {
+    } else if (wordLoading === 'fullfilled') {
       return (
         <View style={{ flex: 1 }}>
           <View style={styles.exitButton}>
@@ -115,31 +125,58 @@ const CardTraining = ({ route, navigation }) => {
               cards={card || []}
               stackSize={card.length || 0}
               renderCard={(card) => {
-                let tWord = null;
-                let tSentences = null;
+                let tWord = '';
+                let tSentences = '';
+
+                let nWord = '';
+                let nSentences = '';
 
                 card.words.forEach((item) => {
                   if (item.langCode === currentLang) {
                     tWord = item;
                   }
+                  if (item.langCode === nativeLang) {
+                    nWord = item;
+                  }
                 });
+
                 card.sentences.forEach((item) => {
                   if (item.langCode === currentLang) {
                     tSentences = item;
+                  }
+                  if (item.langCode === nativeLang) {
+                    nSentences = item;
                   }
                 });
 
                 return (
                   <>
                     <View>
-                      <View>
-                        <View style={styles.card}>
-                          <Text style={styles.text}>{tWord.meaning}</Text>
-                          <Text style={styles.sentences}>
-                            {tSentences.meaning}
-                          </Text>
+                      <FlipCard
+                        clickable={true}
+                        perspective={500}
+                        flipHorizontal={true}
+                        friction={6}
+                        flipVertical={false}
+                      >
+                        <View>
+                          <View style={styles.card}>
+                            <Text style={styles.text}>{tWord.meaning}</Text>
+                            <Text style={styles.sentences}>
+                              {tSentences.meaning}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
+
+                        <View>
+                          <View style={styles.card}>
+                            <Text style={styles.text}>{nWord.meaning}</Text>
+                            <Text style={styles.sentences}>
+                              {nSentences.meaning}
+                            </Text>
+                          </View>
+                        </View>
+                      </FlipCard>
                     </View>
                   </>
                 );
@@ -181,7 +218,6 @@ const CardTraining = ({ route, navigation }) => {
                           userId: user.id,
                         })
                       );
-                      console.log('Bütün kartlar bilindi.');
                     }
 
                     knownWords.forEach((word) => {

@@ -50,15 +50,18 @@ const Home = ({ navigation }) => {
     }
 
     if (user === null) {
-      /*       */
+      dispatch(getUser()).unwrap();
     }
-    dispatch(getUser()).unwrap();
     fetchCategories();
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getUserDeck({ userId: user.id })).unwrap();
-      console.log('home');
-    });
-    return unsubscribe;
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user !== null) {
+      const unsubscribe = navigation.addListener('focus', () => {
+        dispatch(getUserDeck({ userId: user.id })).unwrap();
+      });
+      return unsubscribe;
+    }
   }, [dispatch]);
 
   navigation.addListener('focus', fetchCategories);

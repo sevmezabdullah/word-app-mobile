@@ -28,4 +28,4 @@ export const localUrls = {
   GET_USER_DECK: 'http://192.168.1.115:3000/users/getUserAwardDeck/',
 };
 
-export const socketURL = 'http://192.168.1.115:3000';
+export const socketURL = 'http://10.0.2.2:3000';
