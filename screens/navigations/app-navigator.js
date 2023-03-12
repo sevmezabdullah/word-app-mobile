@@ -33,13 +33,13 @@ const AppNavigator = () => {
         component={CardTraining}
       />
       <Stack.Screen
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
         name="Quiz"
         component={QuizTraining}
       />
 
       <Stack.Screen
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
         name="TimedQuiz"
         component={TimedQuiz}
       />

@@ -16,6 +16,7 @@ const Challenge = ({ navigation }) => {
     setDifficulty(false);
   };
   const gotoQuiz = (difficulty) => {
+    setDifficulty(false);
     if (quizType === 'classic')
       navigation.navigate('Quiz', { difficulty: difficulty });
 

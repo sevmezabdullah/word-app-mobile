@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import ExitButton from '../../components/ui/challange/ExitButton';
 
-const TimedQuiz = () => {
+const TimedQuiz = ({ navigation }) => {
   return (
     <View>
-      <Text>TimedQuiz</Text>
+      <ExitButton navigation={navigation} />
     </View>
   );
 };

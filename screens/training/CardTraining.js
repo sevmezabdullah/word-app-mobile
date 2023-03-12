@@ -19,7 +19,10 @@ import {
   addUnknownWord,
   resetArr,
 } from '../../redux/slices/wordSlice';
-import { addAwardtoUser, addWordUser } from '../../redux/slices/authSlice';
+import {
+  addAwardtoUser as addAwardUser,
+  addWordUser,
+} from '../../redux/slices/authSlice';
 import FlipCard from 'react-native-flip-card';
 
 const CardTraining = ({ route, navigation }) => {
@@ -105,9 +108,6 @@ const CardTraining = ({ route, navigation }) => {
                 }
               }}
               onSwipedAborted={resetActions}
-              onTapCard={() => {
-                setIsFlipped(!isFlipped);
-              }}
               onSwipedRight={(index) => {
                 addWord(index, true);
               }}
@@ -208,12 +208,21 @@ const CardTraining = ({ route, navigation }) => {
                   {unKnownWords.length} kelime bilinmeyenler destesine eklendi.
                 </Dialog.Description>
                 <Dialog.Button
+                  label="Quiz Tamamla"
+                  onPress={() => {
+                    navigation.navigate('Quiz', {
+                      difficulty: null,
+                      quizId: category.quizId,
+                    });
+                  }}
+                />
+                <Dialog.Button
                   onPress={() => {
                     navigation.navigate('Tabs');
 
                     if (card.length === knownWords.length) {
                       dispatch(
-                        addAwardtoUser({
+                        addAwardUser({
                           awardId: category.awardId,
                           userId: user.id,
                         })

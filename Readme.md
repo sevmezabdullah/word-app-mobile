@@ -8,3 +8,7 @@ Zamana Karşı
 Botlara Karşı
 Rakiplere Karşı
 Quiz
+
+## Card Paketi
+
+https://github.com/Paraboly/react-native-card-button
