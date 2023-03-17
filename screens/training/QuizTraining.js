@@ -30,7 +30,7 @@ const QuizTraining = ({ navigation, route }) => {
     increaseIndex++;
     if (increaseIndex < quiz.questions.length - 1) {
       setQuestionIndex(increaseIndex);
-    } else {
+    } else if (increaseIndex === quiz.questions.length - 1) {
       console.log('Quiz tamamlandı');
     }
   };
