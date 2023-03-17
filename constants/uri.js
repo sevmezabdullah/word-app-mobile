@@ -30,4 +30,4 @@ export const localUrls = {
   GET_QUIZ_BY_ID: 'http://192.168.1.115:3000/quiz/',
 };
 
-export const socketURL = 'http://192.168.1.115:3000';
+export const socketURL = 'http://10.0.2.2:3000';

@@ -8,70 +8,44 @@ import { getQuizById } from '../../redux/slices/quizSlice';
 import { resetArr } from '../../redux/slices/wordSlice';
 import QuestionCard from '../../components/ui/quiz/QuestionCard';
 import CardButton from '@paraboly/react-native-card-button';
-
+import { ActivityIndicator } from 'react-native-paper';
+import Dialog from 'react-native-dialog';
 const QuizTraining = ({ navigation, route }) => {
   const dispatch = useDispatch();
+  const { quizId } = route.params || null;
+  const quiz = useSelector((state) => state.quiz.quiz);
   const status = useSelector((state) => state.quiz.status);
-  const difficulty = route.params.difficulty || null;
-  const quizId = route.params.quizId || null;
-
-  let quiz = [];
+  const [exit, setExit] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [answerColor, setAnswerColor] = useState('#E21818');
-  const [questions, setQuestions] = useState([]);
-  const incrementQuestionIndex = () => {
-    /*     if (questionIndex < quiz.questions.length - 1) {
-      setQuestionIndex(questionIndex++);
- 
-    } */
-    setAnswerColor('#E21818');
-  };
-
-  if (quizId != null) {
-    quiz = useSelector((state) => state.quiz.quiz);
-  }
   useEffect(() => {
-    if (quizId !== null && quizId !== undefined) {
+    if (quizId !== null) {
       dispatch(getQuizById(quizId));
-      if (quiz.questions !== null && status === 'fulfilled') {
-        setQuestions(quiz.questions);
-      }
     }
+
     dispatch(resetArr());
   }, [dispatch]);
 
-  const checkAnswer = (userAnswer, correctAnswer) => {
-    if (userAnswer === correctAnswer) {
-      setAnswerColor('#BE6DB7');
+  const nextQuestion = () => {
+    let increaseIndex = questionIndex;
+    increaseIndex++;
+    if (increaseIndex < quiz.questions.length - 1) {
+      setQuestionIndex(increaseIndex);
+    } else {
+      console.log('Quiz tamamlandı');
     }
   };
-
-  if (questions.length > 0 && questions !== null && questions !== undefined) {
+  if (status === 'fulfilled') {
     return (
       <View style={styles.container}>
-        <ExitButton navigation={navigation} />
-        <QuestionCard question={questions[questionIndex].question} />
+        <ExitButton navigation={navigation} setExit={setExit} />
+        <QuestionCard question={quiz.questions[questionIndex].question} />
         <View style={styles.answers}>
           <View style={styles.answerButton}>
             <CardButton
               onPress={() => {
-                checkAnswer('data', 'data');
-                /*     incrementQuestionIndex(); */
-                console.log('Cevap gönderildi');
+                nextQuestion();
               }}
-              text={questions[questionIndex].answerA}
-              textColor="black"
-              rippleColor={answerColor}
-              textSize={18}
-              iconComponent={<View></View>}
-              width={400}
-              height={60}
-              gradient={false}
-            />
-          </View>
-          <View style={styles.answerButton}>
-            <CardButton
-              text={questions[questionIndex].answerB}
+              text={quiz.questions[questionIndex].answerA}
               textColor="black"
               textSize={18}
               iconComponent={<View></View>}
@@ -82,7 +56,10 @@ const QuizTraining = ({ navigation, route }) => {
           </View>
           <View style={styles.answerButton}>
             <CardButton
-              text={'Answer'}
+              onPress={() => {
+                nextQuestion();
+              }}
+              text={quiz.questions[questionIndex].answerB}
               textColor="black"
               textSize={18}
               iconComponent={<View></View>}
@@ -93,7 +70,24 @@ const QuizTraining = ({ navigation, route }) => {
           </View>
           <View style={styles.answerButton}>
             <CardButton
-              text={questions[questionIndex].answerC}
+              onPress={() => {
+                nextQuestion();
+              }}
+              text={quiz.questions[questionIndex].answerC}
+              textColor="black"
+              textSize={18}
+              iconComponent={<View></View>}
+              width={400}
+              height={60}
+              gradient={false}
+            />
+          </View>
+          <View style={styles.answerButton}>
+            <CardButton
+              onPress={() => {
+                nextQuestion();
+              }}
+              text={quiz.questions[questionIndex].answerD}
               textColor="black"
               textSize={18}
               iconComponent={<View></View>}
@@ -103,10 +97,30 @@ const QuizTraining = ({ navigation, route }) => {
             />
           </View>
         </View>
+
+        <Dialog.Container visible={exit}>
+          <Dialog.Title>Çıkış</Dialog.Title>
+          <Dialog.Description>
+            Çıkış yapılırsa gelişim kaydedilmeyecektir. Emin misin?
+          </Dialog.Description>
+
+          <Dialog.Button
+            onPress={() => {
+              setExit(false);
+            }}
+            label="Vazgeç"
+          />
+          <Dialog.Button
+            onPress={() => {
+              navigation.navigate('Tabs');
+            }}
+            label="Çıkış Yap"
+          />
+        </Dialog.Container>
       </View>
     );
-  } else {
-    return <View></View>;
+  } else if (status === 'idle') {
+    return <ActivityIndicator />;
   }
 };
 

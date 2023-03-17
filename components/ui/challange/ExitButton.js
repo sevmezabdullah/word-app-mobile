@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-const ExitButton = ({ navigation }) => {
+
+const ExitButton = ({ navigation, setExit }) => {
   return (
     <View style={styles.exitButtonContainer}>
       <View style={styles.exitButton}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Tabs');
+            setExit(true);
           }}
         >
           <MaterialCommunityIcons name="close" size={32} />

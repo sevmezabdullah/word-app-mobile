@@ -191,6 +191,12 @@ const CardTraining = ({ route, navigation }) => {
 
                 <Dialog.Button
                   onPress={() => {
+                    setExit(false);
+                  }}
+                  label="Vazgeç"
+                />
+                <Dialog.Button
+                  onPress={() => {
                     navigation.navigate('Tabs');
                   }}
                   label="Çıkış Yap"
@@ -211,7 +217,6 @@ const CardTraining = ({ route, navigation }) => {
                   label="Quiz Tamamla"
                   onPress={() => {
                     navigation.navigate('Quiz', {
-                      difficulty: null,
                       quizId: category.quizId,
                     });
                   }}
