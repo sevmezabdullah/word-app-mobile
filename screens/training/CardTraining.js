@@ -19,10 +19,7 @@ import {
   addUnknownWord,
   resetArr,
 } from '../../redux/slices/wordSlice';
-import {
-  addAwardtoUser as addAwardUser,
-  addWordUser,
-} from '../../redux/slices/authSlice';
+
 import FlipCard from 'react-native-flip-card';
 
 const CardTraining = ({ route, navigation }) => {
@@ -214,37 +211,24 @@ const CardTraining = ({ route, navigation }) => {
                   {unKnownWords.length} kelime bilinmeyenler destesine eklendi.
                 </Dialog.Description>
                 <Dialog.Button
+                  onPress={() => {
+                    navigation.navigate('Tabs');
+
+                    dispatch(resetArr());
+                  }}
+                  label="Kapat"
+                />
+                <Dialog.Button
                   label="Quiz Tamamla"
                   onPress={() => {
                     navigation.navigate('Quiz', {
                       quizId: category.quizId,
+                      card: card,
+                      knownWords: knownWords,
+                      user: user,
+                      category: category,
                     });
                   }}
-                />
-                <Dialog.Button
-                  onPress={() => {
-                    navigation.navigate('Tabs');
-
-                    if (card.length === knownWords.length) {
-                      dispatch(
-                        addAwardUser({
-                          awardId: category.awardId,
-                          userId: user.id,
-                        })
-                      );
-                    }
-
-                    knownWords.forEach((word) => {
-                      dispatch(
-                        addWordUser({
-                          knownWords: { word, date: getCurrentDate() },
-                          id: user.id,
-                        })
-                      );
-                    });
-                    dispatch(resetArr());
-                  }}
-                  label="Kapat"
                 />
               </Dialog.Container>
             </View>
@@ -295,15 +279,7 @@ const CardTraining = ({ route, navigation }) => {
     );
   }
 };
-const getCurrentDate = () => {
-  var date = new Date().getDate();
-  var month = new Date().getMonth() + 1;
-  var year = new Date().getFullYear();
 
-  //Alert.alert(date + '-' + month + '-' + year);
-  // You can turn it in to your desired format
-  return date + '-' + month + '-' + year; //format: d-m-y;
-};
 export default CardTraining;
 
 const styles = StyleSheet.create({

@@ -16,6 +16,7 @@ export const emulatorUrls = {
   ADD_AWARD: 'http://10.0.2.2:3000/users/addAwardToUser',
   GET_USER_DECK: 'http://10.0.2.2:3000/users/getUserAwardDeck',
   GET_QUIZ_BY_ID: 'http://10.0.2.2:3000/quiz/',
+  GET_QUIZ_BY_DIffICULTY: 'http://10.0.2.2:3000/quiz/difficulty/',
 };
 export const localUrls = {
   AUTH_URL: 'http://192.168.1.115:3000/users/login',
@@ -28,6 +29,7 @@ export const localUrls = {
   ADD_AWARD: 'http://192.168.1.115:3000/users/addAwardToUser',
   GET_USER_DECK: 'http://192.168.1.115:3000/users/getUserAwardDeck/',
   GET_QUIZ_BY_ID: 'http://192.168.1.115:3000/quiz/',
+  GET_QUIZ_BY_DIffICULTY: 'http://192.168.1.115:3000/quiz/difficulty/',
 };
 
 export const socketURL = 'http://192.168.1.115:3000';

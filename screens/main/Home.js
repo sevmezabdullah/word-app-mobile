@@ -12,6 +12,7 @@ import CategoryItem from '../../components/ui/home/CategoryItem';
 
 import { getUser, getUserDeck } from '../../redux/slices/authSlice';
 import { handleSearch } from '../../redux/slices/categorySlice';
+import { initialize } from '../../redux/slices/quizSlice';
 const Home = ({ navigation }) => {
   const [searchCategory, setSearchCategory] = useState('');
   const socket = io(socketURL);
@@ -45,6 +46,7 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
+    dispatch(initialize());
     if (categoryStatus === 'idle') {
       dispatch(getCategories()).unwrap();
     }

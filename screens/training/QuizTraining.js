@@ -4,18 +4,23 @@ import { useEffect } from 'react';
 import { Audio } from 'expo-av';
 import ExitButton from '../../components/ui/challange/ExitButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQuizById } from '../../redux/slices/quizSlice';
+import { getQuizById, getQuizByDifficulty } from '../../redux/slices/quizSlice';
 import { resetArr } from '../../redux/slices/wordSlice';
 import QuestionCard from '../../components/ui/quiz/QuestionCard';
 import CardButton from '@paraboly/react-native-card-button';
 import { ActivityIndicator } from 'react-native-paper';
 import Dialog from 'react-native-dialog';
-
+import {
+  addAwardtoUser as addAwardUser,
+  addWordUser,
+} from '../../redux/slices/authSlice';
 const passQuestionDuration = 1000;
 
 const QuizTraining = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const { quizId } = route.params || null;
+  const { quizId, card, category, knownWords, difficulty } =
+    route.params || null;
+  const user = useSelector((state) => state.userAuth.user);
   const quiz = useSelector((state) => state.quiz.quiz);
   const status = useSelector((state) => state.quiz.status);
   const [exit, setExit] = useState(false);
@@ -27,10 +32,22 @@ const QuizTraining = ({ navigation, route }) => {
     answerC: 'white',
     answerD: 'white',
   });
-
+  const [isCompletedQuiz, setIsCompletedQuiz] = useState(false);
+  const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
+  const [wrongAnswerCount, setWrongAnswerCount] = useState(0);
   const [sound, setSound] = useState();
+
   useEffect(() => {
-    if (quizId !== null) {
+    if (quizId === undefined) {
+      if (difficulty !== null || difficulty !== undefined) {
+        dispatch(
+          getQuizByDifficulty({
+            difficulty: difficulty,
+            currentLang: user.currentLang,
+          })
+        );
+      }
+    } else if (quizId !== null || quizId != undefined) {
       dispatch(getQuizById(quizId));
     }
 
@@ -45,33 +62,58 @@ const QuizTraining = ({ navigation, route }) => {
       : undefined;
   }, [sound]);
   async function playSound() {
-    console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/success.wav')
     );
     setSound(sound);
 
-    console.log('Playing Sound');
     await sound.playAsync();
   }
   async function playWrongSound() {
-    console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/wrong.wav')
     );
     setSound(sound);
 
-    console.log('Playing Sound');
     await sound.playAsync();
   }
+  const getCurrentDate = () => {
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+
+    return date + '-' + month + '-' + year; //format: d-m-y;
+  };
+  const learnWord = () => {
+    if (card.length === knownWords.length) {
+      dispatch(
+        addAwardUser({
+          awardId: category.awardId,
+          userId: user.id,
+        })
+      );
+    }
+
+    knownWords.forEach((word) => {
+      dispatch(
+        addWordUser({
+          knownWords: { word, date: getCurrentDate() },
+          id: user.id,
+        })
+      );
+    });
+  };
   const nextQuestion = () => {
     let increaseIndex = questionIndex;
     increaseIndex++;
 
-    if (increaseIndex < quiz.questions.length - 1) {
+    if (increaseIndex < quiz.questions.length) {
       setQuestionIndex(increaseIndex);
-    } else if (increaseIndex === quiz.questions.length - 1) {
-      console.log('Quiz tamamlandı');
+    } else if (increaseIndex === quiz.questions.length) {
+      if (quizId) {
+        setIsCompletedQuiz(true);
+        learnWord();
+      }
     }
     clearAnswer();
     setAnswerable(true);
@@ -80,6 +122,7 @@ const QuizTraining = ({ navigation, route }) => {
   const checkAnswer = (userAnswer, buttonType) => {
     if (userAnswer === quiz.questions[questionIndex].answerCorrect) {
       playSound();
+      setCorrectAnswerCount((count) => count + 1);
       if (buttonType === 'A') {
         setAnswerColor({ answerA: 'green' });
       }
@@ -97,7 +140,7 @@ const QuizTraining = ({ navigation, route }) => {
     }
     if (userAnswer !== quiz.questions[questionIndex].answerCorrect) {
       playWrongSound();
-
+      setWrongAnswerCount((count) => count + 1);
       if (buttonType === 'A') {
         setAnswerColor({ answerA: 'red' });
       }
@@ -251,6 +294,16 @@ const QuizTraining = ({ navigation, route }) => {
               navigation.navigate('Tabs');
             }}
             label="Çıkış Yap"
+          />
+        </Dialog.Container>
+        <Dialog.Container visible={isCompletedQuiz}>
+          <Dialog.Title>Quiz Tamamlandı</Dialog.Title>
+          <Dialog.Description></Dialog.Description>
+          <Dialog.Button
+            label="Anasayfaya Dön"
+            onPress={() => {
+              navigation.navigate('Tabs');
+            }}
           />
         </Dialog.Container>
       </View>

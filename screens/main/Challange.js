@@ -12,6 +12,7 @@ const AGAINST_TIME = Image.resolveAssetSource(AgainstTime).uri;
 
 const Challenge = ({ navigation }) => {
   const [difficulty, setDifficulty] = useState(false);
+
   const closeDifDialog = () => {
     setDifficulty(false);
   };
@@ -56,7 +57,7 @@ const Challenge = ({ navigation }) => {
           <View style={{ marginBottom: 5 }}>
             <Button
               onPress={() => {
-                gotoQuiz('easy');
+                gotoQuiz('kolay');
               }}
               color={'green'}
               title="Kolay"
@@ -66,7 +67,7 @@ const Challenge = ({ navigation }) => {
           <View style={{ marginBottom: 5 }}>
             <Button
               onPress={() => {
-                gotoQuiz('medium');
+                gotoQuiz('orta');
               }}
               color={'orange'}
               title="Orta"
@@ -75,7 +76,7 @@ const Challenge = ({ navigation }) => {
 
           <Button
             onPress={() => {
-              gotoQuiz('hard');
+              gotoQuiz('zor');
             }}
             color={'red'}
             title="Zor"
