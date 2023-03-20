@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     height: '50%',
     width: '100%',
     padding: 10,
+    elevation: 20,
   },
   paragraph: {
     fontSize: 18,

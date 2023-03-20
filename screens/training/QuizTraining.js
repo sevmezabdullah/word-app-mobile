@@ -319,10 +319,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     justifyContent: 'space-around',
+    backgroundColor: '#DBE4EB',
+    height: '100%',
   },
   answerButton: {
-    paddingEnd: 30,
     marginTop: 10,
+    marginEnd: 20,
   },
-  answers: {},
+  answers: {
+    marginEnd: 40,
+    paddingEnd: 20,
+  },
 });
