@@ -111,8 +111,8 @@ const QuizTraining = ({ navigation, route }) => {
       setQuestionIndex(increaseIndex);
     } else if (increaseIndex === quiz.questions.length) {
       if (quizId) {
-        setIsCompletedQuiz(true);
         learnWord();
+        navigation.navigate('Result');
       }
     }
     clearAnswer();

@@ -8,6 +8,7 @@ import CardTraining from '../training/CardTraining';
 import Settings from '../main/Settings';
 import QuizTraining from '../training/QuizTraining';
 import TimedQuiz from '../training/TimedQuiz';
+import Result from '../training/Result';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,12 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
         name="Tabs"
         component={TabNavigator}
+      />
+
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Result"
+        component={Result}
       />
       <Stack.Screen
         options={{ headerShown: false }}
