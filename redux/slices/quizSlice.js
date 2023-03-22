@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { localUrls, emulatorUrls } from '../../constants/uri';
 
-const GET_QUIZ_BY_ID = emulatorUrls.GET_QUIZ_BY_ID;
-const GET_QUIZ_BY_DIffICULTY = emulatorUrls.GET_QUIZ_BY_DIffICULTY;
+const GET_QUIZ_BY_ID = localUrls.GET_QUIZ_BY_ID;
+const GET_QUIZ_BY_DIffICULTY = localUrls.GET_QUIZ_BY_DIffICULTY;
 const initialState = {
   quiz: null,
   status: 'idle',

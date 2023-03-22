@@ -112,7 +112,11 @@ const QuizTraining = ({ navigation, route }) => {
     } else if (increaseIndex === quiz.questions.length) {
       if (quizId) {
         learnWord();
-        navigation.navigate('Result');
+        navigation.navigate('Result', {
+          correctCount: correctAnswerCount,
+          wrongCount: wrongAnswerCount,
+        });
+        console.log('Giden Cevap Sayısı', correctAnswerCount);
       }
     }
     clearAnswer();
@@ -121,8 +125,9 @@ const QuizTraining = ({ navigation, route }) => {
 
   const checkAnswer = (userAnswer, buttonType) => {
     if (userAnswer === quiz.questions[questionIndex].answerCorrect) {
-      playSound();
       setCorrectAnswerCount((count) => count + 1);
+
+      playSound();
       if (buttonType === 'A') {
         setAnswerColor({ answerA: 'green' });
       }
@@ -139,8 +144,12 @@ const QuizTraining = ({ navigation, route }) => {
       }
     }
     if (userAnswer !== quiz.questions[questionIndex].answerCorrect) {
-      playWrongSound();
+      if (wrongAnswerCount === 0) {
+        setWrongAnswerCount(1);
+      }
       setWrongAnswerCount((count) => count + 1);
+      playWrongSound();
+
       if (buttonType === 'A') {
         setAnswerColor({ answerA: 'red' });
       }
@@ -170,6 +179,8 @@ const QuizTraining = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <ExitButton navigation={navigation} setExit={setExit} />
+        <Text style={{ textAlign: 'center' }}>{correctAnswerCount}</Text>
+        <Text style={{ textAlign: 'center' }}>{wrongAnswerCount}</Text>
         <QuestionCard question={quiz.questions[questionIndex].question} />
         <View style={styles.answers}>
           <View style={[styles.answerButton]}>

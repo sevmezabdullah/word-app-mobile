@@ -2,13 +2,51 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { DataTable } from 'react-native-paper';
 
-const Result = () => {
+const Result = ({ navigation, route }) => {
+  const { correctCount, wrongCount, total, exp } = route.params || 0;
   return (
     <View style={styles.container}>
       <View style={styles.title}>
         <Text style={styles.textTitle}>Sonuç</Text>
       </View>
+
       <View style={styles.resultContainer}>
+        <DataTable>
+          <DataTable.Row>
+            <DataTable.Cell>
+              <Text>Doğru Cevap</Text>
+            </DataTable.Cell>
+            <DataTable.Cell numeric>
+              <Text>{correctCount}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>
+              <Text>Yanlış Cevap</Text>
+            </DataTable.Cell>
+            <DataTable.Cell numeric>
+              <Text>{wrongCount}</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>
+              <Text>Toplam</Text>
+            </DataTable.Cell>
+            <DataTable.Cell numeric>
+              <Text>30</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+          <DataTable.Row>
+            <DataTable.Cell>
+              <Text>Kazanılan Exp</Text>
+            </DataTable.Cell>
+            <DataTable.Cell numeric>
+              <Text>45</Text>
+            </DataTable.Cell>
+          </DataTable.Row>
+        </DataTable>
+      </View>
+      {/*       <View style={styles.resultContainer}>
         <View style={styles.correctRow}>
           <View style={styles.row}>
             <Text style={styles.dataTitle}>Doğru</Text>
@@ -27,8 +65,22 @@ const Result = () => {
             <Text style={styles.dataTitle}>30</Text>
           </View>
         </View>
+      </View> */}
+      <View style={styles.detailResultContainer}>
+        <DataTable>
+          <DataTable.Header>
+            <DataTable.Title>
+              <Text>Sıra</Text>
+            </DataTable.Title>
+            <DataTable.Title>
+              <Text>Cevabınız</Text>
+            </DataTable.Title>
+            <DataTable.Title>
+              <Text>Doğru Cevap</Text>
+            </DataTable.Title>
+          </DataTable.Header>
+        </DataTable>
       </View>
-      <View style={styles.detailResultContainer}></View>
     </View>
   );
 };
@@ -69,12 +121,12 @@ const styles = StyleSheet.create({
   },
 
   resultContainer: {
-    marginTop: 20,
-    height: '15%',
+    marginTop: 10,
+    height: '25%',
     width: '90%',
     borderRadius: 7,
     flexDirection: 'column',
-    elevation: 16,
+    borderWidth: 1,
     alignSelf: 'center',
   },
   row: {
@@ -100,11 +152,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   detailResultContainer: {
-    marginTop: '20%',
+    marginTop: '3%',
     width: '90%',
     borderWidth: 1,
+
     height: '60%',
-    elevation: 16,
+    elevation: 0,
     borderRadius: 7,
     alignSelf: 'center',
   },
