@@ -1,9 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { DataTable } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { initialize } from '../../redux/slices/quizSlice';
 
 const Result = ({ navigation, route }) => {
-  const { correctCount, wrongCount, total, exp } = route.params || 0;
+  const dispatch = useDispatch();
+  const correctCount = useSelector((state) => state.quiz.correctCount);
+  const wrongCount = useSelector((state) => state.quiz.wrongCount);
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -33,7 +37,7 @@ const Result = ({ navigation, route }) => {
               <Text>Toplam</Text>
             </DataTable.Cell>
             <DataTable.Cell numeric>
-              <Text>30</Text>
+              <Text>{wrongCount + correctCount}</Text>
             </DataTable.Cell>
           </DataTable.Row>
           <DataTable.Row>
@@ -80,6 +84,22 @@ const Result = ({ navigation, route }) => {
             </DataTable.Title>
           </DataTable.Header>
         </DataTable>
+      </View>
+      <View
+        style={{
+          marginTop: 10,
+          width: '90%',
+
+          alignSelf: 'center',
+        }}
+      >
+        <Button
+          onPress={() => {
+            navigation.navigate('Tabs');
+            dispatch(initialize());
+          }}
+          title="Tamamla"
+        ></Button>
       </View>
     </View>
   );
@@ -152,11 +172,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   detailResultContainer: {
-    marginTop: '3%',
+    marginTop: '1%',
     width: '90%',
     borderWidth: 1,
 
-    height: '60%',
+    height: '55%',
     elevation: 0,
     borderRadius: 7,
     alignSelf: 'center',

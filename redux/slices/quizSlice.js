@@ -7,6 +7,8 @@ const GET_QUIZ_BY_DIffICULTY = localUrls.GET_QUIZ_BY_DIffICULTY;
 const initialState = {
   quiz: null,
   status: 'idle',
+  correctCount: 0,
+  wrongCount: 0,
 };
 
 export const getQuizById = createAsyncThunk('quiz/byId', async (quizId) => {
@@ -31,6 +33,14 @@ const quizSlice = createSlice({
     initialize: (state, action) => {
       state.quiz = null;
       state.status = 'idle';
+      state.correctCount = 0;
+      state.wrongCount = 0;
+    },
+    increaseCorrect: (state, action) => {
+      state.correctCount++;
+    },
+    increaseWrong: (state, action) => {
+      state.wrongCount++;
     },
   },
   extraReducers: (builder) => {
@@ -54,5 +64,5 @@ const quizSlice = createSlice({
       });
   },
 });
-export const { initialize } = quizSlice.actions;
+export const { initialize, increaseCorrect, increaseWrong } = quizSlice.actions;
 export default quizSlice.reducer;

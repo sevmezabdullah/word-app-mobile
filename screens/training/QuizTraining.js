@@ -4,7 +4,12 @@ import { useEffect } from 'react';
 import { Audio } from 'expo-av';
 import ExitButton from '../../components/ui/challange/ExitButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQuizById, getQuizByDifficulty } from '../../redux/slices/quizSlice';
+import {
+  getQuizById,
+  getQuizByDifficulty,
+  increaseCorrect,
+  increaseWrong,
+} from '../../redux/slices/quizSlice';
 import { resetArr } from '../../redux/slices/wordSlice';
 import QuestionCard from '../../components/ui/quiz/QuestionCard';
 import CardButton from '@paraboly/react-native-card-button';
@@ -14,6 +19,7 @@ import {
   addAwardtoUser as addAwardUser,
   addWordUser,
 } from '../../redux/slices/authSlice';
+
 const passQuestionDuration = 1000;
 
 const QuizTraining = ({ navigation, route }) => {
@@ -33,8 +39,7 @@ const QuizTraining = ({ navigation, route }) => {
     answerD: 'white',
   });
   const [isCompletedQuiz, setIsCompletedQuiz] = useState(false);
-  const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
-  const [wrongAnswerCount, setWrongAnswerCount] = useState(0);
+
   const [sound, setSound] = useState();
 
   useEffect(() => {
@@ -111,22 +116,24 @@ const QuizTraining = ({ navigation, route }) => {
       setQuestionIndex(increaseIndex);
     } else if (increaseIndex === quiz.questions.length) {
       if (quizId) {
-        learnWord();
-        navigation.navigate('Result', {
-          correctCount: correctAnswerCount,
-          wrongCount: wrongAnswerCount,
-        });
-        console.log('Giden Cevap Sayısı', correctAnswerCount);
+        navigateToResult();
       }
     }
     clearAnswer();
     setAnswerable(true);
   };
 
+  const navigateToResult = () => {
+    learnWord();
+    navigation.navigate('Result', {
+      correctCount: 0,
+      wrongCount: 0,
+    });
+  };
+
   const checkAnswer = (userAnswer, buttonType) => {
     if (userAnswer === quiz.questions[questionIndex].answerCorrect) {
-      setCorrectAnswerCount((count) => count + 1);
-
+      dispatch(increaseCorrect());
       playSound();
       if (buttonType === 'A') {
         setAnswerColor({ answerA: 'green' });
@@ -144,10 +151,7 @@ const QuizTraining = ({ navigation, route }) => {
       }
     }
     if (userAnswer !== quiz.questions[questionIndex].answerCorrect) {
-      if (wrongAnswerCount === 0) {
-        setWrongAnswerCount(1);
-      }
-      setWrongAnswerCount((count) => count + 1);
+      dispatch(increaseWrong());
       playWrongSound();
 
       if (buttonType === 'A') {
@@ -179,8 +183,7 @@ const QuizTraining = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <ExitButton navigation={navigation} setExit={setExit} />
-        <Text style={{ textAlign: 'center' }}>{correctAnswerCount}</Text>
-        <Text style={{ textAlign: 'center' }}>{wrongAnswerCount}</Text>
+
         <QuestionCard question={quiz.questions[questionIndex].question} />
         <View style={styles.answers}>
           <View style={[styles.answerButton]}>
