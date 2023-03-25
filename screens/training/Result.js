@@ -1,13 +1,23 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { DataTable } from 'react-native-paper';
+import { DataTable, IconButton, Dialog } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { initialize } from '../../redux/slices/quizSlice';
+import { useState } from 'react';
 
 const Result = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const correctCount = useSelector((state) => state.quiz.correctCount);
   const wrongCount = useSelector((state) => state.quiz.wrongCount);
+  const userAnswers = useSelector((state) => state.quiz.userAnswers);
+  const questions = useSelector((state) => state.quiz.questions);
+  const currentCorrectAnswers = useSelector(
+    (state) => state.quiz.currentCorrectAnswers
+  );
+  const quiz = useSelector((state) => state.quiz.quiz);
+  const [currentQuestion, setCurrentQuestion] = useState('');
+  const [detailDialog, setDetailDialog] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -45,7 +55,7 @@ const Result = ({ navigation, route }) => {
               <Text>Kazanılan Exp</Text>
             </DataTable.Cell>
             <DataTable.Cell numeric>
-              <Text>45</Text>
+              <Text>{quiz.exp}</Text>
             </DataTable.Cell>
           </DataTable.Row>
         </DataTable>
@@ -82,7 +92,52 @@ const Result = ({ navigation, route }) => {
             <DataTable.Title>
               <Text>Doğru Cevap</Text>
             </DataTable.Title>
+            <DataTable.Title>
+              <Text>Soruyu Gör</Text>
+            </DataTable.Title>
           </DataTable.Header>
+
+          {userAnswers.map((item, index) => {
+            return (
+              <DataTable.Row
+                style={{
+                  opacity: 0.8,
+                  backgroundColor:
+                    item === currentCorrectAnswers[index] ? 'green' : 'red',
+                  margin: 1,
+                  borderRadius: 7,
+                }}
+                key={index}
+              >
+                <DataTable.Cell>
+                  <Text style={styles.resultText}>{index + 1}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.resultText}>{item}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.resultText}>
+                    {currentCorrectAnswers[index]}
+                  </Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <IconButton
+                    onPress={() => {
+                      console.log(
+                        '🚀 ~ file: Result.js:124 ~ {userAnswers.map ~ questions[index]:',
+                        questions[index]
+                      );
+                      setCurrentQuestion(questions[index]);
+                      setDetailDialog(true);
+                    }}
+                    icon={'eye'}
+                    iconColor="white"
+                    size={24}
+                  />
+                </DataTable.Cell>
+              </DataTable.Row>
+            );
+          })}
         </DataTable>
       </View>
       <View
@@ -101,6 +156,22 @@ const Result = ({ navigation, route }) => {
           title="Tamamla"
         ></Button>
       </View>
+      <Dialog visible={detailDialog}>
+        <Dialog.Title>Soru</Dialog.Title>
+        <Dialog.Content>
+          <View style={{ borderBottomWidth: StyleSheet.hairlineWidth }}>
+            <Text>{currentQuestion}</Text>
+          </View>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button
+            onPress={() => {
+              setDetailDialog(false);
+            }}
+            title="Kapat"
+          />
+        </Dialog.Actions>
+      </Dialog>
     </View>
   );
 };
@@ -180,5 +251,9 @@ const styles = StyleSheet.create({
     elevation: 0,
     borderRadius: 7,
     alignSelf: 'center',
+  },
+  resultText: {
+    color: 'white',
+    fontSize: 16,
   },
 });

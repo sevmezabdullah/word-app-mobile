@@ -9,6 +9,9 @@ import {
   getQuizByDifficulty,
   increaseCorrect,
   increaseWrong,
+  addCorrectAnswer,
+  addUserAnswer,
+  addQuestion,
 } from '../../redux/slices/quizSlice';
 import { resetArr } from '../../redux/slices/wordSlice';
 import QuestionCard from '../../components/ui/quiz/QuestionCard';
@@ -125,15 +128,16 @@ const QuizTraining = ({ navigation, route }) => {
 
   const navigateToResult = () => {
     learnWord();
-    navigation.navigate('Result', {
-      correctCount: 0,
-      wrongCount: 0,
-    });
+    navigation.navigate('Result', {});
   };
 
   const checkAnswer = (userAnswer, buttonType) => {
+    dispatch(addCorrectAnswer(quiz.questions[questionIndex].answerCorrect));
+    dispatch(addUserAnswer(userAnswer));
+    dispatch(addQuestion(quiz.questions[questionIndex].question));
     if (userAnswer === quiz.questions[questionIndex].answerCorrect) {
       dispatch(increaseCorrect());
+
       playSound();
       if (buttonType === 'A') {
         setAnswerColor({ answerA: 'green' });
