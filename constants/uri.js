@@ -14,7 +14,7 @@ export const emulatorUrls = {
   GET_BY_ID: 'http://10.0.2.2:3000/category',
   GET_WORDS_BY_CATEGORY_ID: 'http://10.0.2.2:3000/category/getWords/',
   ADD_AWARD: 'http://10.0.2.2:3000/users/addAwardToUser',
-  GET_USER_DECK: 'http://10.0.2.2:3000/users/getUserAwardDeck/',
+  GET_USER_DECK: 'http://10.0.2.2:3000/users/getUserAwardDeck',
   GET_QUIZ_BY_ID: 'http://10.0.2.2:3000/quiz/',
   GET_QUIZ_BY_DIffICULTY: 'http://10.0.2.2:3000/quiz/difficulty/',
   ADD_COMPLETED_QUIZ: 'http://10.0.2.2:3000/users/addCompletedQuiz',
@@ -35,4 +35,4 @@ export const localUrls = {
   ADD_COMPLETED_QUIZ: 'http://192.168.1.115:3000/users/addCompletedQuiz',
 };
 
-export const socketURL = 'http://192.168.1.115:3000';
+export const socketURL = 'http://10.0.2.2:3000';

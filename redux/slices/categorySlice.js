@@ -3,9 +3,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { emulatorUrls, localUrls } from '../../constants/uri';
-const CATEGORY_URL = localUrls.GET_CATEGORIES;
-const GET_CATEGORY_ID = localUrls.GET_BY_ID;
-const GET_WORDS_BY_CATEGORY_ID = localUrls.GET_WORDS_BY_CATEGORY_ID;
+const CATEGORY_URL = emulatorUrls.GET_CATEGORIES;
+const GET_CATEGORY_ID = emulatorUrls.GET_BY_ID;
+const GET_WORDS_BY_CATEGORY_ID = emulatorUrls.GET_WORDS_BY_CATEGORY_ID;
 
 const initialState = {
   categories: [],
