@@ -27,8 +27,8 @@ const passQuestionDuration = 1000;
 
 const QuizTraining = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const { quizId, card, category, knownWords, difficulty } =
-    route.params || null;
+  const { quizId, card, category, difficulty } = route.params || null;
+  const knownWords = useSelector((state) => state.quiz.knownWords);
   const user = useSelector((state) => state.userAuth.user);
   const quiz = useSelector((state) => state.quiz.quiz);
   const status = useSelector((state) => state.quiz.status);
@@ -41,7 +41,7 @@ const QuizTraining = ({ navigation, route }) => {
     answerC: 'white',
     answerD: 'white',
   });
-  const [isCompletedQuiz, setIsCompletedQuiz] = useState(false);
+  const wrongCount = useSelector((state) => state.quiz.wrongCount);
 
   const [sound, setSound] = useState();
 
@@ -52,6 +52,7 @@ const QuizTraining = ({ navigation, route }) => {
           getQuizByDifficulty({
             difficulty: difficulty,
             currentLang: user.currentLang,
+            userId: user.id,
           })
         );
       }
@@ -69,6 +70,7 @@ const QuizTraining = ({ navigation, route }) => {
         }
       : undefined;
   }, [sound]);
+
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/success.wav')
@@ -85,6 +87,7 @@ const QuizTraining = ({ navigation, route }) => {
 
     await sound.playAsync();
   }
+
   const getCurrentDate = () => {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
@@ -94,22 +97,23 @@ const QuizTraining = ({ navigation, route }) => {
   };
   const learnWord = () => {
     if (card.length === knownWords.length) {
-      dispatch(
-        addAwardUser({
-          awardId: category.awardId,
-          userId: user.id,
-        })
-      );
+      if (wrongCount < 3) {
+        knownWords.forEach((word) => {
+          dispatch(
+            addWordUser({
+              knownWords: { word, date: getCurrentDate() },
+              id: user.id,
+            })
+          );
+        });
+        dispatch(
+          addAwardUser({
+            awardId: category.awardId,
+            userId: user.id,
+          })
+        );
+      }
     }
-
-    knownWords.forEach((word) => {
-      dispatch(
-        addWordUser({
-          knownWords: { word, date: getCurrentDate() },
-          id: user.id,
-        })
-      );
-    });
   };
   const nextQuestion = () => {
     let increaseIndex = questionIndex;
@@ -118,6 +122,9 @@ const QuizTraining = ({ navigation, route }) => {
     if (increaseIndex < quiz.questions.length) {
       setQuestionIndex(increaseIndex);
     } else if (increaseIndex === quiz.questions.length) {
+      if (difficulty) {
+        navigateToResult();
+      }
       if (quizId) {
         navigateToResult();
       }
@@ -127,7 +134,7 @@ const QuizTraining = ({ navigation, route }) => {
   };
 
   const navigateToResult = () => {
-    learnWord();
+    if (!difficulty) learnWord();
     navigation.navigate('Result', {});
   };
 
@@ -312,16 +319,6 @@ const QuizTraining = ({ navigation, route }) => {
               navigation.navigate('Tabs');
             }}
             label="Çıkış Yap"
-          />
-        </Dialog.Container>
-        <Dialog.Container visible={isCompletedQuiz}>
-          <Dialog.Title>Quiz Tamamlandı</Dialog.Title>
-          <Dialog.Description></Dialog.Description>
-          <Dialog.Button
-            label="Anasayfaya Dön"
-            onPress={() => {
-              navigation.navigate('Tabs');
-            }}
           />
         </Dialog.Container>
       </View>

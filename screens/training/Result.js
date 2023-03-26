@@ -4,6 +4,7 @@ import { DataTable, IconButton, Dialog } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { initialize } from '../../redux/slices/quizSlice';
 import { useState } from 'react';
+import { completeQuiz } from '../../redux/slices/authSlice';
 
 const Result = ({ navigation, route }) => {
   const dispatch = useDispatch();
@@ -15,8 +16,24 @@ const Result = ({ navigation, route }) => {
     (state) => state.quiz.currentCorrectAnswers
   );
   const quiz = useSelector((state) => state.quiz.quiz);
+  const user = useSelector((state) => state.userAuth.user);
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [detailDialog, setDetailDialog] = useState(false);
+
+  const complete = () => {
+    dispatch(
+      completeQuiz({
+        quizId: quiz._id,
+        userId: user.id,
+        result: {
+          correctCount: correctCount,
+          wrongCount: wrongCount,
+          currentCorrectAnswers: currentCorrectAnswers,
+          userAnswers: userAnswers,
+        },
+      })
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -60,26 +77,7 @@ const Result = ({ navigation, route }) => {
           </DataTable.Row>
         </DataTable>
       </View>
-      {/*       <View style={styles.resultContainer}>
-        <View style={styles.correctRow}>
-          <View style={styles.row}>
-            <Text style={styles.dataTitle}>Doğru</Text>
-            <Text style={styles.dataTitle}>15</Text>
-          </View>
-        </View>
-        <View style={styles.wrongRow}>
-          <View style={styles.row}>
-            <Text style={styles.dataTitle}>Yanlış</Text>
-            <Text style={styles.dataTitle}>15</Text>
-          </View>
-        </View>
-        <View style={styles.total}>
-          <View style={styles.row}>
-            <Text style={styles.dataTitle}>Toplam</Text>
-            <Text style={styles.dataTitle}>30</Text>
-          </View>
-        </View>
-      </View> */}
+
       <View style={styles.detailResultContainer}>
         <DataTable>
           <DataTable.Header>
@@ -150,11 +148,12 @@ const Result = ({ navigation, route }) => {
       >
         <Button
           onPress={() => {
+            complete();
             navigation.navigate('Tabs');
             dispatch(initialize());
           }}
           title="Tamamla"
-        ></Button>
+        />
       </View>
       <Dialog visible={detailDialog}>
         <Dialog.Title>Soru</Dialog.Title>

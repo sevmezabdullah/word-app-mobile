@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { localUrls, emulatorUrls } from '../../constants/uri';
 
-const GET_QUIZ_BY_ID = emulatorUrls.GET_QUIZ_BY_ID;
-const GET_QUIZ_BY_DIffICULTY = emulatorUrls.GET_QUIZ_BY_DIffICULTY;
+const GET_QUIZ_BY_ID = localUrls.GET_QUIZ_BY_ID;
+const GET_QUIZ_BY_DIffICULTY = localUrls.GET_QUIZ_BY_DIffICULTY;
 const initialState = {
   quiz: null,
   status: 'idle',
@@ -13,6 +13,7 @@ const initialState = {
   currentCorrectAnswers: [],
   userAnswers: [],
   questions: [],
+  knownWords: [],
 };
 
 export const getQuizById = createAsyncThunk('quiz/byId', async (quizId) => {
@@ -21,10 +22,10 @@ export const getQuizById = createAsyncThunk('quiz/byId', async (quizId) => {
 });
 export const getQuizByDifficulty = createAsyncThunk(
   'quiz/byDifficulty',
-  async ({ difficulty, currentLang }) => {
+  async ({ difficulty, currentLang, userId }) => {
     console.log(difficulty, currentLang);
     const response = await axios.get(
-      GET_QUIZ_BY_DIffICULTY + difficulty + '/' + currentLang
+      GET_QUIZ_BY_DIffICULTY + difficulty + '/' + currentLang + '/' + userId
     );
     return response.data;
   }
@@ -42,6 +43,7 @@ const quizSlice = createSlice({
       state.currentCorrectAnswers = [];
       state.userAnswers = [];
       state.questions = [];
+      state.knownWords = [];
     },
     increaseCorrect: (state, action) => {
       state.correctCount++;
@@ -58,6 +60,9 @@ const quizSlice = createSlice({
     },
     addQuestion: (state, action) => {
       state.questions.push(action.payload);
+    },
+    addKnownWords: (state, action) => {
+      state.knownWords.push(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -88,5 +93,6 @@ export const {
   addCorrectAnswer,
   addUserAnswer,
   addQuestion,
+  addKnownWords,
 } = quizSlice.actions;
 export default quizSlice.reducer;

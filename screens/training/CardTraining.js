@@ -14,13 +14,10 @@ import {
 } from '../../redux/slices/categorySlice';
 import Swiper from 'react-native-deck-swiper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  addKnownWord,
-  addUnknownWord,
-  resetArr,
-} from '../../redux/slices/wordSlice';
+import { addUnknownWord, resetArr } from '../../redux/slices/wordSlice';
 
 import FlipCard from 'react-native-flip-card';
+import { addKnownWords } from '../../redux/slices/quizSlice';
 
 const CardTraining = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -33,7 +30,7 @@ const CardTraining = ({ route, navigation }) => {
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
 
-  const knownWords = useSelector((state) => state.word.knownWords);
+  const knownWords = useSelector((state) => state.quiz.knownWords);
   const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
   const [swipingKnown, setSwipingKnown] = useState(20);
@@ -52,7 +49,7 @@ const CardTraining = ({ route, navigation }) => {
   const addWord = (index, isRight) => {
     const cardId = card[index]._id;
     if (isRight) {
-      dispatch(addKnownWord(cardId));
+      dispatch(addKnownWords(cardId));
     } else {
       dispatch(addUnknownWord(cardId));
     }
@@ -224,7 +221,7 @@ const CardTraining = ({ route, navigation }) => {
                     navigation.navigate('Quiz', {
                       quizId: category.quizId,
                       card: card,
-                      knownWords: knownWords,
+
                       user: user,
                       category: category,
                     });

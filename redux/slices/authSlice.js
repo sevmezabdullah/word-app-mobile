@@ -4,13 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
 import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = emulatorUrls.AUTH_URL;
-const REGISTER_URL = emulatorUrls.REGISTER_URL;
-const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
-const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
-const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
-const ADD_AWARD = emulatorUrls.ADD_AWARD;
-const GET_USER_DECK = emulatorUrls.GET_USER_DECK;
+const AUTH_URL = localUrls.AUTH_URL;
+const REGISTER_URL = localUrls.REGISTER_URL;
+const LOGOUT_URL = localUrls.LOGOUT_URL;
+const UPDATE_LANG = localUrls.UPDATE_LANG;
+const ADD_WORD_USER = localUrls.ADD_WORD_USER;
+const ADD_AWARD = localUrls.ADD_AWARD;
+const GET_USER_DECK = localUrls.GET_USER_DECK;
+const ADD_COMPLETED_QUIZ = localUrls.ADD_COMPLETED_QUIZ;
 
 const initialState = {
   user: null,
@@ -93,6 +94,21 @@ export const addAwardtoUser = createAsyncThunk(
   }
 );
 
+export const completeQuiz = createAsyncThunk(
+  'auth/completeQuiz',
+  async ({ quizId, result, userId }) => {
+    console.log('🚀 ~ file: authSlice.js:99 ~ userId:', userId);
+    console.log('🚀 ~ file: authSlice.js:99 ~ result:', result);
+    console.log('🚀 ~ file: authSlice.js:99 ~ quizId:', quizId);
+
+    const response = await axios.post(ADD_COMPLETED_QUIZ, {
+      quizId,
+      result,
+      userId,
+    });
+    return response.data;
+  }
+);
 export const getUserDeck = createAsyncThunk(
   'auth/getUserDeck',
   async ({ userId }) => {
@@ -167,6 +183,11 @@ const authSlice = createSlice({
       })
       .addCase(getUserDeck.fulfilled, (state, action) => {
         state.user.categoryAwardsIds = action.payload.categoryAwardsIds;
+      })
+      .addCase(completeQuiz.fulfilled, (state, action) => {
+        console.log(action.payload);
+        console.log('istek tamamlandı');
+        0;
       });
   },
 });
