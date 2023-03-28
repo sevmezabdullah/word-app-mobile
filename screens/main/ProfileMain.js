@@ -5,9 +5,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../constants/colors';
 import { useSelector } from 'react-redux';
 import { Card } from 'react-native-paper';
+import Stat from '../../components/ui/profile/Stat';
+import { useState } from 'react';
+import Awards from '../../components/ui/profile/Awards';
+import ChangeImageButton from '../../components/ui/profile/ChangeImageButton';
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
 
+  const [selected, setSelected] = useState('stat');
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'flex-end' }}>
@@ -25,7 +30,9 @@ const ProfileMain = ({ navigation }) => {
         <View
           style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}
         >
-          <View style={styles.avatar}></View>
+          <View style={styles.avatar}>
+            <ChangeImageButton />
+          </View>
         </View>
       </View>
       <View
@@ -47,7 +54,12 @@ const ProfileMain = ({ navigation }) => {
           }}
         >
           <View style={{ width: '42%', margin: 5 }}>
-            <Button title="Başarımlar" />
+            <Button
+              onPress={() => {
+                setSelected('awards');
+              }}
+              title="Başarımlar"
+            />
           </View>
           <View
             style={{
@@ -56,17 +68,15 @@ const ProfileMain = ({ navigation }) => {
               margin: 5,
             }}
           >
-            <Button title="İstatistikler" />
+            <Button
+              onPress={() => {
+                setSelected('stat');
+              }}
+              title="İstatistikler"
+            />
           </View>
         </View>
-        <View
-          style={{
-            height: 450,
-            borderTopLeftRadius: 32,
-            borderTopRightRadius: 32,
-            backgroundColor: 'white',
-          }}
-        ></View>
+        {selected === 'stat' ? <Stat /> : <Awards />}
       </View>
     </View>
   );
@@ -83,7 +93,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     elevation: 5,
-    backgroundColor: 'red',
+
     borderRadius: 50,
     flexDirection: 'column',
   },

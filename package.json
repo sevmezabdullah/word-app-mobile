@@ -33,6 +33,7 @@
     "react-native-dropdown-picker": "^2.1.1",
     "react-native-flip-card": "^3.5.7",
     "react-native-gesture-flip-card": "^1.0.6",
+    "react-native-image-avatars": "^1.1.6",
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.1.4",
