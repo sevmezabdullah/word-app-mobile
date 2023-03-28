@@ -96,16 +96,16 @@ export const addAwardtoUser = createAsyncThunk(
 
 export const completeQuiz = createAsyncThunk(
   'auth/completeQuiz',
-  async ({ quizId, result, userId }) => {
-    console.log('🚀 ~ file: authSlice.js:99 ~ userId:', userId);
-    console.log('🚀 ~ file: authSlice.js:99 ~ result:', result);
-    console.log('🚀 ~ file: authSlice.js:99 ~ quizId:', quizId);
-
+  async ({ result, userId, quizId }) => {
+    console.log('🚀 ~ file: authSlice.js:100 ~ quizId:', quizId);
+    console.log('🚀 ~ file: authSlice.js:100 ~ userId:', userId);
+    console.log('🚀 ~ file: authSlice.js:100 ~ result:', result);
     const response = await axios.post(ADD_COMPLETED_QUIZ, {
-      quizId,
-      result,
       userId,
+      result,
+      quizId,
     });
+
     return response.data;
   }
 );
@@ -186,8 +186,6 @@ const authSlice = createSlice({
       })
       .addCase(completeQuiz.fulfilled, (state, action) => {
         console.log(action.payload);
-        console.log('istek tamamlandı');
-        0;
       });
   },
 });
