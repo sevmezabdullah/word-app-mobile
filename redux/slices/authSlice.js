@@ -4,15 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
 import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = emulatorUrls.AUTH_URL;
-const REGISTER_URL = emulatorUrls.REGISTER_URL;
-const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
-const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
-const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
-const ADD_AWARD = emulatorUrls.ADD_AWARD;
-const GET_USER_DECK = emulatorUrls.GET_USER_DECK;
-const ADD_COMPLETED_QUIZ = emulatorUrls.ADD_COMPLETED_QUIZ;
-const RESET_PROCESS = emulatorUrls.RESET_PROCESS;
+const AUTH_URL = localUrls.AUTH_URL;
+const REGISTER_URL = localUrls.REGISTER_URL;
+const LOGOUT_URL = localUrls.LOGOUT_URL;
+const UPDATE_LANG = localUrls.UPDATE_LANG;
+const ADD_WORD_USER = localUrls.ADD_WORD_USER;
+const ADD_AWARD = localUrls.ADD_AWARD;
+const GET_USER_DECK = localUrls.GET_USER_DECK;
+const ADD_COMPLETED_QUIZ = localUrls.ADD_COMPLETED_QUIZ;
+const RESET_PROCESS = localUrls.RESET_PROCESS;
+const CREATE_REQUEST = localUrls.CREATE_REQUEST;
+const INCREMENT_EXP = localUrls.INCREMENT_EXP;
 
 const initialState = {
   user: null,
@@ -21,6 +23,7 @@ const initialState = {
   message: '',
   isVerify: false,
   resetStatus: 'idle',
+  requestStatus: 'idle',
 };
 function showToast(message) {
   ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
@@ -47,6 +50,17 @@ export const getUser = createAsyncThunk('auth/getUser', async () => {
   const user = JSON.parse(await AsyncStorage.getItem('user'));
   return user;
 });
+
+export const incrementExp = createAsyncThunk(
+  'auth/increment',
+  async (userId, exp) => {
+    const response = await axios.post(INCREMENT_EXP, {
+      userId: userId,
+      exp: exp,
+    });
+    return response.data;
+  }
+);
 
 export const updateLang = createAsyncThunk(
   'auth/updateLang',
@@ -105,11 +119,12 @@ export const resetProcess = createAsyncThunk(
 );
 export const completeQuiz = createAsyncThunk(
   'auth/completeQuiz',
-  async ({ result, userId, quizId }) => {
+  async ({ result, userId, quizId, exp }) => {
     const response = await axios.post(ADD_COMPLETED_QUIZ, {
       userId,
       result,
       quizId,
+      exp,
     });
 
     return response.data;
@@ -120,6 +135,14 @@ export const getUserDeck = createAsyncThunk(
   async ({ userId }) => {
     const response = await axios.get(GET_USER_DECK + '/' + userId);
 
+    return response.data;
+  }
+);
+
+export const createRequest = createAsyncThunk(
+  'auth/request',
+  async ({ userId, message }) => {
+    const response = await axios.post(CREATE_REQUEST, { userId, message });
     return response.data;
   }
 );
@@ -187,12 +210,13 @@ const authSlice = createSlice({
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload;
       })
+      .addCase(incrementExp.fulfilled, (state, action) => {
+        state.user.exp = action.payload.exp;
+      })
       .addCase(getUserDeck.fulfilled, (state, action) => {
         state.user.categoryAwardsIds = action.payload.categoryAwardsIds;
       })
-      .addCase(completeQuiz.fulfilled, (state, action) => {
-        console.log(action.payload);
-      })
+      .addCase(completeQuiz.fulfilled, (state, action) => {})
       .addCase(resetProcess.pending, (state, action) => {
         state.resetStatus = 'pending';
       })
@@ -201,6 +225,12 @@ const authSlice = createSlice({
       })
       .addCase(resetProcess.rejected, (state, action) => {
         console.log(action.payload);
+      })
+      .addCase(createRequest.pending, (state, action) => {
+        state.requestStatus = 'pending';
+      })
+      .addCase(createRequest.fulfilled, (state, action) => {
+        state.requestStatus = 'fulfilled';
       });
   },
 });

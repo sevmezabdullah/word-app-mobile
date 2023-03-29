@@ -6,13 +6,18 @@ import {
   TextInput,
   Button,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, resetProcess } from '../../redux/slices/authSlice';
+import {
+  createRequest,
+  logout,
+  resetProcess,
+} from '../../redux/slices/authSlice';
 import SettingButton from '../../components/ui/settings/SettingButton';
-import { Modal, Provider, Portal, Dialog } from 'react-native-paper';
-import LoginInput from '../../components/ui/auth/LoginInput';
+import { Dialog } from 'react-native-paper';
+
 import SocialButton from '../../components/ui/profile/SocialButton';
 import FacebookLogo from '../../assets/facebook.png';
 import InstagramLogo from '../../assets/instagram.png';
@@ -25,7 +30,7 @@ const Settings = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.userAuth.user);
-
+  const requestStatus = useSelector((state) => state.userAuth.requestStatus);
   const [message, setMessage] = useState('');
   const [visiblePasswordModal, setVisiblePasswordModal] = useState(false);
   const [password, setPassword] = useState('');
@@ -33,12 +38,10 @@ const Settings = () => {
   const [contactWithUSDialog, setContactWithUsDialog] = useState(false);
   const showPasswordModal = () => setVisiblePasswordModal(true);
   const hidePasswordModal = () => setVisiblePasswordModal(false);
-  const containerStyle = {
-    backgroundColor: 'white',
-    padding: 80,
-    margin: 16,
-    borderRadius: 5,
-  };
+
+  function showToast(message) {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  }
   const logoutAlert = () => {
     Alert.alert('Çıkış', 'Çıkış yapmak istediğinizden emin misiniz ? ', [
       { text: 'Vazgeç', onPress: () => {} },
@@ -61,10 +64,9 @@ const Settings = () => {
     setContactWithUsDialog(true);
   };
   const closeContactDialog = () => {
+    setMessage('');
     setContactWithUsDialog(false);
   };
-
-  const contactAlert = () => {};
 
   const changePasswordAlert = () => {
     Alert.alert('Şifre Değiştir', '', [
@@ -116,6 +118,7 @@ const Settings = () => {
         />
       </View>
       <Dialog
+        style={styles.dialog}
         visible={visiblePasswordModal}
         onDismiss={() => {
           setVisiblePasswordModal(false);
@@ -146,7 +149,11 @@ const Settings = () => {
           <Button title="Değiştir" />
         </Dialog.Actions>
       </Dialog>
-      <Dialog onDismiss={closeResetProcessDialog} visible={resetProccessDialog}>
+      <Dialog
+        style={styles.dialog}
+        onDismiss={closeResetProcessDialog}
+        visible={resetProccessDialog}
+      >
         <Dialog.Title>İlerlemeyi Sıfırla</Dialog.Title>
         <Dialog.Content>
           <Text>İlerlemeyi sıfırlamak istediğinden emin misin ?</Text>
@@ -170,7 +177,11 @@ const Settings = () => {
           </View>
         </Dialog.Actions>
       </Dialog>
-      <Dialog onDismiss={closeContactDialog} visible={contactWithUSDialog}>
+      <Dialog
+        style={styles.dialog}
+        onDismiss={closeContactDialog}
+        visible={contactWithUSDialog}
+      >
         <Dialog.Title>Bize Ulaş</Dialog.Title>
         <Dialog.Content>
           <View
@@ -200,7 +211,16 @@ const Settings = () => {
           <View style={{ margin: 10 }}>
             <Button onPress={closeContactDialog} color={'red'} title="Vazgeç" />
           </View>
-          <Button title="Gönder" />
+          <Button
+            onPress={() => {
+              dispatch(createRequest({ userId: user.id, message: message }));
+              if (requestStatus === 'fulfilled') {
+                showToast('Talep oluşturuldu');
+              }
+              closeContactDialog();
+            }}
+            title="Gönder"
+          />
         </Dialog.Actions>
       </Dialog>
     </>
@@ -226,7 +246,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   socialButtons: {
+    elevation: 2,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+  },
+  dialog: {
+    backgroundColor: 'white',
   },
 });

@@ -4,8 +4,8 @@ import { DataTable, IconButton, Dialog } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { initialize } from '../../redux/slices/quizSlice';
 import { useState } from 'react';
-import { completeQuiz } from '../../redux/slices/authSlice';
-
+import { completeQuiz, incrementExp } from '../../redux/slices/authSlice';
+import { getUserDeck } from '../../redux/slices/authSlice';
 const Result = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const correctCount = useSelector((state) => state.quiz.correctCount);
@@ -33,6 +33,9 @@ const Result = ({ navigation, route }) => {
         },
       })
     );
+
+    dispatch(incrementExp({ userId: user.id, exp: quiz.exp }));
+    dispatch(getUserDeck({ userId: user.id })).unwrap();
   };
 
   return (
