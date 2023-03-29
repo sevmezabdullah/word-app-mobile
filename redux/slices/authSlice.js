@@ -12,6 +12,7 @@ const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
 const ADD_AWARD = emulatorUrls.ADD_AWARD;
 const GET_USER_DECK = emulatorUrls.GET_USER_DECK;
 const ADD_COMPLETED_QUIZ = emulatorUrls.ADD_COMPLETED_QUIZ;
+const RESET_PROCESS = emulatorUrls.RESET_PROCESS;
 
 const initialState = {
   user: null,
@@ -19,6 +20,7 @@ const initialState = {
   token: null,
   message: '',
   isVerify: false,
+  resetStatus: 'idle',
 };
 function showToast(message) {
   ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
@@ -94,12 +96,16 @@ export const addAwardtoUser = createAsyncThunk(
   }
 );
 
+export const resetProcess = createAsyncThunk(
+  'auth/resetProcess',
+  async (userId) => {
+    const response = await axios.post(RESET_PROCESS, { userId: userId });
+    return response.data;
+  }
+);
 export const completeQuiz = createAsyncThunk(
   'auth/completeQuiz',
   async ({ result, userId, quizId }) => {
-    console.log('🚀 ~ file: authSlice.js:100 ~ quizId:', quizId);
-    console.log('🚀 ~ file: authSlice.js:100 ~ userId:', userId);
-    console.log('🚀 ~ file: authSlice.js:100 ~ result:', result);
     const response = await axios.post(ADD_COMPLETED_QUIZ, {
       userId,
       result,
@@ -185,6 +191,15 @@ const authSlice = createSlice({
         state.user.categoryAwardsIds = action.payload.categoryAwardsIds;
       })
       .addCase(completeQuiz.fulfilled, (state, action) => {
+        console.log(action.payload);
+      })
+      .addCase(resetProcess.pending, (state, action) => {
+        state.resetStatus = 'pending';
+      })
+      .addCase(resetProcess.fulfilled, (state, action) => {
+        state.resetStatus = 'fullfilled';
+      })
+      .addCase(resetProcess.rejected, (state, action) => {
         console.log(action.payload);
       });
   },

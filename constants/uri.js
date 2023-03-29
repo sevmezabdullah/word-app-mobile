@@ -18,6 +18,7 @@ export const emulatorUrls = {
   GET_QUIZ_BY_ID: 'http://10.0.2.2:3000/quiz/',
   GET_QUIZ_BY_DIffICULTY: 'http://10.0.2.2:3000/quiz/difficulty/',
   ADD_COMPLETED_QUIZ: 'http://10.0.2.2:3000/quizResult/create',
+  RESET_PROCESS: 'http://10.0.2.2:3000/users/resetProcess',
 };
 export const localUrls = {
   AUTH_URL: 'http://192.168.1.115:3000/users/login',
@@ -33,6 +34,7 @@ export const localUrls = {
   GET_QUIZ_BY_ID: 'http://192.168.1.115:3000/quiz/',
   GET_QUIZ_BY_DIffICULTY: 'http://192.168.1.115:3000/quiz/difficulty/',
   ADD_COMPLETED_QUIZ: 'http://192.168.1.115:3000/quizResult/create',
+  RESET_PROCESS: 'http://192.168.1.115:3000/users/resetProcess',
 };
 
 export const socketURL = 'http://10.0.2.2:3000';

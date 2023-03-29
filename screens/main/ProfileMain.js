@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import React from 'react';
-
+import CountryFlag from 'react-native-country-flag';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../constants/colors';
 import { useSelector } from 'react-redux';
-import { Card } from 'react-native-paper';
+
 import Stat from '../../components/ui/profile/Stat';
 import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
-import ChangeImageButton from '../../components/ui/profile/ChangeImageButton';
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
 
@@ -27,20 +26,33 @@ const ProfileMain = ({ navigation }) => {
         />
       </View>
       <View style={styles.profile}>
-        <View
-          style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}
-        >
-          <View style={styles.avatar}>
-            <ChangeImageButton />
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <View>
+            <Text style={{ color: 'white', fontSize: 16 }}>
+              {user.name + ' ' + user.surname}
+            </Text>
           </View>
         </View>
+        <View>
+          <Text style={{ textAlign: 'center', color: 'white', fontSize: 14 }}>
+            Öğrenilen Dil
+          </Text>
+        </View>
+        <View style={{ alignSelf: 'center', margin: 10 }}>
+          <CountryFlag isoCode={user.currentLang} size={24} />
+        </View>
+        <View style={{ alignSelf: 'center', margin: 4 }}>
+          <Text style={{ color: 'white', fontSize: 14 }}>
+            {'Level : ' + user.level}
+          </Text>
+        </View>
+        <View style={{ flexDirection: 'row' }}></View>
       </View>
       <View
         style={{
           flexDirection: 'column',
-
-          width: 400,
-          height: 500,
+          width: '100%',
+          height: '66%',
         }}
       >
         <View
@@ -99,7 +111,7 @@ const styles = StyleSheet.create({
   },
 
   profile: {
-    flex: 1,
+    marginTop: '40%',
     flexDirection: 'column',
   },
   button: {

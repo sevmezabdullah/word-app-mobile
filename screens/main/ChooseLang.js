@@ -34,7 +34,7 @@ const ChooseLang = () => {
         <View style={styles.currentLang}>
           <DropDownPicker
             items={[
-              { label: 'English', value: 'en' },
+              { label: 'English', value: 'gb' },
               { label: 'Deutsch', value: 'de' },
               { label: 'French', value: 'fr' },
             ]}
