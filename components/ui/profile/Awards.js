@@ -1,29 +1,16 @@
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, View, Text, Image } from 'react-native';
 import React from 'react';
 import Award from './Award';
+import AwardImage from '../../../assets/awards/award.png';
 
+const AWARD_IMAGE = Image.resolveAssetSource({ uri: AwardImage }).uri;
 const awards = [
-  { image: '', title: '', detail: '' },
-  'item 1',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
-  'item 2',
+  { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '100 Kelime Öğren' },
+  { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '400 Kelime Öğren' },
+  { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '800 Kelime Öğren' },
+  { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '15 Quiz Tamamla' },
+  { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '30 Quiz Tamamla' },
+  { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '60 Quiz Tamamla' },
 ];
 
 const Awards = () => {
@@ -34,7 +21,7 @@ const Awards = () => {
         keyExtractor={(item, index) => index.toString()}
         numColumns={3}
         data={awards}
-        renderItem={({ item }) => <Award award={item} />}
+        renderItem={({ item }) => <Award award={item} progress={0.4} />}
       />
     </View>
   );
@@ -49,7 +36,7 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     marginLeft: '5%',
     marginBottom: '30%',
-    borderRadius: 32,
+    borderRadius: 16,
     backgroundColor: 'white',
   },
 });

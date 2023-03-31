@@ -11,7 +11,7 @@ import Awards from '../../components/ui/profile/Awards';
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
 
-  const [selected, setSelected] = useState('stat');
+  const [selected, setSelected] = useState('award');
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'flex-end' }}>

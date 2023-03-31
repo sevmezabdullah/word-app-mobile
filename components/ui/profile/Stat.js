@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import StatItem from './StatItem';
 
+const statRows = [{ item: '' }, { item: '' }, { item: '' }, { item: '' }];
 const Stat = ({ data }) => {
   return (
     <View
@@ -13,7 +15,9 @@ const Stat = ({ data }) => {
         borderRadius: 32,
         backgroundColor: 'white',
       }}
-    ></View>
+    >
+      <FlatList data={statRows} renderItem={({ item }) => <StatItem />} />
+    </View>
   );
 };
 
