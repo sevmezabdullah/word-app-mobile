@@ -3,13 +3,21 @@ import React from 'react';
 import CountryFlag from 'react-native-country-flag';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../constants/colors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Stat from '../../components/ui/profile/Stat';
 import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
+import { useEffect } from 'react';
+import { getUserStat } from '../../redux/slices/authSlice';
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
+  const stat = useSelector((state) => state.userAuth.stat);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserStat());
+  }, [dispatch]);
 
   const [selected, setSelected] = useState('award');
   return (
@@ -82,13 +90,14 @@ const ProfileMain = ({ navigation }) => {
           >
             <Button
               onPress={() => {
+                dispatch(getUserStat({ userId: user.id }));
                 setSelected('stat');
               }}
               title="İstatistikler"
             />
           </View>
         </View>
-        {selected === 'stat' ? <Stat /> : <Awards />}
+        {selected === 'stat' ? <Stat data={stat} /> : <Awards />}
       </View>
     </View>
   );

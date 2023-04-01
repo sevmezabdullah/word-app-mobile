@@ -11,6 +11,36 @@ const awards = [
   { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '15 Quiz Tamamla' },
   { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '30 Quiz Tamamla' },
   { image: AWARD_IMAGE, title: 'Usta Öğrenici', detail: '60 Quiz Tamamla' },
+  {
+    image: AWARD_IMAGE,
+    title: 'Usta Öğrenici',
+    detail: '300 Soruyu Doğru Cevapla',
+  },
+  {
+    image: AWARD_IMAGE,
+    title: 'Usta Öğrenici',
+    detail: '600 Soruyu Doğru Cevapla',
+  },
+  {
+    image: AWARD_IMAGE,
+    title: 'Usta Öğrenici',
+    detail: '900 Soruyu Doğru Cevapla',
+  },
+  {
+    image: AWARD_IMAGE,
+    title: 'Usta Öğrenici',
+    detail: '15 Quizi Yanlış Cevaplamadan Tamamla',
+  },
+  {
+    image: AWARD_IMAGE,
+    title: 'Usta Öğrenici',
+    detail: '30 Quizi Yanlış Cevaplamadan Tamamla',
+  },
+  {
+    image: AWARD_IMAGE,
+    title: 'Usta Öğrenici',
+    detail: '45 Quizi Yanlış Cevaplamadan Tamamla',
+  },
 ];
 
 const Awards = () => {

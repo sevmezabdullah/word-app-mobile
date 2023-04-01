@@ -2,8 +2,18 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import StatItem from './StatItem';
 
-const statRows = [{ item: '' }, { item: '' }, { item: '' }, { item: '' }];
 const Stat = ({ data }) => {
+  const result = data.result;
+  const statRows = [
+    { item: 'Tamamlanan Quiz', value: result.completedQuizCount },
+    { item: 'Toplam Öğrenilen Kelime', value: result.knownWordCount },
+    { item: 'Doğru Cevaplar', value: result.correctAnswerCount },
+    { item: 'Yanlış Cevaplar', value: result.wrongAnswerCount },
+    { item: 'Günlük Kelime', value: 0 },
+    { item: 'Haftalık Kelime', value: 0 },
+    { item: 'Aylık Kelime', value: 0 },
+    { item: 'Yıllık  Kelime', value: 0 },
+  ];
   return (
     <View
       style={{
@@ -16,7 +26,10 @@ const Stat = ({ data }) => {
         backgroundColor: 'white',
       }}
     >
-      <FlatList data={statRows} renderItem={({ item }) => <StatItem />} />
+      <FlatList
+        data={statRows}
+        renderItem={({ item }) => <StatItem item={item} />}
+      />
     </View>
   );
 };
