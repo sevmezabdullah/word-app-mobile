@@ -8,18 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Stat from '../../components/ui/profile/Stat';
 import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
-import { useEffect } from 'react';
-import { getUserStat } from '../../redux/slices/authSlice';
+
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
-  const stat = useSelector((state) => state.userAuth.stat);
+  const statRequestStatus = useSelector((state) => state.userAuth.statRequest);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getUserStat());
-  }, [dispatch]);
-
   const [selected, setSelected] = useState('award');
+
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'flex-end' }}>
@@ -90,14 +85,13 @@ const ProfileMain = ({ navigation }) => {
           >
             <Button
               onPress={() => {
-                dispatch(getUserStat({ userId: user.id }));
                 setSelected('stat');
               }}
               title="İstatistikler"
             />
           </View>
         </View>
-        {selected === 'stat' ? <Stat data={stat} /> : <Awards />}
+        {selected === 'stat' ? <Stat /> : <Awards />}
       </View>
     </View>
   );

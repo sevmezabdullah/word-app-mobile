@@ -4,12 +4,12 @@ import { Card } from 'react-native-paper';
 
 const StatItem = ({ item }) => {
   return (
-    <Card style={{ height: 40 }}>
+    <Card style={{ height: 50, margin: 10, borderRadius: 16 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View style={{ margin: 10 }}>
-          <Text>{item.item}</Text>
+        <View style={{ margin: 10, marginTop: '7%' }}>
+          <Text style={{ textAlignVertical: 'bottom' }}>{item.item}</Text>
         </View>
-        <View style={{ marginRight: '10%', marginTop: '3%' }}>
+        <View style={{ marginRight: '10%', marginTop: '7%' }}>
           <Text>{item.value}</Text>
         </View>
       </View>

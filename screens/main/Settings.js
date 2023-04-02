@@ -184,23 +184,32 @@ const Settings = () => {
       >
         <Dialog.Title>Bize Ulaş</Dialog.Title>
         <Dialog.Content>
-          <View
-            style={{
-              borderColor: 'black',
-              borderWidth: 1,
-              height: 150,
-              borderRadius: 7,
-            }}
-          >
+          <View>
             <TextInput
               multiline={true}
               value={message}
+              style={{
+                width: '100%',
+                textAlignVertical: 'top',
+                height: 200,
+                textAlign: 'left',
+
+                borderWidth: 1,
+              }}
               onChangeText={(text) => {
                 setMessage(text);
               }}
               placeholder="Mesajınız"
             />
           </View>
+          {/*           <View
+            style={{
+              borderColor: 'black',
+              borderWidth: 1,
+              height: 150,
+              borderRadius: 7,
+            }}
+          ></View> */}
           <View style={styles.socialButtons}>
             <SocialButton icon={FACEBOOK_IMAGE} />
             <SocialButton icon={YOUTUBE_LOGO} />

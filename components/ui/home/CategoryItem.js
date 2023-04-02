@@ -10,14 +10,20 @@ const CategoryItem = ({ item, lang }) => {
   const icon = <Icon name="trophy" color={'orange'} size={18} />;
   const cards = <Cards name="cards-outline" color={'black'} size={18} />;
   const user = useSelector((state) => state.userAuth.user);
-  const [title, setTitle] = useState('');
+  const [titles, setTitles] = useState([]);
   useEffect(() => {
+    console.log(item.titles);
     item.titles.forEach((titleP) => {
       if (titleP.langCode === user.currentLang) {
-        setTitle(titleP.meaning);
+        console.log(
+          '🚀 ~ file: CategoryItem.js:19 ~ item.titles.forEach ~ titleP:',
+          titleP
+        );
       }
     });
   }, [item]);
+
+  console.log('🚀 ~ file: CategoryItem.js:24 ~ CategoryItem ~ titles:', titles);
 
   return (
     <View style={{ width: 130 }}>
@@ -36,7 +42,7 @@ const CategoryItem = ({ item, lang }) => {
               uri: item.logo,
             }}
           />
-          <Text style={{ textAlign: 'center' }}>{title}</Text>
+          <Text style={{ textAlign: 'center' }}>{''}</Text>
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >

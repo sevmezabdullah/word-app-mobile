@@ -3,9 +3,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { emulatorUrls, localUrls } from '../../constants/uri';
-const CATEGORY_URL = emulatorUrls.GET_CATEGORIES;
-const GET_CATEGORY_ID = emulatorUrls.GET_BY_ID;
-const GET_WORDS_BY_CATEGORY_ID = emulatorUrls.GET_WORDS_BY_CATEGORY_ID;
+const CATEGORY_URL = localUrls.GET_CATEGORIES;
+const GET_CATEGORY_ID = localUrls.GET_BY_ID;
+const GET_WORDS_BY_CATEGORY_ID = localUrls.GET_WORDS_BY_CATEGORY_ID;
 
 const initialState = {
   categories: [],
@@ -55,15 +55,10 @@ const categorySlice = createSlice({
       const category = action.payload.text;
       const nativeLangCode = action.payload.nativeLang;
       if (category.length > 0) {
-        const filteredList = state.categories.filter((categoryItem) => {
-          console.log('item', categoryItem._id);
-        });
+        const filteredList = state.categories.filter((categoryItem) => {});
 
         // state.categories = filteredList;
       }
-
-      console.log(category);
-      console.log(nativeLangCode);
     },
     clearSearch: (state, action) => {
       state.categories = state.categoriesContainer;
@@ -76,9 +71,7 @@ const categorySlice = createSlice({
         state.categoriesContainer = action.payload;
         state.status = 'fullfilled';
       })
-      .addCase(getCategories.rejected, (state, action) => {
-        console.log('Kategori Hatası');
-      })
+      .addCase(getCategories.rejected, (state, action) => {})
       .addCase(getCategoryById.fulfilled, (state, action) => {
         state.category = action.payload;
       })
