@@ -27,6 +27,7 @@ const initialState = {
   requestStatus: 'idle',
   statRequest: 'idle',
   stat: null,
+  awards:null
 };
 function showToast(message) {
   ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);

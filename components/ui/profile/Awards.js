@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, View, Text, Image } from 'react-native';
 import React from 'react';
 import Award from './Award';
 import AwardImage from '../../../assets/awards/award.png';
+import { useDispatch } from 'react-redux';
 
 const AWARD_IMAGE = Image.resolveAssetSource({ uri: AwardImage }).uri;
 const awards = [
@@ -44,6 +45,8 @@ const awards = [
 ];
 
 const Awards = () => {
+  const dispatch = useDispatch();
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -51,7 +54,9 @@ const Awards = () => {
         keyExtractor={(item, index) => index.toString()}
         numColumns={3}
         data={awards}
-        renderItem={({ item }) => <Award award={item} progress={0.4} />}
+        renderItem={({ item }) => {
+          return <Award award={item} progress={0.5} />;
+        }}
       />
     </View>
   );
