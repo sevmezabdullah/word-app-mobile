@@ -10,11 +10,20 @@ import { getLocales } from 'expo-localization';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import * as Localization from 'expo-localization';
+import { I18n } from 'i18n-js';
+import { en, tr, gb, ar } from '../../constants/localizations.json';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
+
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const i18n = new I18n({ tr, en, ar, gb });
+  const locale = getLocales();
+  const lang = locale[0].languageCode;
+  i18n.locale = lang;
+
   const status = useSelector((state) => state.userAuth.status);
   const emailChangeHandler = (email) => {
     setEmail(email);
@@ -49,7 +58,7 @@ const Login = ({ navigation }) => {
         //visibility of Overlay Loading Spinner
         visible={status === 'loading' ? true : false}
         //Text with the Spinner
-        textContent={'Giriş yapılıyor'}
+        textContent={i18n.t('logging')}
         //Text style of the Spinner Text
         textStyle={styles.spinnerTextStyle}
       />
@@ -57,7 +66,7 @@ const Login = ({ navigation }) => {
         secureTextEntry={false}
         value={email}
         inputHandler={emailChangeHandler}
-        placeHolder={'Email'}
+        placeHolder={i18n.t('emailPlaceHolder')}
       />
       <View>
         <LoginInput
@@ -65,25 +74,25 @@ const Login = ({ navigation }) => {
           keyboardType="password"
           value={password}
           inputHandler={passwordChangeHandler}
-          placeHolder={'Şifre'}
+          placeHolder={i18n.t('passwordPlaceHolder')}
         />
       </View>
 
       <ForgetPasswordText />
       <SignButton
-        title="Giriş Yap"
+        title={i18n.t('loginButtonText')}
         icon={loginIcon}
         color={colors.sign_button}
         onPress={handleLogin}
       />
 
       <SignButton
-        title="Google ile Giriş Yap "
+        title={i18n.t('signInWithGoogleText')}
         icon={googleIcon}
         color={colors.sign_button}
       />
       <SignButton
-        title="Kayıt Ol"
+        title={i18n.t('registerButtonText')}
         icon={registerIcon}
         color={colors.sign_button}
         onPress={handleRegister}

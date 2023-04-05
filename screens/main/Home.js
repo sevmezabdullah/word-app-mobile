@@ -6,39 +6,32 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearSearch, getCategories } from '../../redux/slices/categorySlice';
 import io from 'socket.io-client';
 import { colors } from '../../constants/colors';
-import LoginInput from '../../components/ui/auth/LoginInput';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryItem from '../../components/ui/home/CategoryItem';
 
 import { getUser, getUserDeck } from '../../redux/slices/authSlice';
-import { handleSearch } from '../../redux/slices/categorySlice';
-import { initialize } from '../../redux/slices/quizSlice';
 
+import { initialize } from '../../redux/slices/quizSlice';
+import * as Localization from 'expo-localization';
+import { I18n } from 'i18n-js';
+import { en, tr, gb, ar } from '../../constants/localizations.json';
+import { getLocales } from 'expo-localization';
 const Home = ({ navigation }) => {
-  const [searchCategory, setSearchCategory] = useState('');
   const socket = io(socketURL);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.user);
   const categoryList = useSelector((state) => state.category.categories);
   const categoryStatus = useSelector((state) => state.category.status);
 
+  const i18n = new I18n({ tr, en, ar, gb });
+  const locale = getLocales();
+  const lang = locale[0].languageCode;
+  i18n.locale = lang;
+
   socket.on('online', (data) => {
     console.log('Online Kullanıcılar : ', data);
   });
-
-  const handleSearchText = (text) => {
-    if (text.length > 0) {
-      dispatch(
-        handleSearch({
-          text: text,
-          nativeLang: user.nativeLang,
-        })
-      );
-    } else {
-      dispatch(clearSearch());
-    }
-    setSearchCategory(text);
-  };
 
   const fetchCategories = () => {
     if (categoryStatus === 'idle') {
@@ -71,11 +64,11 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <LoginInput
+        {/*   <LoginInput
           value={searchCategory}
           inputHandler={handleSearchText}
           placeHolder="Aramak istediğiniz kategoriyi girin"
-        />
+        /> */}
         <FlatList
           numColumns={3}
           style={{
@@ -95,7 +88,7 @@ const Home = ({ navigation }) => {
                 });
               }}
             >
-              <CategoryItem item={item} lang={user.nativeLang} />
+              <CategoryItem item={item} lang={user.currentLang} />
             </Pressable>
           )}
         />

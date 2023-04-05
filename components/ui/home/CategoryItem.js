@@ -11,19 +11,15 @@ const CategoryItem = ({ item, lang }) => {
   const cards = <Cards name="cards-outline" color={'black'} size={18} />;
   const user = useSelector((state) => state.userAuth.user);
   const [titles, setTitles] = useState([]);
+
   useEffect(() => {
-    console.log(item.titles);
-    item.titles.forEach((titleP) => {
-      if (titleP.langCode === user.currentLang) {
-        console.log(
-          '🚀 ~ file: CategoryItem.js:19 ~ item.titles.forEach ~ titleP:',
-          titleP
-        );
+    setTitles([]);
+    item.titles.forEach((titleItem) => {
+      if (titleItem.langCode === lang) {
+        setTitles((current) => [...current, titleItem.meaning]);
       }
     });
   }, [item]);
-
-  console.log('🚀 ~ file: CategoryItem.js:24 ~ CategoryItem ~ titles:', titles);
 
   return (
     <View style={{ width: 130 }}>
@@ -42,7 +38,8 @@ const CategoryItem = ({ item, lang }) => {
               uri: item.logo,
             }}
           />
-          <Text style={{ textAlign: 'center' }}>{''}</Text>
+          <Text style={{ textAlign: 'center' }}>{titles[0]}</Text>
+
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >

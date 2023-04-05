@@ -7,12 +7,20 @@ import AgainstTime from '../../assets/time.png';
 import { Dialog } from 'react-native-paper';
 import { useState } from 'react';
 
+import * as Localization from 'expo-localization';
+import { I18n } from 'i18n-js';
+import { en, tr, gb, ar } from '../../constants/localizations.json';
+import { getLocales } from 'expo-localization';
+
 const QUIZ_IMAGE = Image.resolveAssetSource(QuizImage).uri;
 const AGAINST_TIME = Image.resolveAssetSource(AgainstTime).uri;
 
 const Challenge = ({ navigation }) => {
   const [difficulty, setDifficulty] = useState(false);
-
+  const i18n = new I18n({ tr, en, ar, gb });
+  const locale = getLocales();
+  const lang = locale[0].languageCode;
+  i18n.locale = lang;
   const closeDifDialog = () => {
     setDifficulty(false);
   };
@@ -39,11 +47,11 @@ const Challenge = ({ navigation }) => {
             setQuizType('classic');
             setDifficulty(true);
           }}
-          title="Quiz"
+          title={i18n.t('quizButtonText')}
           icon={QUIZ_IMAGE}
         />
         <ChallengeButton
-          title="Zamana Karşı"
+          title={i18n.t('challangeAgainstTime')}
           onPress={() => {
             setQuizType('timed');
             setDifficulty(true);
@@ -52,7 +60,7 @@ const Challenge = ({ navigation }) => {
         />
       </View>
       <Dialog visible={difficulty}>
-        <Dialog.Title>Zorluk Seçimi</Dialog.Title>
+        <Dialog.Title>{i18n.t('chooseDiffculty')}</Dialog.Title>
         <Dialog.Content>
           <View style={{ marginBottom: 5 }}>
             <Button
@@ -60,7 +68,7 @@ const Challenge = ({ navigation }) => {
                 gotoQuiz('kolay');
               }}
               color={'green'}
-              title="Kolay"
+              title={i18n.t('easyQuiz')}
             />
           </View>
 
@@ -70,7 +78,7 @@ const Challenge = ({ navigation }) => {
                 gotoQuiz('orta');
               }}
               color={'orange'}
-              title="Orta"
+              title={i18n.t('mediumQuiz')}
             />
           </View>
 
@@ -79,11 +87,15 @@ const Challenge = ({ navigation }) => {
               gotoQuiz('zor');
             }}
             color={'red'}
-            title="Zor"
+            title={i18n.t('hardQuiz')}
           />
         </Dialog.Content>
         <Dialog.Actions>
-          <Button color={'purple'} onPress={closeDifDialog} title="Kapat" />
+          <Button
+            color={'purple'}
+            onPress={closeDifDialog}
+            title={i18n.t('close')}
+          />
         </Dialog.Actions>
       </Dialog>
     </View>

@@ -13,126 +13,128 @@ const Award = ({ award, awardUser }) => {
   }, []);
 
   const checkProgressBar = (id) => {
-    if (id === 0) {
-      const progress = awardUser.knownWordCount / 100;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 1) {
-      const progress = awardUser.knownWordCount / 400;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 2) {
-      const progress = awardUser.knownWordCount / 800;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 3) {
-      const progress = awardUser.quizResultsCount / 15;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 4) {
-      const progress = awardUser.quizResultsCount / 30;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 5) {
-      const progress = awardUser.quizResultsCount / 60;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 6) {
-      const progress = awardUser.totalCorrectAnswer / 300;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 7) {
-      const progress = awardUser.totalCorrectAnswer / 600;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 8) {
-      const progress = awardUser.totalCorrectAnswer / 900;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 9) {
-      const progress = awardUser.nonWrongQuiz / 15;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 10) {
-      const progress = awardUser.nonWrongQuiz / 30;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
-    } else if (id === 11) {
-      const progress = awardUser.nonWrongQuiz / 45;
-      setProgressBar(
-        <Progress.Bar
-          width={100}
-          height={10}
-          color="orange"
-          progress={progress}
-        />
-      );
+    if (awardUser !== null) {
+      if (id === 0) {
+        const progress = awardUser.knownWordCount / 100;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 1) {
+        const progress = awardUser.knownWordCount / 400;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 2) {
+        const progress = awardUser.knownWordCount / 800;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 3) {
+        const progress = awardUser.quizResultsCount / 15;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 4) {
+        const progress = awardUser.quizResultsCount / 30;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 5) {
+        const progress = awardUser.quizResultsCount / 60;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 6) {
+        const progress = awardUser.totalCorrectAnswer / 300;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 7) {
+        const progress = awardUser.totalCorrectAnswer / 600;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 8) {
+        const progress = awardUser.totalCorrectAnswer / 900;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 9) {
+        const progress = awardUser.nonWrongQuiz / 15;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 10) {
+        const progress = awardUser.nonWrongQuiz / 30;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      } else if (id === 11) {
+        const progress = awardUser.nonWrongQuiz / 45;
+        setProgressBar(
+          <Progress.Bar
+            width={100}
+            height={10}
+            color="orange"
+            progress={progress}
+          />
+        );
+      }
     }
   };
   return (
