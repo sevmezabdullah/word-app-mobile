@@ -4,18 +4,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
 import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = localUrls.AUTH_URL;
-const REGISTER_URL = localUrls.REGISTER_URL;
-const LOGOUT_URL = localUrls.LOGOUT_URL;
-const UPDATE_LANG = localUrls.UPDATE_LANG;
-const ADD_WORD_USER = localUrls.ADD_WORD_USER;
-const ADD_AWARD = localUrls.ADD_AWARD;
-const GET_USER_DECK = localUrls.GET_USER_DECK;
-const ADD_COMPLETED_QUIZ = localUrls.ADD_COMPLETED_QUIZ;
-const RESET_PROCESS = localUrls.RESET_PROCESS;
-const CREATE_REQUEST = localUrls.CREATE_REQUEST;
-const INCREMENT_EXP = localUrls.INCREMENT_EXP;
-const GET_USER_STAT = localUrls.GET_USER_STAT;
+const AUTH_URL = emulatorUrls.AUTH_URL;
+const REGISTER_URL = emulatorUrls.REGISTER_URL;
+const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
+const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
+const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
+const ADD_AWARD = emulatorUrls.ADD_AWARD;
+const GET_USER_DECK = emulatorUrls.GET_USER_DECK;
+const ADD_COMPLETED_QUIZ = emulatorUrls.ADD_COMPLETED_QUIZ;
+const RESET_PROCESS = emulatorUrls.RESET_PROCESS;
+const CREATE_REQUEST = emulatorUrls.CREATE_REQUEST;
+const INCREMENT_EXP = emulatorUrls.INCREMENT_EXP;
+const GET_USER_STAT = emulatorUrls.GET_USER_STAT;
+const GET_USER_AWARDS = emulatorUrls.GET_USER_AWARDS;
 
 const initialState = {
   user: null,
@@ -27,7 +28,7 @@ const initialState = {
   requestStatus: 'idle',
   statRequest: 'idle',
   stat: null,
-  awards:null
+  awards: null,
 };
 function showToast(message) {
   ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
@@ -124,7 +125,14 @@ export const getUserStat = createAsyncThunk(
   'auth/userStat',
   async ({ userId }) => {
     const response = await axios.get(GET_USER_STAT + '/' + userId);
+    return response.data;
+  }
+);
 
+export const getUserAwards = createAsyncThunk(
+  'auth/userAwards',
+  async ({ userId }) => {
+    const response = await axios.get(GET_USER_AWARDS + '/' + userId);
     return response.data;
   }
 );
@@ -232,6 +240,7 @@ const authSlice = createSlice({
       .addCase(resetProcess.fulfilled, (state, action) => {
         state.resetStatus = 'fullfilled';
       })
+
       .addCase(resetProcess.rejected, (state, action) => {})
       .addCase(createRequest.pending, (state, action) => {
         state.requestStatus = 'pending';
@@ -245,6 +254,9 @@ const authSlice = createSlice({
       })
       .addCase(getUserStat.pending, (state, action) => {
         state.statRequest = 'pending';
+      })
+      .addCase(getUserAwards.fulfilled, (state, action) => {
+        state.awards = action.payload;
       });
   },
 });

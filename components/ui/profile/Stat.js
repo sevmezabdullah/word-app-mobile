@@ -21,15 +21,17 @@ const Stat = () => {
     dispatch(getUserStat({ userId: user.id }));
   }, [dispatch]);
   let statRows;
-  if (stat != null) {
+  if (stat != null && stat !== undefined) {
     const result = stat.result;
-    statRows = [
-      { item: 'Bilinen Kelime', value: result.knownWordCount },
-      { item: 'Tamamlanan Quiz', value: result.completedQuizCount },
+    if (result !== undefined) {
+      statRows = [
+        { item: 'Bilinen Kelime', value: result.knownWordCount },
+        { item: 'Tamamlanan Quiz', value: result.completedQuizCount },
 
-      { item: 'Doğru Cevaplar', value: result.correctAnswerCount },
-      { item: 'Yanlış Cevaplar', value: result.wrongAnswerCount },
-    ];
+        { item: 'Doğru Cevaplar', value: result.correctAnswerCount },
+        { item: 'Yanlış Cevaplar', value: result.wrongAnswerCount },
+      ];
+    }
   } else {
     statRows = [];
   }

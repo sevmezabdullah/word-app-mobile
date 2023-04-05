@@ -22,6 +22,7 @@ export const emulatorUrls = {
   CREATE_REQUEST: 'http://10.0.2.2:3000/requests/create',
   INCREMENT_EXP: 'http://10.0.2.2:3000/users/incrementExp',
   GET_USER_STAT: 'http://10.0.2.2:3000/users/getUserStat',
+  GET_USER_AWARDS: 'http://10.0.2.2:3000/users/getUserAward',
 };
 export const localUrls = {
   AUTH_URL: 'http://192.168.1.115:3000/users/login',
@@ -41,6 +42,7 @@ export const localUrls = {
   CREATE_REQUEST: 'http://192.168.1.115:3000/requests/create',
   INCREMENT_EXP: 'http://192.168.1.115:3000/users/incrementExp',
   GET_USER_STAT: 'http://192.168.1.115:3000/users/getUserStat',
+  GET_USER_AWARDS: 'http://192.168.1.115:3000/users/getUserAward',
 };
 
-export const socketURL = 'http://192.168.1.115:3000';
+export const socketURL = 'http://10.0.2.2:3000';
