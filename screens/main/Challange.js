@@ -7,20 +7,14 @@ import AgainstTime from '../../assets/time.png';
 import { Dialog } from 'react-native-paper';
 import { useState } from 'react';
 
-import * as Localization from 'expo-localization';
-import { I18n } from 'i18n-js';
-import { en, tr, gb, ar } from '../../constants/localizations.json';
-import { getLocales } from 'expo-localization';
+import { i18n } from '../../constants/langSupport';
 
 const QUIZ_IMAGE = Image.resolveAssetSource(QuizImage).uri;
 const AGAINST_TIME = Image.resolveAssetSource(AgainstTime).uri;
 
 const Challenge = ({ navigation }) => {
   const [difficulty, setDifficulty] = useState(false);
-  const i18n = new I18n({ tr, en, ar, gb });
-  const locale = getLocales();
-  const lang = locale[0].languageCode;
-  i18n.locale = lang;
+
   const closeDifDialog = () => {
     setDifficulty(false);
   };

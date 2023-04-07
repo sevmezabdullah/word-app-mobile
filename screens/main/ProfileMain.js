@@ -4,17 +4,14 @@ import CountryFlag from 'react-native-country-flag';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../constants/colors';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { i18n } from '../../constants/langSupport';
 import Stat from '../../components/ui/profile/Stat';
 import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
 
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
-  const statRequestStatus = useSelector((state) => state.userAuth.statRequest);
-  const dispatch = useDispatch();
   const [selected, setSelected] = useState('award');
-
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'flex-end' }}>
@@ -73,7 +70,7 @@ const ProfileMain = ({ navigation }) => {
               onPress={() => {
                 setSelected('awards');
               }}
-              title="Başarımlar"
+              title={i18n.t('awards')}
             />
           </View>
           <View
@@ -87,7 +84,7 @@ const ProfileMain = ({ navigation }) => {
               onPress={() => {
                 setSelected('stat');
               }}
-              title="İstatistikler"
+              title={i18n.t('stats')}
             />
           </View>
         </View>

@@ -16,7 +16,10 @@
     "easyQuiz": "Kolay",
     "mediumQuiz": "Orta",
     "hardQuiz": "Zor",
-    "close": "Kapat"
+    "close": "Kapat",
+    "awards": "Başarımlar",
+    "stats": "Istatistikler",
+    "learningLang": "Öğrenilen Dil"
   },
   "en": {
     "loginButtonText": "Login",
@@ -35,7 +38,10 @@
     "easyQuiz": "Easy",
     "mediumQuiz": "Medium",
     "hardQuiz": "Hard",
-    "close": "Close"
+    "close": "Close",
+    "awards": "Awards",
+    "stats": "Stats",
+    "learningLang": "Learning Language"
   },
   "gb": {
     "loginButtonText": "Login",
@@ -54,7 +60,9 @@
     "easyQuiz": "Easy",
     "mediumQuiz": "Medium",
     "hardQuiz": "Hard",
-    "close": "Close"
+    "close": "Close",
+    "awards": "Awards",
+    "stats": "Stats"
   },
   "ar": {}
 }
