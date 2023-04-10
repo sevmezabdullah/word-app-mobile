@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { i18n } from '../../constants/langSupport';
 import { useSelector } from 'react-redux';
 import ChooseLang from '../main/ChooseLang';
 import TabNavigator from './tab-navigator';
@@ -51,7 +51,7 @@ const AppNavigator = () => {
         component={TimedQuiz}
       />
       <Stack.Screen
-        options={{ headerShown: true, headerTitle: 'Ayarlar' }}
+        options={{ headerShown: true, headerTitle: i18n.t('settings') }}
         name="Settings"
         component={Settings}
       />

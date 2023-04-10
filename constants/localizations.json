@@ -19,7 +19,23 @@
     "close": "Kapat",
     "awards": "Başarımlar",
     "stats": "Istatistikler",
-    "learningLang": "Öğrenilen Dil"
+    "learningLang": "Öğrenilen Dil",
+    "changePasswordText": "Şifre Değiştir",
+    "changeLangPrefs": "Dil Tercihlerini Değiştir",
+    "resetProcess": "İlerlemeyi Sıfırla",
+    "contactWithUs": "Bize Ulaşın",
+    "logout": "Çıkış Yap",
+    "password": "Şifre",
+    "passwordAgain": "Şifre Tekrar",
+    "change": "Değiştir",
+    "areYouSureResetProcess": "İlerlemeyi sıfırlamak istediğine emin misin ?",
+    "cancel": "Vazgeç",
+    "reset": "Sıfırla",
+    "yourMessage": "Mesajınız",
+    "send": "Gönder",
+    "signout": "Çıkış",
+    "logoutMessage": "Çıkış yapmak istedinizden emin misiniz ?",
+    "settings": "Ayarlar"
   },
   "en": {
     "loginButtonText": "Login",
@@ -41,7 +57,12 @@
     "close": "Close",
     "awards": "Awards",
     "stats": "Stats",
-    "learningLang": "Learning Language"
+    "learningLang": "Learning Language",
+    "changePasswordText": "Change Password",
+    "changeLangPrefs": "Change Language Preferences",
+    "resetProcess": "Reset Progress",
+    "contactWithUs": "Contact Us",
+    "logout": "Logout"
   },
   "gb": {
     "loginButtonText": "Login",
@@ -62,7 +83,12 @@
     "hardQuiz": "Hard",
     "close": "Close",
     "awards": "Awards",
-    "stats": "Stats"
+    "stats": "Stats",
+    "changePasswordText": "Change Password",
+    "changeLangPrefs": "Change Language Preferences",
+    "resetProcess": "Reset Progress",
+    "contactWithUs": "Contact Us",
+    "logout": "Logout"
   },
   "ar": {}
 }

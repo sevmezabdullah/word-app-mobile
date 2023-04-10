@@ -8,10 +8,17 @@ import { i18n } from '../../constants/langSupport';
 import Stat from '../../components/ui/profile/Stat';
 import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
+import { useEffect } from 'react';
+import { getUserAwards } from '../../redux/slices/authSlice';
 
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
   const [selected, setSelected] = useState('award');
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserAwards({ userId: user.id }));
+  }, [dispatch]);
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'flex-end' }}>

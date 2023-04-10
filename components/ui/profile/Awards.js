@@ -4,7 +4,7 @@ import Award from './Award';
 import AwardImage from '../../../assets/awards/award.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getUserAwards } from '../../../redux/slices/authSlice';
+import { getUserAwards, getUserStat } from '../../../redux/slices/authSlice';
 
 const AWARD_IMAGE = Image.resolveAssetSource({ uri: AwardImage }).uri;
 const awards = [
@@ -88,6 +88,7 @@ const Awards = () => {
   const awardUser = useSelector((state) => state.userAuth.awards);
   useEffect(() => {
     dispatch(getUserAwards({ userId: user.id }));
+    dispatch(getUserStat({ userId: user.id }));
   }, [dispatch]);
 
   return (

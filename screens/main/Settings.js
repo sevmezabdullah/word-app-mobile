@@ -17,7 +17,7 @@ import {
 } from '../../redux/slices/authSlice';
 import SettingButton from '../../components/ui/settings/SettingButton';
 import { Dialog } from 'react-native-paper';
-
+import { i18n } from '../../constants/langSupport';
 import SocialButton from '../../components/ui/profile/SocialButton';
 import FacebookLogo from '../../assets/facebook.png';
 import InstagramLogo from '../../assets/instagram.png';
@@ -43,10 +43,10 @@ const Settings = () => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   }
   const logoutAlert = () => {
-    Alert.alert('Çıkış', 'Çıkış yapmak istediğinizden emin misiniz ? ', [
-      { text: 'Vazgeç', onPress: () => {} },
+    Alert.alert(i18n.t('logout'), i18n.t('logoutMessage'), [
+      { text: i18n.t('cancel'), onPress: () => {} },
       {
-        text: 'Çıkış',
+        text: i18n.t('signout'),
         onPress: () => {
           dispatch(logout());
         },
@@ -68,20 +68,11 @@ const Settings = () => {
     setContactWithUsDialog(false);
   };
 
-  const changePasswordAlert = () => {
-    Alert.alert('Şifre Değiştir', '', [
-      { text: 'Vazgeç', onPress: () => {} },
-      {
-        text: 'Değiştir',
-        onPress: () => {},
-      },
-    ]);
-  };
   return (
     <>
       <View>
         <SettingButton
-          title="Şifre Değiştir"
+          title={i18n.t('changePasswordText')}
           onPress={() => {
             showPasswordModal();
           }}
@@ -89,13 +80,13 @@ const Settings = () => {
           isModalEnable={false}
         />
         <SettingButton
-          title="Dil Tercihlerini Değiştir"
+          title={i18n.t('changeLangPrefs')}
           onPress={() => {}}
           icon="call-split"
           isModalEnable={false}
         />
         <SettingButton
-          title="İlerlemeyi Sıfırla"
+          title={i18n.t('resetProcess')}
           onPress={() => {
             //showAlert();
             setResetProcessDialog(true);
@@ -104,13 +95,13 @@ const Settings = () => {
         />
 
         <SettingButton
-          title="Bize Ulaşın"
+          title={i18n.t('contactWithUs')}
           onPress={openContactDialog}
           icon="email"
         />
 
         <SettingButton
-          title="Çıkış Yap"
+          title={i18n.t('logout')}
           onPress={() => {
             logoutAlert();
           }}
@@ -124,7 +115,7 @@ const Settings = () => {
           setVisiblePasswordModal(false);
         }}
       >
-        <Dialog.Title>Şifre Değiştir</Dialog.Title>
+        <Dialog.Title>{i18n.t('changePasswordText')}</Dialog.Title>
         <Dialog.Content>
           <View
             style={{
@@ -132,8 +123,11 @@ const Settings = () => {
               alignItems: 'center',
             }}
           >
-            <TextInput placeholder="Şifre" style={styles.input} />
-            <TextInput placeholder="Şifre Tekrar" style={styles.input} />
+            <TextInput placeholder={i18n.t('password')} style={styles.input} />
+            <TextInput
+              placeholder={i18n.t('passwordAgain')}
+              style={styles.input}
+            />
           </View>
         </Dialog.Content>
         <Dialog.Actions>
@@ -143,10 +137,10 @@ const Settings = () => {
               onPress={() => {
                 setVisiblePasswordModal(false);
               }}
-              title="Kapat"
+              title={i18n.t('close')}
             />
           </View>
-          <Button title="Değiştir" />
+          <Button title={i18n.t('change')} />
         </Dialog.Actions>
       </Dialog>
       <Dialog
@@ -154,16 +148,16 @@ const Settings = () => {
         onDismiss={closeResetProcessDialog}
         visible={resetProccessDialog}
       >
-        <Dialog.Title>İlerlemeyi Sıfırla</Dialog.Title>
+        <Dialog.Title>{i18n.t('resetProcess')}</Dialog.Title>
         <Dialog.Content>
-          <Text>İlerlemeyi sıfırlamak istediğinden emin misin ?</Text>
+          <Text>{i18n.t('areYouSureResetProcess')}</Text>
         </Dialog.Content>
         <Dialog.Actions>
           <View style={{ margin: 10 }}>
             <Button
               onPress={closeResetProcessDialog}
               color={'red'}
-              title="Vazgeç"
+              title={i18n.t('cancel')}
             />
           </View>
           <View style={{ margin: 10 }}>
@@ -172,7 +166,7 @@ const Settings = () => {
                 dispatch(resetProcess(user.id));
                 closeResetProcessDialog();
               }}
-              title="Sıfırla"
+              title={i18n.t('reset')}
             />
           </View>
         </Dialog.Actions>
@@ -182,7 +176,7 @@ const Settings = () => {
         onDismiss={closeContactDialog}
         visible={contactWithUSDialog}
       >
-        <Dialog.Title>Bize Ulaş</Dialog.Title>
+        <Dialog.Title>{i18n.t('contactWithUs')}</Dialog.Title>
         <Dialog.Content>
           <View>
             <TextInput
@@ -199,7 +193,7 @@ const Settings = () => {
               onChangeText={(text) => {
                 setMessage(text);
               }}
-              placeholder="Mesajınız"
+              placeholder={i18n.t('yourMessage')}
             />
           </View>
           {/*           <View
@@ -218,7 +212,11 @@ const Settings = () => {
         </Dialog.Content>
         <Dialog.Actions>
           <View style={{ margin: 10 }}>
-            <Button onPress={closeContactDialog} color={'red'} title="Vazgeç" />
+            <Button
+              onPress={closeContactDialog}
+              color={'red'}
+              title={i18n.t('cancel')}
+            />
           </View>
           <Button
             onPress={() => {
@@ -228,7 +226,7 @@ const Settings = () => {
               }
               closeContactDialog();
             }}
-            title="Gönder"
+            title={i18n.t('send')}
           />
         </Dialog.Actions>
       </Dialog>
