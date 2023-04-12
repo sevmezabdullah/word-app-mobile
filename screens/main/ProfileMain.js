@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import CountryFlag from 'react-native-country-flag';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,16 +16,28 @@ import Stat from '../../components/ui/profile/Stat';
 import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
 import { useEffect } from 'react';
-import { getUserAwards } from '../../redux/slices/authSlice';
+import {
+  getUserAwards,
+  getUserDailiyWordCount,
+} from '../../redux/slices/authSlice';
+import * as Progress from 'react-native-progress';
+import { Dialog } from 'react-native-paper';
 
 const ProfileMain = ({ navigation }) => {
   const user = useSelector((state) => state.userAuth.user);
-  const [selected, setSelected] = useState('award');
+  const dailyWordCount = useSelector((state) => state.userAuth.dailiyWordCount);
 
+  const [selected, setSelected] = useState('award');
+  const [targetWordDialog, setTargetWordDialog] = useState(false);
+
+  const closeTargetWordDialog = () => {
+    setTargetWordDialog(false);
+  };
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUserAwards({ userId: user.id }));
-  }, [dispatch]);
+    dispatch(getUserDailiyWordCount({ userId: user.id }));
+  }, [dispatch, user]);
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'flex-end' }}>
@@ -32,7 +51,37 @@ const ProfileMain = ({ navigation }) => {
           }}
         />
       </View>
+
       <View style={styles.profile}>
+        <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+            <Text style={{ fontSize: 18, color: 'white', fontWeight: 'bold' }}>
+              {i18n.t('dailyWordTargetMessage')}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setTargetWordDialog(true);
+              }}
+            >
+              <MaterialCommunityIcons
+                style={{ marginLeft: 10, elevation: 5 }}
+                name="information"
+                size={18}
+                color={'white'}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.circles}>
+          <Progress.Circle
+            size={100}
+            style={styles.progress}
+            thickness={8}
+            progress={dailyWordCount / 100}
+            color="white"
+            showsText={true}
+          />
+        </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <View>
             <Text style={{ color: 'white', fontSize: 16 }}>
@@ -42,12 +91,13 @@ const ProfileMain = ({ navigation }) => {
         </View>
         <View>
           <Text style={{ textAlign: 'center', color: 'white', fontSize: 14 }}>
-            Öğrenilen Dil
+            {i18n.t('learningLang')}
           </Text>
         </View>
         <View style={{ alignSelf: 'center', margin: 10 }}>
           <CountryFlag isoCode={user.currentLang} size={24} />
         </View>
+
         <View style={{ alignSelf: 'center', margin: 4 }}>
           <Text style={{ color: 'white', fontSize: 14 }}>
             {'Level : ' + user.level}
@@ -97,6 +147,23 @@ const ProfileMain = ({ navigation }) => {
         </View>
         {selected === 'stat' ? <Stat /> : <Awards />}
       </View>
+      <Dialog
+        dismissable={true}
+        onDismiss={closeTargetWordDialog}
+        visible={targetWordDialog}
+      >
+        <Dialog.Title>{i18n.t('targetWordDialogTitle')}</Dialog.Title>
+        <Dialog.Content>
+          <Text>{i18n.t('targetWordDialogContent')}</Text>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button
+            onPress={closeTargetWordDialog}
+            title={i18n.t('close')}
+            color={'red'}
+          />
+        </Dialog.Actions>
+      </Dialog>
     </View>
   );
 };
@@ -118,8 +185,12 @@ const styles = StyleSheet.create({
   },
 
   profile: {
-    marginTop: '40%',
+    marginTop: '10%',
     flexDirection: 'column',
+  },
+  circles: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     alignItems: 'center',
@@ -136,5 +207,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
+  },
+  progress: {
+    width: 100,
+    height: 100,
+    margin: 8,
   },
 });

@@ -11,6 +11,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Challenge from '../main/Challange';
 import ProfileMain from '../main/ProfileMain';
 import Home from '../main/Home';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearWords } from '../../redux/slices/categorySlice';
 const TabNavigator = () => {
   const i18n = new I18n({ tr, en, ar, gb });
   const locale = getLocales();
@@ -20,6 +23,11 @@ const TabNavigator = () => {
   const home = i18n.t('homeBottomLabelText');
   const challange = i18n.t('challangeBottomLabelText');
   const profile = i18n.t('profilBottomLabelText');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearWords());
+  }, [dispatch]);
   return (
     <Tab.Navigator initialRouteName="TabHome">
       <Tab.Screen

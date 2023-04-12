@@ -63,6 +63,10 @@ const categorySlice = createSlice({
     clearSearch: (state, action) => {
       state.categories = state.categoriesContainer;
     },
+    clearWords: (state, action) => {
+      console.log('Word Cleared');
+      state.words = [];
+    },
   },
   extraReducers(builder) {
     builder
@@ -84,5 +88,5 @@ const categorySlice = createSlice({
       });
   },
 });
-export const { handleSearch, clearSearch } = categorySlice.actions;
+export const { handleSearch, clearSearch, clearWords } = categorySlice.actions;
 export default categorySlice.reducer;

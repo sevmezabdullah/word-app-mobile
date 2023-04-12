@@ -10,12 +10,9 @@ const Award = ({ award, awardUser }) => {
 
   useEffect(() => {
     checkProgressBar(award.id);
-  }, []);
-  const opacityObj = {};
+  }, [awardUser]);
+
   const calculateOpacity = (id, progress) => {
-    opacityObj.id = id;
-    opacityObj.progress = progress;
-    console.log(opacityObj['progress']);
     setProgressBar(
       <Progress.Bar
         width={100}
@@ -69,10 +66,10 @@ const Award = ({ award, awardUser }) => {
   };
 
   return (
-    <Card style={{ width: '33%' }}>
+    <Card style={{ width: '31%', margin: 4 }}>
       <View style={styles.container}>
         <Image
-          style={{ width: '80%', height: 80, opacity: 0.5 }}
+          style={{ width: '70%', height: 50, opacity: 0.5 }}
           source={award.image}
         />
         <Text>{award.title}</Text>

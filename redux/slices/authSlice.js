@@ -17,6 +17,7 @@ const CREATE_REQUEST = localUrls.CREATE_REQUEST;
 const INCREMENT_EXP = localUrls.INCREMENT_EXP;
 const GET_USER_STAT = localUrls.GET_USER_STAT;
 const GET_USER_AWARDS = localUrls.GET_USER_AWARDS;
+const GET_USER_DAILY_WORD_COUNT = localUrls.GET_USER_DAILY_WORD_COUNT;
 
 const initialState = {
   user: null,
@@ -29,6 +30,7 @@ const initialState = {
   statRequest: 'idle',
   stat: null,
   awards: null,
+  dailiyWordCount: 0,
 };
 function showToast(message) {
   ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
@@ -120,7 +122,14 @@ export const resetProcess = createAsyncThunk(
     return response.data;
   }
 );
-
+export const getUserDailiyWordCount = createAsyncThunk(
+  'auth/dailyWordCount',
+  async ({ userId }) => {
+    const response = await axios.get(GET_USER_DAILY_WORD_COUNT + '/' + userId);
+    console.log('🚀 ~ file: authSlice.js:129 ~ response:', response.data);
+    return response.data;
+  }
+);
 export const getUserStat = createAsyncThunk(
   'auth/userStat',
   async ({ userId }) => {
@@ -257,6 +266,9 @@ const authSlice = createSlice({
       })
       .addCase(getUserAwards.fulfilled, (state, action) => {
         state.awards = action.payload;
+      })
+      .addCase(getUserDailiyWordCount.fulfilled, (state, action) => {
+        state.dailiyWordCount = action.payload.learnedWordCount;
       });
   },
 });

@@ -35,7 +35,10 @@
     "send": "Gönder",
     "signout": "Çıkış",
     "logoutMessage": "Çıkış yapmak istedinizden emin misiniz ?",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "dailyWordTargetMessage": "Günlük Kelime Hedefiniz",
+    "targetWordDialogTitle": "Kelime Hedefi",
+    "targetWordDialogContent": "Yapılan deneyler göstermiştir ki; 100 kelime ezberlemeye çalışıldığında ertesi gün 1/3'ü unutulur, diğer gün en fazla yarısı akılda kalır. Bir hafta sonunda ilk yüz kelimenin 1/4'ü ancak akılda kalabilir. Hergün için süzgece unutulanlar dahil 100 kelime koyulduğunda 1 hafta sonunda 700 kelime ezberlenebilir.Günlük kelime hedefiniz 100 kelime üzerinden değerlendirilir."
   },
   "en": {
     "loginButtonText": "Login",

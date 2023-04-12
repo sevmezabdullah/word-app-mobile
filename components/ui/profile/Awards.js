@@ -88,7 +88,6 @@ const Awards = () => {
   const awardUser = useSelector((state) => state.userAuth.awards);
   useEffect(() => {
     dispatch(getUserAwards({ userId: user.id }));
-    dispatch(getUserStat({ userId: user.id }));
   }, [dispatch]);
 
   return (

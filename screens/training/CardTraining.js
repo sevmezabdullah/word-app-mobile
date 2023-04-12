@@ -41,10 +41,10 @@ const CardTraining = ({ route, navigation }) => {
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
   }, [dispatch, categoryId]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
-  }, [categoryId]);
+  }, [categoryId]); */
 
   const addWord = (index, isRight) => {
     const cardId = card[index]._id;
