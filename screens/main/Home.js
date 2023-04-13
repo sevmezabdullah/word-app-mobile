@@ -13,7 +13,7 @@ import CategoryItem from '../../components/ui/home/CategoryItem';
 import { getUser, getUserDeck } from '../../redux/slices/authSlice';
 
 import { initialize } from '../../redux/slices/quizSlice';
-import * as Localization from 'expo-localization';
+
 import { I18n } from 'i18n-js';
 import { en, tr, gb, ar } from '../../constants/localizations.json';
 import { getLocales } from 'expo-localization';
@@ -41,9 +41,6 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(initialize());
-    if (categoryStatus === 'idle') {
-      dispatch(getCategories()).unwrap();
-    }
 
     if (user === null) {
       dispatch(getUser()).unwrap();

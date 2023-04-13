@@ -22,6 +22,7 @@ import SocialButton from '../../components/ui/profile/SocialButton';
 import FacebookLogo from '../../assets/facebook.png';
 import InstagramLogo from '../../assets/instagram.png';
 import YoutubeLogo from '../../assets/youtube.png';
+import ChangeLangPrefs from '../../components/ui/settings/ChangeLangPrefs';
 
 const FACEBOOK_IMAGE = Image.resolveAssetSource(FacebookLogo).uri;
 const INSTAGRAM_LOGO = Image.resolveAssetSource(InstagramLogo).uri;
@@ -33,6 +34,7 @@ const Settings = () => {
   const requestStatus = useSelector((state) => state.userAuth.requestStatus);
   const [message, setMessage] = useState('');
   const [visiblePasswordModal, setVisiblePasswordModal] = useState(false);
+  const [changeLangDialog, setChangeLangDialog] = useState(false);
   const [password, setPassword] = useState('');
   const [resetProccessDialog, setResetProcessDialog] = useState(false);
   const [contactWithUSDialog, setContactWithUsDialog] = useState(false);
@@ -68,6 +70,10 @@ const Settings = () => {
     setContactWithUsDialog(false);
   };
 
+  const closeChangeLangDialog = () => {
+    setChangeLangDialog(false);
+  };
+
   return (
     <>
       <View>
@@ -81,7 +87,9 @@ const Settings = () => {
         />
         <SettingButton
           title={i18n.t('changeLangPrefs')}
-          onPress={() => {}}
+          onPress={() => {
+            setChangeLangDialog(true);
+          }}
           icon="call-split"
           isModalEnable={false}
         />
@@ -102,9 +110,7 @@ const Settings = () => {
 
         <SettingButton
           title={i18n.t('logout')}
-          onPress={() => {
-            logoutAlert();
-          }}
+          onPress={logoutAlert}
           icon="logout"
         />
       </View>
@@ -228,6 +234,25 @@ const Settings = () => {
             }}
             title={i18n.t('send')}
           />
+        </Dialog.Actions>
+      </Dialog>
+      <Dialog
+        visible={changeLangDialog}
+        onDismiss={closeChangeLangDialog}
+        dismissible={true}
+      >
+        <Dialog.Title>{i18n.t('changeLangPrefs')}</Dialog.Title>
+        <Dialog.Content>
+          <ChangeLangPrefs />
+        </Dialog.Content>
+        <Dialog.Actions>
+          <View>
+            <Button
+              onPress={closeChangeLangDialog}
+              color={'red'}
+              title={i18n.t('close')}
+            />
+          </View>
         </Dialog.Actions>
       </Dialog>
     </>

@@ -1,16 +1,10 @@
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import React from 'react';
 import StatItem from './StatItem';
 import { useEffect } from 'react';
 import { getUserStat } from '../../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { i18n } from '../../../constants/langSupport';
 const Stat = () => {
   const user = useSelector((state) => state.userAuth.user);
   const stat = useSelector((state) => state.userAuth.stat);
@@ -24,12 +18,16 @@ const Stat = () => {
   if (stat != null && stat !== undefined) {
     const result = stat.result;
     if (result !== undefined) {
+      const knownWords = i18n.t('knownWords');
+      const completedQuiz = i18n.t('completedQuiz');
+      const correctAnswers = i18n.t('correctAnswers');
+      const wrongAnswers = i18n.t('wrongAnswers');
       statRows = [
-        { item: 'Bilinen Kelime', value: result.knownWordCount },
-        { item: 'Tamamlanan Quiz', value: result.completedQuizCount },
+        { item: knownWords, value: result.knownWordCount },
+        { item: completedQuiz, value: result.completedQuizCount },
 
-        { item: 'Doğru Cevaplar', value: result.correctAnswerCount },
-        { item: 'Yanlış Cevaplar', value: result.wrongAnswerCount },
+        { item: correctAnswers, value: result.correctAnswerCount },
+        { item: wrongAnswers, value: result.wrongAnswerCount },
       ];
     }
   } else {

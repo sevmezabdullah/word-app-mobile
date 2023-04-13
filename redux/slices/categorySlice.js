@@ -15,17 +15,23 @@ const initialState = {
   words: [],
   wordLoading: 'idle',
 };
-export const getCategories = createAsyncThunk('category/getAll', async () => {
-  const token = await AsyncStorage.getItem('token');
-  const response = await axios.get(CATEGORY_URL, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
+export const getCategories = createAsyncThunk(
+  'category/getAll',
+  async ({ nativeLang, currentLang }) => {
+    const token = await AsyncStorage.getItem('token');
+    const response = await axios.get(
+      CATEGORY_URL + '/' + nativeLang + '/' + currentLang,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-  return response.data;
-});
+    return response.data;
+  }
+);
 
 export const getWordsByCategoryId = createAsyncThunk(
   'category/getByIdWord',

@@ -40,7 +40,16 @@
     "targetWordDialogTitle": "Kelime Hedefi",
     "targetWordDialogContent": "Yapılan deneyler göstermiştir ki; 100 kelime ezberlemeye çalışıldığında ertesi gün 1/3'ü unutulur, diğer gün en fazla yarısı akılda kalır. Bir hafta sonunda ilk yüz kelimenin 1/4'ü ancak akılda kalabilir. Hergün için süzgece unutulanlar dahil 100 kelime koyulduğunda 1 hafta sonunda 700 kelime ezberlenebilir.Günlük kelime hedefiniz 100 kelime üzerinden değerlendirilir.",
     "exit": "Çıkış",
-    "endChallange": "Çıkış yapılırsa gelişim kaydedilmeyecektir. Emin misin?"
+    "endChallange": "Çıkış yapılırsa gelişim kaydedilmeyecektir. Emin misin?",
+    "knownWords": "Bilinen Kelime",
+    "completedQuiz": "Tamamlanan Quiz",
+    "correctAnswers": "Doğru Cevaplar",
+    "wrongAnswers": "Yanlış Cevaplar",
+    "save": "Kaydet",
+    "nativeLang": "Ana Dil",
+    "selectLang": "Dil Seçin",
+    "currentLang": "Hedef Dil",
+    "back": "Geri"
   },
   "en": {
     "loginButtonText": "Login",
@@ -76,7 +85,23 @@
     "targetWordDialogTitle": "Word Target",
     "targetWordDialogContent": "Experiments have shown that; When trying to memorize 100 words, 1/3 of them are forgotten the next day, and the next day, at most, half of them are remembered. At the end of a week, only 1/4 of the first hundred words can be remembered. When 100 words are included in the filter for each day, including those forgotten, 700 words can be memorized at the end of 1 week. Your daily vocabulary goal is evaluated over 100 words.",
     "exit": "Exit",
-    "endChallange": "If exiting is done, progress will not be recorded. Are you sure?"
+    "endChallange": "If exiting is done, progress will not be recorded. Are you sure?",
+    "knownWords": "Known Words",
+    "completedQuiz": "Completed Quiz",
+    "correctAnswers": "Correct Answers",
+    "wrongAnswers": "Wrong Answers",
+    "change": "Change",
+    "password": "Password",
+    "passwordAgain": "Password Again",
+    "reset": "Reset",
+    "areYouSureResetProcess": "Are you sure reset your process?",
+    "register": "Register",
+    "alreadyRegistered": "Are you registered ? Login",
+    "save": "Save",
+    "nativeLang": "Native Language",
+    "selectLang": "Select Language",
+    "currentLang": "Current Language",
+    "back": "Back"
   },
   "gb": {
     "loginButtonText": "Login",
@@ -102,7 +127,19 @@
     "changeLangPrefs": "Change Language Preferences",
     "resetProcess": "Reset Progress",
     "contactWithUs": "Contact Us",
-    "logout": "Logout"
+    "logout": "Logout",
+    "knownWords": "Known Words",
+    "completedQuiz": "Completed Quiz",
+    "correctAnswers": "Correct Answers",
+    "wrongAnswers": "Wrong Answers",
+    "change": "Change",
+    "password": "Password",
+    "passwordAgain": "Password Again",
+    "reset": "Reset",
+    "register": "Register",
+    "selectLang": "Select Language",
+    "currentLang": "Current Language",
+    "back": "Back"
   },
   "ar": {}
 }

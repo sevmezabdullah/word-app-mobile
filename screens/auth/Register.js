@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { register } from '../../redux/slices/authSlice';
 import { getLocales } from 'expo-localization';
+import { i18n } from '../../constants/langSupport';
 const Register = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -103,7 +104,7 @@ const Register = ({ navigation }) => {
         onPress={handleRegister}
         icon={registerIcon}
         color={colors.sign_button}
-        title={'Kayıt Ol'}
+        title={i18n.t('register')}
       />
       <SignButton
         icon={loginIcon}

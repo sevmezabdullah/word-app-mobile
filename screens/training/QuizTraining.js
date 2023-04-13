@@ -22,7 +22,7 @@ import {
   addAwardtoUser as addAwardUser,
   addWordUser,
 } from '../../redux/slices/authSlice';
-
+import { i18n } from '../../constants/langSupport';
 const passQuestionDuration = 1000;
 
 const QuizTraining = ({ navigation, route }) => {
@@ -303,22 +303,19 @@ const QuizTraining = ({ navigation, route }) => {
         </View>
 
         <Dialog.Container visible={exit}>
-          <Dialog.Title>Çıkış</Dialog.Title>
-          <Dialog.Description>
-            Çıkış yapılırsa gelişim kaydedilmeyecektir. Emin misin?
-          </Dialog.Description>
-
+          <Dialog.Title>{i18n.t('exit')}</Dialog.Title>
+          <Dialog.Description>{i18n.t('endChallange')}</Dialog.Description>
           <Dialog.Button
             onPress={() => {
               setExit(false);
             }}
-            label="Vazgeç"
+            label={i18n.t('cancel')}
           />
           <Dialog.Button
             onPress={() => {
               navigation.navigate('Tabs');
             }}
-            label="Çıkış Yap"
+            label={i18n.t('exit')}
           />
         </Dialog.Container>
       </View>
