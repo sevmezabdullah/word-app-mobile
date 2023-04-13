@@ -15,7 +15,7 @@ import {
 import Swiper from 'react-native-deck-swiper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addUnknownWord, resetArr } from '../../redux/slices/wordSlice';
-
+import { i18n } from '../../constants/langSupport';
 import FlipCard from 'react-native-flip-card';
 import { addKnownWords } from '../../redux/slices/quizSlice';
 
@@ -178,22 +178,22 @@ const CardTraining = ({ route, navigation }) => {
             ></Swiper>
             <View>
               <Dialog.Container visible={exit}>
-                <Dialog.Title>Çıkış</Dialog.Title>
+                <Dialog.Title>{i18n.t('exit')}</Dialog.Title>
                 <Dialog.Description>
-                  Çıkış yapılırsa gelişim kaydedilmeyecektir. Emin misin?
+                  {i18n.t('endChallange')}
                 </Dialog.Description>
 
                 <Dialog.Button
                   onPress={() => {
                     setExit(false);
                   }}
-                  label="Vazgeç"
+                  label={i18n.t('cancel')}
                 />
                 <Dialog.Button
                   onPress={() => {
                     navigation.navigate('Tabs');
                   }}
-                  label="Çıkış Yap"
+                  label={i18n.t('exit')}
                 />
               </Dialog.Container>
             </View>

@@ -42,7 +42,6 @@ const Award = ({ award, awardUser }) => {
       } else if (id === 5) {
         const progress = awardUser.quizResultsCount / 60;
         calculateOpacity(5, progress);
-        calculateOpacity(5, progress);
       } else if (id === 6) {
         const progress = awardUser.totalCorrectAnswer / 300;
         calculateOpacity(6, progress);
