@@ -34,16 +34,15 @@ const Home = ({ navigation }) => {
   });
 
   const fetchCategories = () => {
+    dispatch(initialize());
     if (categoryStatus === 'idle') {
-      dispatch(getCategories()).unwrap();
+      dispatch(getCategories());
     }
   };
 
   useEffect(() => {
-    dispatch(initialize());
-
     if (user === null) {
-      dispatch(getUser()).unwrap();
+      dispatch(getUser());
     }
     fetchCategories();
   }, [dispatch]);

@@ -16,6 +16,7 @@ const CurrentLangDrop = ({ setCurrentLang }) => {
             { label: '🇹🇷' + ' Turkish', value: 'tr' },
             { label: '🇹🇷' + 'Deutsch', value: 'de' },
             { label: 'French', value: 'fr' },
+            { label: 'English', value: 'gb' },
           ]}
           defaultIndex={0}
           containerStyle={{ height: 40 }}
@@ -31,4 +32,7 @@ const CurrentLangDrop = ({ setCurrentLang }) => {
 
 export default CurrentLangDrop;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  currentLang: { paddingTop: 40 },
+  nativeLang: { paddingTop: 20, margin: 10 },
+});

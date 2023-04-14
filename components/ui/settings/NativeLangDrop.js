@@ -4,7 +4,7 @@ import { i18n } from '../../../constants/langSupport';
 import DropDownPicker from 'react-native-dropdown-picker';
 const NativeLangDrop = ({ setNativeLang }) => {
   const [defaultDropdown, setDefaultDropdown] = useState(true);
-  const [selectedLang, setSelectedLang] = useState('');
+
   return (
     <View style={styles.nativeLang}>
       <Text style={{ marginTop: 10 }}>{i18n.t('nativeLang')}</Text>
@@ -33,4 +33,7 @@ const NativeLangDrop = ({ setNativeLang }) => {
 
 export default NativeLangDrop;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  currentLang: { paddingTop: 40 },
+  nativeLang: { paddingTop: 20, margin: 10 },
+});

@@ -24,6 +24,7 @@ export const emulatorUrls = {
   GET_USER_STAT: 'http://10.0.2.2:3000/users/getUserStat',
   GET_USER_AWARDS: 'http://10.0.2.2:3000/users/getUserAward',
   GET_USER_DAILY_WORD_COUNT: 'http://10.0.2.2:3000/users/getWordCountByDate',
+  GET_CATEGORIES_BY_LANG_CODES: '',
 };
 export const localUrls = {
   AUTH_URL: 'http://192.168.1.115:3000/users/login',
@@ -46,6 +47,7 @@ export const localUrls = {
   GET_USER_AWARDS: 'http://192.168.1.115:3000/users/getUserAward',
   GET_USER_DAILY_WORD_COUNT:
     'http://192.168.1.115:3000/users/getWordCountByDate',
+  GET_CATEGORIES_BY_LANG_CODES: '',
 };
 
 export const socketURL = 'http://192.168.1.115:3000';
