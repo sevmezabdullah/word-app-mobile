@@ -18,6 +18,7 @@ const INCREMENT_EXP = emulatorUrls.INCREMENT_EXP;
 const GET_USER_STAT = emulatorUrls.GET_USER_STAT;
 const GET_USER_AWARDS = emulatorUrls.GET_USER_AWARDS;
 const GET_USER_DAILY_WORD_COUNT = emulatorUrls.GET_USER_DAILY_WORD_COUNT;
+const GET_USER_BY_ID = emulatorUrls.GET_USER_BY_ID;
 
 const initialState = {
   user: null,
@@ -230,8 +231,8 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {})
       .addCase(register.rejected, (state, action) => {})
       .addCase(updateLang.fulfilled, (state, action) => {
-        state.user.currentLang = action.payload.currentLang;
         state.user.nativeLang = action.payload.nativeLang;
+        state.user.currentLang = action.payload.currentLang;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload;

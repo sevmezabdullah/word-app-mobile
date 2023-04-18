@@ -13,6 +13,11 @@ const ChangeLangPrefs = () => {
   const [nativeLang, setNativeLang] = useState(null);
   const [currentLang, setCurrentLang] = useState(null);
   const user = useSelector((state) => state.userAuth.user);
+  console.log(
+    '🚀 ~ file: ChangeLangPrefs.js:16 ~ ChangeLangPrefs ~ user:',
+    user.id
+  );
+
   const dispatch = useDispatch();
   const content = [
     <NativeLangDrop setNativeLang={setNativeLang} />,
@@ -32,7 +37,7 @@ const ChangeLangPrefs = () => {
           setActiveIndex((p) => p - 1);
         }}
         onFinish={() => {
-          console.log(nativeLang, currentLang);
+          console.log(user);
           dispatch(
             updateLang({
               userId: user.id,

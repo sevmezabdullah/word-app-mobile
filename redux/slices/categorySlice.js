@@ -6,6 +6,7 @@ import { emulatorUrls, localUrls } from '../../constants/uri';
 const CATEGORY_URL = emulatorUrls.GET_CATEGORIES;
 const GET_CATEGORY_ID = emulatorUrls.GET_BY_ID;
 const GET_WORDS_BY_CATEGORY_ID = emulatorUrls.GET_WORDS_BY_CATEGORY_ID;
+const GET_CATEGORIES_BY_LANGCODE = emulatorUrls.GET_CATEGORIES_BY_LANGCODE;
 
 const initialState = {
   categories: [],
@@ -30,7 +31,12 @@ export const getCategories = createAsyncThunk('category/getAll', async () => {
 export const getCategoriesByLangCodes = createAsyncThunk(
   'category/getByLangCodes',
   async ({ nativeLang, currentLang }) => {
-    const response = await axios.get();
+    console.log('🚀 ~ file: categorySlice.js:34 ~ nativeLang:', nativeLang);
+    const response = await axios.get(
+      GET_CATEGORIES_BY_LANGCODE + '/' + nativeLang + '/' + currentLang
+    );
+
+    return response.data;
   }
 );
 export const getWordsByCategoryId = createAsyncThunk(
@@ -76,12 +82,6 @@ const categorySlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(getCategories.fulfilled, (state, action) => {
-        state.categories = action.payload;
-        state.categoriesContainer = action.payload;
-        state.status = 'fullfilled';
-      })
-      .addCase(getCategories.rejected, (state, action) => {})
       .addCase(getCategoryById.fulfilled, (state, action) => {
         state.category = action.payload;
       })
@@ -91,6 +91,11 @@ const categorySlice = createSlice({
       })
       .addCase(getWordsByCategoryId.pending, (state, action) => {
         state.wordLoading = 'loading';
+      })
+      .addCase(getCategoriesByLangCodes.fulfilled, (state, action) => {
+        state.categories = action.payload.categories;
+        state.categoriesContainer = action.payload.categories;
+        state.status = 'fullfilled';
       });
   },
 });

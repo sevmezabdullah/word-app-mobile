@@ -12,6 +12,7 @@ export const emulatorUrls = {
   UPDATE_LANG: 'http://10.0.2.2:3000/users/updateLang',
   GET_CATEGORIES: 'http://10.0.2.2:3000/category/categories',
   GET_BY_ID: 'http://10.0.2.2:3000/category',
+  GET_USER_BY_ID: 'http://10.0.2.2:3000/users',
   GET_WORDS_BY_CATEGORY_ID: 'http://10.0.2.2:3000/category/getWords/',
   ADD_AWARD: 'http://10.0.2.2:3000/users/addAwardToUser',
   GET_USER_DECK: 'http://10.0.2.2:3000/users/getUserAwardDeck',
@@ -24,7 +25,7 @@ export const emulatorUrls = {
   GET_USER_STAT: 'http://10.0.2.2:3000/users/getUserStat',
   GET_USER_AWARDS: 'http://10.0.2.2:3000/users/getUserAward',
   GET_USER_DAILY_WORD_COUNT: 'http://10.0.2.2:3000/users/getWordCountByDate',
-  GET_CATEGORIES_BY_LANG_CODES: '',
+  GET_CATEGORIES_BY_LANGCODE: 'http://10.0.2.2:3000/category/categories',
 };
 export const localUrls = {
   AUTH_URL: 'http://192.168.1.115:3000/users/login',
@@ -34,6 +35,7 @@ export const localUrls = {
   UPDATE_LANG: 'http://192.168.1.115:3000/users/updateLang',
   GET_CATEGORIES: 'http://192.168.1.115:3000/category/categories',
   GET_BY_ID: 'http://192.168.1.115:3000/category',
+  GET_USER_BY_ID: 'http://192.168.1.115:3000/users',
   GET_WORDS_BY_CATEGORY_ID: 'http://192.168.1.115:3000/category/getWords/',
   ADD_AWARD: 'http://192.168.1.115:3000/users/addAwardToUser',
   GET_USER_DECK: 'http://192.168.1.115:3000/users/getUserAwardDeck',
@@ -47,7 +49,7 @@ export const localUrls = {
   GET_USER_AWARDS: 'http://192.168.1.115:3000/users/getUserAward',
   GET_USER_DAILY_WORD_COUNT:
     'http://192.168.1.115:3000/users/getWordCountByDate',
-  GET_CATEGORIES_BY_LANG_CODES: '',
+  GET_CATEGORIES_BY_LANGCODE: 'http://192.168.1.115:3000/category/categories',
 };
 
 export const socketURL = 'http://192.168.1.115:3000';

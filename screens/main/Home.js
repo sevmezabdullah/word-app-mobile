@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { socketURL } from '../../constants/uri';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearSearch, getCategories } from '../../redux/slices/categorySlice';
+import {
+  clearSearch,
+  getCategoriesByLangCodes,
+} from '../../redux/slices/categorySlice';
 import io from 'socket.io-client';
 import { colors } from '../../constants/colors';
 
@@ -13,40 +16,38 @@ import CategoryItem from '../../components/ui/home/CategoryItem';
 import { getUser, getUserDeck } from '../../redux/slices/authSlice';
 
 import { initialize } from '../../redux/slices/quizSlice';
+import { i18n } from '../../constants/langSupport';
 
-import { I18n } from 'i18n-js';
-import { en, tr, gb, ar } from '../../constants/localizations.json';
-import { getLocales } from 'expo-localization';
 const Home = ({ navigation }) => {
   const socket = io(socketURL);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.user);
-  const categoryList = useSelector((state) => state.category.categories);
-  const categoryStatus = useSelector((state) => state.category.status);
 
-  const i18n = new I18n({ tr, en, ar, gb });
-  const locale = getLocales();
-  const lang = locale[0].languageCode;
-  i18n.locale = lang;
+  const categoryList = useSelector((state) => state.category.categories);
+
+  const categoryStatus = useSelector((state) => state.category.status);
 
   socket.on('online', (data) => {
     console.log('Online Kullanıcılar : ', data);
   });
-
-  const fetchCategories = () => {
-    dispatch(initialize());
-    if (categoryStatus === 'idle') {
-      dispatch(getCategories());
-    }
-  };
-
   useEffect(() => {
     if (user === null) {
-      dispatch(getUser());
+      dispatch(getUser()).unwrap();
     }
     fetchCategories();
   }, [dispatch]);
 
+  const fetchCategories = () => {
+    dispatch(initialize());
+    if (user !== null) {
+      dispatch(
+        getCategoriesByLangCodes({
+          nativeLang: user.nativeLang,
+          currentLang: user.currentLang,
+        })
+      );
+    }
+  };
   useEffect(() => {
     if (user !== null) {
       const unsubscribe = navigation.addListener('focus', () => {
