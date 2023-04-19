@@ -31,7 +31,6 @@ export const getCategories = createAsyncThunk('category/getAll', async () => {
 export const getCategoriesByLangCodes = createAsyncThunk(
   'category/getByLangCodes',
   async ({ nativeLang, currentLang }) => {
-    console.log('🚀 ~ file: categorySlice.js:34 ~ nativeLang:', nativeLang);
     const response = await axios.get(
       GET_CATEGORIES_BY_LANGCODE + '/' + nativeLang + '/' + currentLang
     );

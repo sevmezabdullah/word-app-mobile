@@ -8,15 +8,11 @@ import NativeLangDrop from './NativeLangDrop';
 import CurrentLangDrop from './CurrentLangDrop';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateLang } from '../../../redux/slices/authSlice';
-const ChangeLangPrefs = () => {
+const ChangeLangPrefs = ({ onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [nativeLang, setNativeLang] = useState(null);
   const [currentLang, setCurrentLang] = useState(null);
   const user = useSelector((state) => state.userAuth.user);
-  console.log(
-    '🚀 ~ file: ChangeLangPrefs.js:16 ~ ChangeLangPrefs ~ user:',
-    user.id
-  );
 
   const dispatch = useDispatch();
   const content = [
@@ -37,7 +33,6 @@ const ChangeLangPrefs = () => {
           setActiveIndex((p) => p - 1);
         }}
         onFinish={() => {
-          console.log(user);
           dispatch(
             updateLang({
               userId: user.id,
@@ -45,6 +40,7 @@ const ChangeLangPrefs = () => {
               currentLang: currentLang,
             })
           ).unwrap();
+          onClose();
         }}
       />
     </View>

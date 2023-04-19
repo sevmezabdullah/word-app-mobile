@@ -34,10 +34,9 @@ const Home = ({ navigation }) => {
     if (user === null) {
       dispatch(getUser()).unwrap();
     }
-    fetchCategories();
   }, [dispatch]);
 
-  const fetchCategories = () => {
+  const fetchCategories = (user) => {
     dispatch(initialize());
     if (user !== null) {
       dispatch(
@@ -50,14 +49,15 @@ const Home = ({ navigation }) => {
   };
   useEffect(() => {
     if (user !== null) {
+      navigation.addListener('focus', fetchCategories(user));
       const unsubscribe = navigation.addListener('focus', () => {
         dispatch(getUserDeck({ userId: user.id })).unwrap();
       });
+
       return unsubscribe;
     }
   }, [dispatch]);
 
-  navigation.addListener('focus', fetchCategories);
   return (
     <SafeAreaView style={styles.container}>
       <View>

@@ -243,7 +243,7 @@ const Settings = () => {
       >
         <Dialog.Title>{i18n.t('changeLangPrefs')}</Dialog.Title>
         <Dialog.Content>
-          <ChangeLangPrefs />
+          <ChangeLangPrefs onClose={closeChangeLangDialog} />
         </Dialog.Content>
         <Dialog.Actions>
           <View>
