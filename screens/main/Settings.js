@@ -193,7 +193,7 @@ const Settings = () => {
                 textAlignVertical: 'top',
                 height: 200,
                 textAlign: 'left',
-
+                padding: 10,
                 borderWidth: 1,
               }}
               onChangeText={(text) => {

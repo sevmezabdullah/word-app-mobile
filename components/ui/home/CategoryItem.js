@@ -7,10 +7,10 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 const CategoryItem = ({ item, lang }) => {
-  const icon = <Icon name="trophy" color={'orange'} size={18} />;
-  const cards = <Cards name="cards-outline" color={'black'} size={18} />;
   const user = useSelector((state) => state.userAuth.user);
   const [titles, setTitles] = useState([]);
+  const icon = <Icon name="trophy" color={'orange'} size={18} />;
+  const cards = <Cards name="cards-outline" color={'black'} size={18} />;
 
   useEffect(() => {
     setTitles([]);
@@ -22,27 +22,18 @@ const CategoryItem = ({ item, lang }) => {
   }, [item]);
 
   return (
-    <View style={{ width: 130 }}>
-      <Card
-        style={{
-          margin: 3,
-          elevation: 8,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+    <View style={styles.container}>
+      <Card style={styles.card}>
         <Card.Content>
           <Image
-            style={{ width: 80, height: 80, borderRadius: 5 }}
+            style={styles.image}
             source={{
               uri: item.logo,
             }}
           />
-          <Text style={{ textAlign: 'center' }}>{titles[0]}</Text>
+          <Text style={styles.title}>{titles[0]}</Text>
 
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
+          <View style={styles.row}>
             <View
               style={{
                 opacity: user.categoryAwardsIds.includes(item.awardId)
@@ -65,4 +56,23 @@ const CategoryItem = ({ item, lang }) => {
 
 export default CategoryItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    width: 130,
+  },
+  card: {
+    margin: 3,
+    elevation: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 5,
+  },
+  title: {
+    textAlign: 'center',
+  },
+  row: { flexDirection: 'row', justifyContent: 'space-between' },
+});

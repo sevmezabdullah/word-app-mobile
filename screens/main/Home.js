@@ -37,6 +37,9 @@ const Home = ({ navigation }) => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    fetchCategories();
+  }, [user]);
   const fetchCategories = () => {
     dispatch(initialize());
     if (user !== null) {
@@ -48,9 +51,9 @@ const Home = ({ navigation }) => {
       );
     }
   };
+
   useEffect(() => {
     if (user !== null) {
-      /*     navigation.addListener('focus', fetchCategories); */
       const unsubscribe = navigation.addListener('focus', () => {
         dispatch(getUserDeck({ userId: user.id })).unwrap();
       });
@@ -62,19 +65,9 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        {/*   <LoginInput
-          value={searchCategory}
-          inputHandler={handleSearchText}
-          placeHolder="Aramak istediğiniz kategoriyi girin"
-        /> */}
         <FlatList
           numColumns={3}
-          style={{
-            marginTop: 20,
-            marginHorizontal: 4,
-            display: 'flex',
-            height: '87%',
-          }}
+          style={styles.listContainer}
           scrollEnabled={true}
           keyExtractor={(item, index) => index.toString()}
           data={categoryList}
@@ -101,5 +94,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
     flex: 1,
+  },
+  listContainer: {
+    marginTop: 20,
+    marginHorizontal: 4,
+    display: 'flex',
+    height: '87%',
   },
 });
