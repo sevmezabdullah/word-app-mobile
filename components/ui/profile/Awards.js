@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     marginRight: '5%',
     marginLeft: '5%',
-    marginBottom: '30%',
+    marginBottom: '63%',
     borderRadius: 16,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
   },
 });

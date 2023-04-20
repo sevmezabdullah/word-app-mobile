@@ -42,9 +42,9 @@ const Stat = () => {
           marginTop: '5%',
           marginRight: '5%',
           marginLeft: '5%',
-          marginBottom: '30%',
+          marginBottom: '63%',
           borderRadius: 32,
-          backgroundColor: 'white',
+          backgroundColor: 'transparent',
         }}
       >
         <ActivityIndicator size={50} style={{ justifyContent: 'center' }} />
@@ -58,9 +58,9 @@ const Stat = () => {
           marginTop: '5%',
           marginRight: '5%',
           marginLeft: '5%',
-          marginBottom: '30%',
+          marginBottom: '63%',
           borderRadius: 32,
-          backgroundColor: 'white',
+          backgroundColor: 'transparent',
         }}
       >
         <FlatList

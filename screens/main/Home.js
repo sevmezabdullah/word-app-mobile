@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 import { socketURL } from '../../constants/uri';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  clearSearch,
-  getCategoriesByLangCodes,
-} from '../../redux/slices/categorySlice';
+import { getCategoriesByLangCodes } from '../../redux/slices/categorySlice';
 import io from 'socket.io-client';
 import { colors } from '../../constants/colors';
 
@@ -17,6 +14,8 @@ import { getUser, getUserDeck } from '../../redux/slices/authSlice';
 
 import { initialize } from '../../redux/slices/quizSlice';
 import { i18n } from '../../constants/langSupport';
+import { StatusBar } from 'expo-status-bar';
+import Background from '../../components/background/Background';
 
 const Home = ({ navigation }) => {
   const socket = io(socketURL);
@@ -63,42 +62,40 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <FlatList
-          numColumns={3}
-          style={styles.listContainer}
-          scrollEnabled={true}
-          keyExtractor={(item, index) => index.toString()}
-          data={categoryList}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => {
-                navigation.navigate('CardTraining', {
-                  categoryId: item._id,
-                });
-              }}
-            >
-              <CategoryItem item={item} lang={user.currentLang} />
-            </Pressable>
-          )}
-        />
-      </View>
-    </SafeAreaView>
+    <Background
+      component={
+        <View>
+          <FlatList
+            numColumns={3}
+            style={styles.listContainer}
+            scrollEnabled={true}
+            keyExtractor={(item, index) => index.toString()}
+            data={categoryList}
+            renderItem={({ item }) => (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('CardTraining', {
+                    categoryId: item._id,
+                  });
+                }}
+              >
+                <CategoryItem item={item} lang={user.currentLang} />
+              </Pressable>
+            )}
+          />
+        </View>
+      }
+    />
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.background,
-    flex: 1,
-  },
   listContainer: {
     marginTop: 20,
     marginHorizontal: 4,
     display: 'flex',
-    height: '87%',
+    height: '98%',
   },
 });

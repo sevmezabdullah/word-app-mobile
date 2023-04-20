@@ -191,135 +191,153 @@ const QuizTraining = ({ navigation, route }) => {
     });
   };
   if (status === 'fulfilled') {
-    return (
-      <View style={styles.container}>
-        <ExitButton navigation={navigation} setExit={setExit} />
+    if (quiz !== null) {
+      return (
+        <View style={styles.container}>
+          <ExitButton navigation={navigation} setExit={setExit} />
 
-        <QuestionCard question={quiz.questions[questionIndex].question} />
-        <View style={styles.answers}>
-          <View style={[styles.answerButton]}>
-            <CardButton
-              onPress={
-                answerable
-                  ? () => {
-                      setAnswerable(false);
-                      checkAnswer(quiz.questions[questionIndex].answerA, 'A');
-                      setTimeout(nextQuestion, passQuestionDuration);
-                    }
-                  : null
-              }
-              text={quiz.questions[questionIndex].answerA}
-              textColor={
-                answerColor.answerA === 'green' || answerColor.answerA === 'red'
-                  ? 'white'
-                  : 'black'
-              }
-              backgroundColor={answerColor.answerA}
-              textSize={18}
-              iconComponent={<View></View>}
-              width={400}
-              height={60}
-              gradient={false}
-            />
+          <QuestionCard question={quiz.questions[questionIndex].question} />
+          <View style={styles.answers}>
+            <View style={[styles.answerButton]}>
+              <CardButton
+                onPress={
+                  answerable
+                    ? () => {
+                        setAnswerable(false);
+                        checkAnswer(quiz.questions[questionIndex].answerA, 'A');
+                        setTimeout(nextQuestion, passQuestionDuration);
+                      }
+                    : null
+                }
+                text={quiz.questions[questionIndex].answerA}
+                textColor={
+                  answerColor.answerA === 'green' ||
+                  answerColor.answerA === 'red'
+                    ? 'white'
+                    : 'black'
+                }
+                backgroundColor={answerColor.answerA}
+                textSize={18}
+                iconComponent={<View></View>}
+                width={400}
+                height={60}
+                gradient={false}
+              />
+            </View>
+            <View style={styles.answerButton}>
+              <CardButton
+                onPress={
+                  answerable
+                    ? () => {
+                        setAnswerable(false);
+                        checkAnswer(quiz.questions[questionIndex].answerB, 'B');
+                        setTimeout(nextQuestion, passQuestionDuration);
+                      }
+                    : null
+                }
+                text={
+                  quiz.questions[questionIndex].answerB ||
+                  answerColor.answerB === 'red'
+                }
+                textColor={
+                  answerColor.answerB === 'green' ||
+                  answerColor.answerB === 'red'
+                    ? 'white'
+                    : 'black'
+                }
+                textSize={18}
+                backgroundColor={answerColor.answerB}
+                iconComponent={<View></View>}
+                width={400}
+                height={60}
+                gradient={false}
+              />
+            </View>
+            <View style={styles.answerButton}>
+              <CardButton
+                onPress={
+                  answerable
+                    ? () => {
+                        setAnswerable(false);
+                        checkAnswer(quiz.questions[questionIndex].answerC, 'C');
+                        setTimeout(nextQuestion, passQuestionDuration);
+                      }
+                    : null
+                }
+                backgroundColor={answerColor.answerC}
+                text={quiz.questions[questionIndex].answerC}
+                textColor={
+                  answerColor.answerC === 'green' ||
+                  answerColor.answerC === 'red'
+                    ? 'white'
+                    : 'black'
+                }
+                textSize={18}
+                iconComponent={<View></View>}
+                width={400}
+                height={60}
+                gradient={false}
+              />
+            </View>
+            <View style={styles.answerButton}>
+              <CardButton
+                onPress={
+                  answerable
+                    ? () => {
+                        setAnswerable(false);
+                        checkAnswer(quiz.questions[questionIndex].answerD, 'D');
+                        setTimeout(nextQuestion, passQuestionDuration);
+                      }
+                    : null
+                }
+                text={quiz.questions[questionIndex].answerD}
+                textColor={
+                  answerColor.answerD === 'green' ||
+                  answerColor.answerD === 'red'
+                    ? 'white'
+                    : 'black'
+                }
+                textSize={18}
+                backgroundColor={answerColor.answerD}
+                iconComponent={<View></View>}
+                width={400}
+                height={60}
+                gradient={false}
+              />
+            </View>
           </View>
-          <View style={styles.answerButton}>
-            <CardButton
-              onPress={
-                answerable
-                  ? () => {
-                      setAnswerable(false);
-                      checkAnswer(quiz.questions[questionIndex].answerB, 'B');
-                      setTimeout(nextQuestion, passQuestionDuration);
-                    }
-                  : null
-              }
-              text={
-                quiz.questions[questionIndex].answerB ||
-                answerColor.answerB === 'red'
-              }
-              textColor={
-                answerColor.answerB === 'green' || answerColor.answerB === 'red'
-                  ? 'white'
-                  : 'black'
-              }
-              textSize={18}
-              backgroundColor={answerColor.answerB}
-              iconComponent={<View></View>}
-              width={400}
-              height={60}
-              gradient={false}
+
+          <Dialog.Container visible={exit}>
+            <Dialog.Title>{i18n.t('exit')}</Dialog.Title>
+            <Dialog.Description>{i18n.t('endChallange')}</Dialog.Description>
+            <Dialog.Button
+              onPress={() => {
+                setExit(false);
+              }}
+              label={i18n.t('cancel')}
             />
-          </View>
-          <View style={styles.answerButton}>
-            <CardButton
-              onPress={
-                answerable
-                  ? () => {
-                      setAnswerable(false);
-                      checkAnswer(quiz.questions[questionIndex].answerC, 'C');
-                      setTimeout(nextQuestion, passQuestionDuration);
-                    }
-                  : null
-              }
-              backgroundColor={answerColor.answerC}
-              text={quiz.questions[questionIndex].answerC}
-              textColor={
-                answerColor.answerC === 'green' || answerColor.answerC === 'red'
-                  ? 'white'
-                  : 'black'
-              }
-              textSize={18}
-              iconComponent={<View></View>}
-              width={400}
-              height={60}
-              gradient={false}
+            <Dialog.Button
+              onPress={() => {
+                navigation.navigate('Tabs');
+              }}
+              label={i18n.t('exit')}
             />
-          </View>
-          <View style={styles.answerButton}>
-            <CardButton
-              onPress={
-                answerable
-                  ? () => {
-                      setAnswerable(false);
-                      checkAnswer(quiz.questions[questionIndex].answerD, 'D');
-                      setTimeout(nextQuestion, passQuestionDuration);
-                    }
-                  : null
-              }
-              text={quiz.questions[questionIndex].answerD}
-              textColor={
-                answerColor.answerD === 'green' || answerColor.answerD === 'red'
-                  ? 'white'
-                  : 'black'
-              }
-              textSize={18}
-              backgroundColor={answerColor.answerD}
-              iconComponent={<View></View>}
-              width={400}
-              height={60}
-              gradient={false}
-            />
-          </View>
+          </Dialog.Container>
         </View>
-
-        <Dialog.Container visible={exit}>
-          <Dialog.Title>{i18n.t('exit')}</Dialog.Title>
-          <Dialog.Description>{i18n.t('endChallange')}</Dialog.Description>
-          <Dialog.Button
-            onPress={() => {
-              setExit(false);
-            }}
-            label={i18n.t('cancel')}
-          />
-          <Dialog.Button
-            onPress={() => {
-              navigation.navigate('Tabs');
-            }}
-            label={i18n.t('exit')}
-          />
-        </Dialog.Container>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'column',
+            flex: 1,
+          }}
+        >
+          <Text style={{ textAlign: 'center' }}>Quiz Bulunamadı</Text>
+        </View>
+      );
+    }
   } else if (status === 'idle') {
     return <ActivityIndicator />;
   }
