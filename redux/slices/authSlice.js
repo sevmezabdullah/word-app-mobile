@@ -59,7 +59,7 @@ export const getUser = createAsyncThunk('auth/getUser', async () => {
 
 export const incrementExp = createAsyncThunk(
   'auth/increment',
-  async (userId, exp) => {
+  async ({ userId, exp }) => {
     const response = await axios.post(INCREMENT_EXP, {
       userId: userId,
       exp: exp,
