@@ -59,7 +59,6 @@ const QuizTraining = ({ navigation, route }) => {
     } else if (quizId !== null || quizId !== undefined) {
       dispatch(getQuizById(quizId));
     }
-
     dispatch(resetArr());
   }, [dispatch, user]);
 

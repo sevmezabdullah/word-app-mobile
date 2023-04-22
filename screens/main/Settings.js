@@ -37,6 +37,7 @@ const Settings = () => {
   const [visiblePasswordModal, setVisiblePasswordModal] = useState(false);
   const [changeLangDialog, setChangeLangDialog] = useState(false);
   const [password, setPassword] = useState('');
+  const [rePassword, setRepassword] = useState('');
   const [resetProccessDialog, setResetProcessDialog] = useState(false);
   const [contactWithUSDialog, setContactWithUsDialog] = useState(false);
   const showPasswordModal = () => setVisiblePasswordModal(true);
@@ -62,6 +63,9 @@ const Settings = () => {
   };
   const passwordChangeHandler = (text) => {
     setPassword(text);
+  };
+  const rePaswordHandler = (text) => {
+    setRepassword(text);
   };
 
   const changePasswordUI = () => {
@@ -131,7 +135,9 @@ const Settings = () => {
           setVisiblePasswordModal(false);
         }}
       >
-        <Dialog.Title>{i18n.t('changePasswordText')}</Dialog.Title>
+        <Dialog.Title style={{ color: 'white' }}>
+          {i18n.t('changePasswordText')}
+        </Dialog.Title>
         <Dialog.Content>
           <View
             style={{
@@ -139,12 +145,24 @@ const Settings = () => {
               alignItems: 'center',
             }}
           >
-            <TextInput placeholder={i18n.t('password')} style={styles.input} />
             <TextInput
+              onChangeText={passwordChangeHandler}
+              secureTextEntry={true}
+              placeholder={i18n.t('password')}
+              style={styles.input}
+            />
+            <TextInput
+              onChangeText={rePaswordHandler}
+              secureTextEntry={true}
               placeholder={i18n.t('passwordAgain')}
               style={styles.input}
             />
           </View>
+          {password !== rePassword ? (
+            <Text style={{ textAlign: 'left' }}>Şifreler aynı değil</Text>
+          ) : (
+            <View></View>
+          )}
         </Dialog.Content>
         <Dialog.Actions>
           <View style={{ margin: 5 }}>
@@ -157,6 +175,7 @@ const Settings = () => {
             />
           </View>
           <Button
+            color={'#1B2331'}
             onPress={() => {
               changePasswordUI();
             }}
@@ -298,6 +317,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   dialog: {
-    backgroundColor: 'white',
+    backgroundColor: '#6B7BA0',
   },
 });

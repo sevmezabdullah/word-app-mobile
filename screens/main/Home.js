@@ -40,7 +40,6 @@ const Home = ({ navigation }) => {
     fetchCategories();
   }, [user]);
   const fetchCategories = () => {
-    dispatch(initialize());
     if (user !== null) {
       dispatch(
         getCategoriesByLangCodes({

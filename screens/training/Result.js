@@ -9,14 +9,19 @@ import { getUserDeck } from '../../redux/slices/authSlice';
 const Result = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const correctCount = useSelector((state) => state.quiz.correctCount);
+  console.log('🚀 ~ file: Result.js:12 ~ Result ~ correctCount:', correctCount);
   const wrongCount = useSelector((state) => state.quiz.wrongCount);
+  console.log('🚀 ~ file: Result.js:14 ~ Result ~ wrongCount:', wrongCount);
   const userAnswers = useSelector((state) => state.quiz.userAnswers);
+  console.log('🚀 ~ file: Result.js:16 ~ Result ~ userAnswers:', userAnswers);
   const questions = useSelector((state) => state.quiz.questions);
+  console.log('🚀 ~ file: Result.js:18 ~ Result ~ questions:', questions);
   const currentCorrectAnswers = useSelector(
     (state) => state.quiz.currentCorrectAnswers
   );
   const quiz = useSelector((state) => state.quiz.quiz);
   const user = useSelector((state) => state.userAuth.user);
+
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [detailDialog, setDetailDialog] = useState(false);
 

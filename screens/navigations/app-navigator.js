@@ -51,7 +51,17 @@ const AppNavigator = () => {
         component={TimedQuiz}
       />
       <Stack.Screen
-        options={{ headerShown: true, headerTitle: i18n.t('settings') }}
+        options={{
+          headerShown: true,
+          headerTitle: i18n.t('settings'),
+          headerTitleStyle: {
+            color: 'white',
+          },
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: '#3E4A66',
+          },
+        }}
         name="Settings"
         component={Settings}
       />

@@ -124,6 +124,7 @@ const ProfileMain = ({ navigation }) => {
             >
               <View style={{ width: '42%', margin: 5 }}>
                 <Button
+                  color={'#1B2331'}
                   onPress={() => {
                     setSelected('awards');
                   }}
@@ -138,6 +139,7 @@ const ProfileMain = ({ navigation }) => {
                 }}
               >
                 <Button
+                  color={'#1B2331'}
                   onPress={() => {
                     setSelected('stat');
                   }}

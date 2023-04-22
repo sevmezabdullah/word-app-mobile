@@ -8,7 +8,7 @@ const SettingButton = ({ onPress, title, icon }) => {
       <TouchableOpacity style={styles.appButtonContainer} onPress={onPress}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           <Text style={styles.appButtonText}>{title}</Text>
-          <MaterialCommunityIcons name={icon} size={24} color={'black'} />
+          <MaterialCommunityIcons name={icon} size={24} color={'white'} />
         </View>
       </TouchableOpacity>
     </View>
@@ -20,7 +20,7 @@ export default SettingButton;
 const styles = StyleSheet.create({
   appButtonContainer: {
     elevation: 8,
-    backgroundColor: 'white',
+    backgroundColor: '#1B2331',
     margin: 4,
     borderRadius: 5,
     paddingVertical: 10,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     flex: 1,
     alignSelf: 'flex-start',
   },

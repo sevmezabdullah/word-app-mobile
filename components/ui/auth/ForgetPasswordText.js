@@ -23,6 +23,7 @@ const ForgetPasswordText = ({ navigation }) => {
     <Pressable
       onPress={() => {
         fadeIn();
+        navigation.navigate('ForgetPassword');
       }}
       onPressOut={fadeOut}
     >
