@@ -37,7 +37,6 @@ const Result = ({ navigation, route }) => {
     dispatch(incrementExp({ userId: user.id, exp: quiz.exp }));
     dispatch(getUserDeck({ userId: user.id })).unwrap();
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.title}>
@@ -74,9 +73,9 @@ const Result = ({ navigation, route }) => {
             <DataTable.Cell>
               <Text>Kazanılan Exp</Text>
             </DataTable.Cell>
-            <DataTable.Cell numeric>
+            {/*  <DataTable.Cell numeric>
               <Text>{quiz.exp}</Text>
-            </DataTable.Cell>
+            </DataTable.Cell> */}
           </DataTable.Row>
         </DataTable>
       </View>
@@ -124,10 +123,6 @@ const Result = ({ navigation, route }) => {
                 <DataTable.Cell>
                   <IconButton
                     onPress={() => {
-                      console.log(
-                        '🚀 ~ file: Result.js:124 ~ {userAnswers.map ~ questions[index]:',
-                        questions[index]
-                      );
                       setCurrentQuestion(questions[index]);
                       setDetailDialog(true);
                     }}

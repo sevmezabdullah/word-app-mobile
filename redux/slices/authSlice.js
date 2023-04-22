@@ -18,7 +18,7 @@ const INCREMENT_EXP = localUrls.INCREMENT_EXP;
 const GET_USER_STAT = localUrls.GET_USER_STAT;
 const GET_USER_AWARDS = localUrls.GET_USER_AWARDS;
 const GET_USER_DAILY_WORD_COUNT = localUrls.GET_USER_DAILY_WORD_COUNT;
-const GET_USER_BY_ID = localUrls.GET_USER_BY_ID;
+const CHANGE_USER_PASSWORD = localUrls.CHANGE_USER_PASSWORD;
 
 const initialState = {
   user: null,
@@ -63,6 +63,17 @@ export const incrementExp = createAsyncThunk(
     const response = await axios.post(INCREMENT_EXP, {
       userId: userId,
       exp: exp,
+    });
+    return response.data;
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  'auth/changePassword',
+  async ({ userId, password }) => {
+    const response = await axios.post(CHANGE_USER_PASSWORD, {
+      userId,
+      password,
     });
     return response.data;
   }
@@ -118,7 +129,8 @@ export const addAwardtoUser = createAsyncThunk(
 
 export const resetProcess = createAsyncThunk(
   'auth/resetProcess',
-  async (userId) => {
+  async ({ userId }) => {
+    console.log(userId);
     const response = await axios.post(RESET_PROCESS, { userId: userId });
     return response.data;
   }
@@ -186,7 +198,7 @@ const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(addWordUser.fulfilled, (state, action) => {
-        //  state.user.knownWords = action.payload.knownWords;
+        state.user = action.payload;
       })
       .addCase(signIn.rejected, (state, action) => {
         state.status = 'error';
@@ -270,6 +282,12 @@ const authSlice = createSlice({
       })
       .addCase(getUserDailiyWordCount.fulfilled, (state, action) => {
         state.dailiyWordCount = action.payload.learnedWordCount;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        showToast('Şifre değiştirme esnasında bir hata meydana geldi.');
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        showToast('Şifre değiştirme başarılı');
       });
   },
 });

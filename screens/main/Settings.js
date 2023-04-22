@@ -14,6 +14,7 @@ import {
   createRequest,
   logout,
   resetProcess,
+  changePassword,
 } from '../../redux/slices/authSlice';
 import SettingButton from '../../components/ui/settings/SettingButton';
 import { Dialog } from 'react-native-paper';
@@ -23,7 +24,7 @@ import FacebookLogo from '../../assets/facebook.png';
 import InstagramLogo from '../../assets/instagram.png';
 import YoutubeLogo from '../../assets/youtube.png';
 import ChangeLangPrefs from '../../components/ui/settings/ChangeLangPrefs';
-
+import Background from '../../components/background/Background';
 const FACEBOOK_IMAGE = Image.resolveAssetSource(FacebookLogo).uri;
 const INSTAGRAM_LOGO = Image.resolveAssetSource(InstagramLogo).uri;
 const YOUTUBE_LOGO = Image.resolveAssetSource(YoutubeLogo).uri;
@@ -62,6 +63,10 @@ const Settings = () => {
   const passwordChangeHandler = (text) => {
     setPassword(text);
   };
+
+  const changePasswordUI = () => {
+    dispatch(changePassword({ userId: user.id, password: password }));
+  };
   const openContactDialog = () => {
     setContactWithUsDialog(true);
   };
@@ -76,44 +81,49 @@ const Settings = () => {
 
   return (
     <>
-      <View>
-        <SettingButton
-          title={i18n.t('changePasswordText')}
-          onPress={() => {
-            showPasswordModal();
-          }}
-          icon="lock"
-          isModalEnable={false}
-        />
-        <SettingButton
-          title={i18n.t('changeLangPrefs')}
-          onPress={() => {
-            setChangeLangDialog(true);
-          }}
-          icon="call-split"
-          isModalEnable={false}
-        />
-        <SettingButton
-          title={i18n.t('resetProcess')}
-          onPress={() => {
-            //showAlert();
-            setResetProcessDialog(true);
-          }}
-          icon="backup-restore"
-        />
+      <Background
+        component={
+          <View style={{ height: '100%' }}>
+            <SettingButton
+              title={i18n.t('changePasswordText')}
+              onPress={() => {
+                showPasswordModal();
+              }}
+              icon="lock"
+              isModalEnable={false}
+            />
+            <SettingButton
+              title={i18n.t('changeLangPrefs')}
+              onPress={() => {
+                setChangeLangDialog(true);
+              }}
+              icon="call-split"
+              isModalEnable={false}
+            />
+            <SettingButton
+              title={i18n.t('resetProcess')}
+              onPress={() => {
+                //showAlert();
+                setResetProcessDialog(true);
+              }}
+              icon="backup-restore"
+            />
 
-        <SettingButton
-          title={i18n.t('contactWithUs')}
-          onPress={openContactDialog}
-          icon="email"
-        />
+            <SettingButton
+              title={i18n.t('contactWithUs')}
+              onPress={openContactDialog}
+              icon="email"
+            />
 
-        <SettingButton
-          title={i18n.t('logout')}
-          onPress={logoutAlert}
-          icon="logout"
-        />
-      </View>
+            <SettingButton
+              title={i18n.t('logout')}
+              onPress={logoutAlert}
+              icon="logout"
+            />
+          </View>
+        }
+      />
+
       <Dialog
         style={styles.dialog}
         visible={visiblePasswordModal}
@@ -146,7 +156,12 @@ const Settings = () => {
               title={i18n.t('close')}
             />
           </View>
-          <Button title={i18n.t('change')} />
+          <Button
+            onPress={() => {
+              changePasswordUI();
+            }}
+            title={i18n.t('change')}
+          />
         </Dialog.Actions>
       </Dialog>
       <Dialog
@@ -169,7 +184,7 @@ const Settings = () => {
           <View style={{ margin: 10 }}>
             <Button
               onPress={() => {
-                dispatch(resetProcess(user.id));
+                dispatch(resetProcess({ userId: user.id }));
                 closeResetProcessDialog();
               }}
               title={i18n.t('reset')}

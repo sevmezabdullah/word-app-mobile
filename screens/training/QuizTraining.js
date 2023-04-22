@@ -56,12 +56,12 @@ const QuizTraining = ({ navigation, route }) => {
           })
         );
       }
-    } else if (quizId !== null || quizId != undefined) {
+    } else if (quizId !== null || quizId !== undefined) {
       dispatch(getQuizById(quizId));
     }
 
     dispatch(resetArr());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   useEffect(() => {
     return sound
