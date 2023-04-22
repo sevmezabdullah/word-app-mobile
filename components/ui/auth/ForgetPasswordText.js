@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';
 import React from 'react';
 
-const ForgetPasswordText = () => {
+const ForgetPasswordText = ({ navigation }) => {
   const animated = new Animated.Value(1);
 
   const fadeIn = () => {
@@ -20,7 +20,12 @@ const ForgetPasswordText = () => {
   };
 
   return (
-    <Pressable onPress={fadeIn} onPressOut={fadeOut}>
+    <Pressable
+      onPress={() => {
+        fadeIn();
+      }}
+      onPressOut={fadeOut}
+    >
       <View style={{ marginVertical: 10 }}>
         <Animated.View
           style={{

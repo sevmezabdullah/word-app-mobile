@@ -10,19 +10,15 @@ import { getLocales } from 'expo-localization';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import * as Localization from 'expo-localization';
-import { I18n } from 'i18n-js';
-import { en, tr, gb, ar } from '../../constants/localizations.json';
+
+import { i18n } from '../../constants/langSupport';
+import Background from '../../components/background/Background';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
 
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const i18n = new I18n({ tr, en, ar, gb });
-  const locale = getLocales();
-  const lang = locale[0].languageCode;
-  i18n.locale = lang;
 
   const status = useSelector((state) => state.userAuth.status);
   const emailChangeHandler = (email) => {
@@ -52,61 +48,64 @@ const Login = ({ navigation }) => {
     <MaterialCommunityIcons name="account-group" color={'white'} size={30} />
   );
   return (
-    <View style={styles.body}>
-      <View></View>
-      <Spinner
-        //visibility of Overlay Loading Spinner
-        visible={status === 'loading' ? true : false}
-        //Text with the Spinner
-        textContent={i18n.t('logging')}
-        //Text style of the Spinner Text
-        textStyle={styles.spinnerTextStyle}
-      />
-      <LoginInput
-        secureTextEntry={false}
-        value={email}
-        inputHandler={emailChangeHandler}
-        placeHolder={i18n.t('emailPlaceHolder')}
-      />
-      <View>
-        <LoginInput
-          secureTextEntry={true}
-          keyboardType="password"
-          value={password}
-          inputHandler={passwordChangeHandler}
-          placeHolder={i18n.t('passwordPlaceHolder')}
-        />
-      </View>
+    <Background
+      component={
+        <View style={styles.body}>
+          <Spinner
+            //visibility of Overlay Loading Spinner
+            visible={status === 'loading' ? true : false}
+            //Text with the Spinner
+            textContent={i18n.t('logging')}
+            //Text style of the Spinner Text
+            textStyle={styles.spinnerTextStyle}
+          />
+          <LoginInput
+            secureTextEntry={false}
+            value={email}
+            inputHandler={emailChangeHandler}
+            placeHolder={i18n.t('emailPlaceHolder')}
+          />
+          <View>
+            <LoginInput
+              secureTextEntry={true}
+              keyboardType="password"
+              value={password}
+              inputHandler={passwordChangeHandler}
+              placeHolder={i18n.t('passwordPlaceHolder')}
+            />
+          </View>
 
-      <ForgetPasswordText />
-      <SignButton
-        title={i18n.t('loginButtonText')}
-        icon={loginIcon}
-        color={colors.sign_button}
-        onPress={handleLogin}
-      />
+          <ForgetPasswordText navigation={navigation} />
+          <SignButton
+            title={i18n.t('loginButtonText')}
+            icon={loginIcon}
+            color={colors.sign_button}
+            onPress={handleLogin}
+          />
 
-      <SignButton
-        title={i18n.t('signInWithGoogleText')}
-        icon={googleIcon}
-        color={colors.sign_button}
-      />
-      <SignButton
-        title={i18n.t('registerButtonText')}
-        icon={registerIcon}
-        color={colors.sign_button}
-        onPress={handleRegister}
-      />
-      <SignButton
-        title="Test Verisi Gir"
-        icon={registerIcon}
-        color={colors.sign_button}
-        onPress={() => {
-          setEmail('abdullahsevmez@gmail.com');
-          setPassword('123456');
-        }}
-      />
-    </View>
+          <SignButton
+            title={i18n.t('signInWithGoogleText')}
+            icon={googleIcon}
+            color={colors.sign_button}
+          />
+          <SignButton
+            title={i18n.t('registerButtonText')}
+            icon={registerIcon}
+            color={colors.sign_button}
+            onPress={handleRegister}
+          />
+          <SignButton
+            title="Test Verisi Gir"
+            icon={registerIcon}
+            color={colors.sign_button}
+            onPress={() => {
+              setEmail('abdullahsevmez@gmail.com');
+              setPassword('123456');
+            }}
+          />
+        </View>
+      }
+    />
   );
 };
 
@@ -114,9 +113,8 @@ export default Login;
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: colors.background,
     justifyContent: 'center',
-    flex: 1,
+    height: '100%',
     flexDirection: 'column',
   },
   spinnerTextStyle: {

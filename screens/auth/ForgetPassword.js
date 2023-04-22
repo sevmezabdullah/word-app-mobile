@@ -1,12 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import Background from '../../components/background/Background';
 
 const ForgetPassword = () => {
-  return (
-    <View>
-      <Text>ForgetPassword</Text>
-    </View>
-  );
+  return <Background component={<View></View>} />;
 };
 
 export default ForgetPassword;
