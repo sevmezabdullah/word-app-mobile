@@ -4,18 +4,20 @@ import { DataTable, IconButton, Dialog } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { initialize } from '../../redux/slices/quizSlice';
 import { useState } from 'react';
-import { completeQuiz, incrementExp } from '../../redux/slices/authSlice';
+import {
+  completeQuiz,
+  getUser,
+  getUserFromServer,
+  incrementExp,
+} from '../../redux/slices/authSlice';
 import { getUserDeck } from '../../redux/slices/authSlice';
+import { useEffect } from 'react';
 const Result = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const correctCount = useSelector((state) => state.quiz.correctCount);
-  console.log('🚀 ~ file: Result.js:12 ~ Result ~ correctCount:', correctCount);
   const wrongCount = useSelector((state) => state.quiz.wrongCount);
-  console.log('🚀 ~ file: Result.js:14 ~ Result ~ wrongCount:', wrongCount);
   const userAnswers = useSelector((state) => state.quiz.userAnswers);
-  console.log('🚀 ~ file: Result.js:16 ~ Result ~ userAnswers:', userAnswers);
   const questions = useSelector((state) => state.quiz.questions);
-  console.log('🚀 ~ file: Result.js:18 ~ Result ~ questions:', questions);
   const currentCorrectAnswers = useSelector(
     (state) => state.quiz.currentCorrectAnswers
   );
@@ -24,6 +26,11 @@ const Result = ({ navigation, route }) => {
 
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [detailDialog, setDetailDialog] = useState(false);
+
+  useEffect(() => {
+    dispatch(getUserFromServer());
+    dispatch(getUser());
+  }, [dispatch]);
 
   const complete = () => {
     dispatch(
@@ -39,9 +46,10 @@ const Result = ({ navigation, route }) => {
       })
     );
 
-    dispatch(incrementExp({ userId: user.id, exp: quiz.exp }));
-    dispatch(getUserDeck({ userId: user.id })).unwrap();
-    dispatch(initialize());
+    dispatch(incrementExp({ userId: user._id, exp: quiz.exp }));
+    dispatch(getUserDeck({ userId: user.id }));
+
+    /*   dispatch(initialize()); */
   };
   return (
     <View style={styles.container}>

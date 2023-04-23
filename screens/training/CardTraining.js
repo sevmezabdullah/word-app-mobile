@@ -18,6 +18,7 @@ import { addUnknownWord, resetArr } from '../../redux/slices/wordSlice';
 import { i18n } from '../../constants/langSupport';
 import FlipCard from 'react-native-flip-card';
 import { addKnownWords } from '../../redux/slices/quizSlice';
+import { getUser, getUserFromServer } from '../../redux/slices/authSlice';
 
 const CardTraining = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -25,8 +26,8 @@ const CardTraining = ({ route, navigation }) => {
   const category = useSelector((state) => state.category.category);
   const card = useSelector((state) => state.category.words);
   const user = useSelector((state) => state.userAuth.user);
-  const currentLang = user.currentLang;
-  const nativeLang = user.nativeLang;
+  console.log('🚀 ~ file: CardTraining.js:29 ~ CardTraining ~ user:', user);
+
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
 
@@ -34,17 +35,16 @@ const CardTraining = ({ route, navigation }) => {
   const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
   const [swipingKnown, setSwipingKnown] = useState(20);
-
+  let currentLang = user.currentLang ?? '';
+  let nativeLang = user.nativeLang ?? '';
   const [finished, setFinished] = useState(false);
   useEffect(() => {
+    currentLang = user.currentLang;
+    nativeLang = user.nativeLang;
+
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
   }, [dispatch, categoryId]);
-
-  /*   useEffect(() => {
-    dispatch(getCategoryById(categoryId)).unwrap();
-    dispatch(getWordsByCategoryId(categoryId)).unwrap();
-  }, [categoryId]); */
 
   const addWord = (index, isRight) => {
     const cardId = card[index]._id;

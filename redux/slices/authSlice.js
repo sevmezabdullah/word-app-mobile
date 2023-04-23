@@ -19,12 +19,14 @@ const GET_USER_STAT = localUrls.GET_USER_STAT;
 const GET_USER_AWARDS = localUrls.GET_USER_AWARDS;
 const GET_USER_DAILY_WORD_COUNT = localUrls.GET_USER_DAILY_WORD_COUNT;
 const CHANGE_USER_PASSWORD = localUrls.CHANGE_USER_PASSWORD;
+const GET_USER_BY_ID = localUrls.GET_USER_BY_ID;
 
 const initialState = {
   user: null,
   status: 'idle',
   token: null,
   message: '',
+  exp: 0,
   isVerify: false,
   resetStatus: 'idle',
   requestStatus: 'idle',
@@ -54,6 +56,7 @@ const storeUser = async (user) => {
 
 export const getUser = createAsyncThunk('auth/getUser', async () => {
   const user = JSON.parse(await AsyncStorage.getItem('user'));
+
   return user;
 });
 
@@ -82,7 +85,11 @@ export const changePassword = createAsyncThunk(
 export const updateLang = createAsyncThunk(
   'auth/updateLang',
   async (userPref) => {
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    userPref.userId = user.id;
+
     const response = await axios.put(UPDATE_LANG, userPref);
+
     return response.data;
   }
 );
@@ -122,7 +129,17 @@ export const addWordUser = createAsyncThunk(
 export const addAwardtoUser = createAsyncThunk(
   'auth/addAward',
   async ({ awardId, userId }) => {
-    const response = await axios.post(ADD_AWARD, { awardId, userId });
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.post(ADD_AWARD, { awardId, userId: user.id });
+    return response.data;
+  }
+);
+
+export const getUserFromServer = createAsyncThunk(
+  'auth/getFromServer',
+  async () => {
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.get(GET_USER_BY_ID + user.id);
     return response.data;
   }
 );
@@ -130,23 +147,26 @@ export const addAwardtoUser = createAsyncThunk(
 export const resetProcess = createAsyncThunk(
   'auth/resetProcess',
   async ({ userId }) => {
-    console.log(userId);
-    const response = await axios.post(RESET_PROCESS, { userId: userId });
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.post(RESET_PROCESS, { userId: user.id });
     return response.data;
   }
 );
 export const getUserDailiyWordCount = createAsyncThunk(
   'auth/dailyWordCount',
   async ({ userId }) => {
-    const response = await axios.get(GET_USER_DAILY_WORD_COUNT + '/' + userId);
-    console.log('🚀 ~ file: authSlice.js:129 ~ response:', response.data);
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+
+    const response = await axios.get(GET_USER_DAILY_WORD_COUNT + '/' + user.id);
+
     return response.data;
   }
 );
 export const getUserStat = createAsyncThunk(
   'auth/userStat',
   async ({ userId }) => {
-    const response = await axios.get(GET_USER_STAT + '/' + userId);
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.get(GET_USER_STAT + '/' + user.id);
     return response.data;
   }
 );
@@ -154,18 +174,18 @@ export const getUserStat = createAsyncThunk(
 export const getUserAwards = createAsyncThunk(
   'auth/userAwards',
   async ({ userId }) => {
-    const response = await axios.get(GET_USER_AWARDS + '/' + userId);
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.get(GET_USER_AWARDS + '/' + user.id);
     return response.data;
   }
 );
 export const completeQuiz = createAsyncThunk(
   'auth/completeQuiz',
-  async ({ result, userId, quizId, exp }) => {
+  async ({ result, userId, quizId }) => {
     const response = await axios.post(ADD_COMPLETED_QUIZ, {
       userId,
       result,
       quizId,
-      exp,
     });
 
     return response.data;
@@ -174,7 +194,8 @@ export const completeQuiz = createAsyncThunk(
 export const getUserDeck = createAsyncThunk(
   'auth/getUserDeck',
   async ({ userId }) => {
-    const response = await axios.get(GET_USER_DECK + '/' + userId);
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.get(GET_USER_DECK + '/' + user.id);
 
     return response.data;
   }
@@ -200,6 +221,7 @@ const authSlice = createSlice({
       .addCase(addWordUser.fulfilled, (state, action) => {
         state.user = action.payload;
       })
+
       .addCase(signIn.rejected, (state, action) => {
         state.status = 'error';
         showToast('Hesap bulunamadı');
@@ -250,7 +272,7 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(incrementExp.fulfilled, (state, action) => {
-        state.user.exp = action.payload.exp;
+        state.exp = action.payload;
       })
       .addCase(getUserDeck.fulfilled, (state, action) => {
         state.user.categoryAwardsIds = action.payload.categoryAwardsIds;
@@ -288,6 +310,9 @@ const authSlice = createSlice({
       })
       .addCase(changePassword.fulfilled, (state, action) => {
         showToast('Şifre değiştirme başarılı');
+      })
+      .addCase(getUserFromServer.fulfilled, (state, action) => {
+        state.user = action.payload;
       });
   },
 });

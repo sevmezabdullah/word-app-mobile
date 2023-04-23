@@ -20,38 +20,38 @@ const CategoryItem = ({ item, lang }) => {
       }
     });
   }, [item]);
-
-  return (
-    <View style={styles.container}>
-      <Card style={styles.card}>
-        <Card.Content>
-          <Image
-            style={styles.image}
-            source={{
-              uri: item.logo,
-            }}
-          />
-          <Text style={styles.title}>{titles[0]}</Text>
-
-          <View style={styles.row}>
-            <View
-              style={{
-                opacity: user.categoryAwardsIds.includes(item.awardId)
-                  ? 1
-                  : 0.2,
+  if (user.categoryAwardsIds !== undefined || user.categoryAwardsIds !== null)
+    return (
+      <View style={styles.container}>
+        <Card style={styles.card}>
+          <Card.Content>
+            <Image
+              style={styles.image}
+              source={{
+                uri: item.logo,
               }}
-            >
-              {icon}
+            />
+            <Text style={styles.title}>{titles[0]}</Text>
+
+            <View style={styles.row}>
+              <View
+                style={{
+                  opacity: user.categoryAwardsIds.includes(item.awardId)
+                    ? 1
+                    : 0.2,
+                }}
+              >
+                {icon}
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                {cards}
+                <Text>{item.words.length}</Text>
+              </View>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              {cards}
-              <Text>{item.words.length}</Text>
-            </View>
-          </View>
-        </Card.Content>
-      </Card>
-    </View>
-  );
+          </Card.Content>
+        </Card>
+      </View>
+    );
 };
 
 export default CategoryItem;

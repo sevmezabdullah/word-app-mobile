@@ -75,7 +75,6 @@ const categorySlice = createSlice({
       state.categories = state.categoriesContainer;
     },
     clearWords: (state, action) => {
-      console.log('Word Cleared');
       state.words = [];
     },
   },

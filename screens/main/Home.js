@@ -10,7 +10,11 @@ import { colors } from '../../constants/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryItem from '../../components/ui/home/CategoryItem';
 
-import { getUser, getUserDeck } from '../../redux/slices/authSlice';
+import {
+  getUser,
+  getUserDeck,
+  getUserFromServer,
+} from '../../redux/slices/authSlice';
 
 import { initialize } from '../../redux/slices/quizSlice';
 import { i18n } from '../../constants/langSupport';
@@ -26,21 +30,23 @@ const Home = ({ navigation }) => {
 
   const categoryStatus = useSelector((state) => state.category.status);
 
-  socket.on('online', (data) => {
-    console.log('Online Kullanıcılar : ', data);
-  });
+  socket.on('online', (data) => {});
   useEffect(() => {
     if (user === null) {
       dispatch(getUser());
     }
     fetchCategories();
+    dispatch(getUserFromServer());
   }, []);
 
   useEffect(() => {
     fetchCategories();
   }, [user]);
+
   const fetchCategories = () => {
     if (user !== null) {
+      dispatch(initialize());
+
       dispatch(
         getCategoriesByLangCodes({
           nativeLang: user.nativeLang,
@@ -53,9 +59,8 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     if (user !== null) {
       const unsubscribe = navigation.addListener('focus', () => {
-        dispatch(getUserDeck({ userId: user.id })).unwrap();
+        dispatch(getUserDeck({ userId: user.id }));
       });
-
       return unsubscribe;
     }
   }, []);
@@ -78,7 +83,11 @@ const Home = ({ navigation }) => {
                   });
                 }}
               >
-                <CategoryItem item={item} lang={user.currentLang} />
+                {user !== null ? (
+                  <CategoryItem item={item} lang={user.currentLang} />
+                ) : (
+                  <View></View>
+                )}
               </Pressable>
             )}
           />

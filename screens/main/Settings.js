@@ -188,9 +188,13 @@ const Settings = () => {
         onDismiss={closeResetProcessDialog}
         visible={resetProccessDialog}
       >
-        <Dialog.Title>{i18n.t('resetProcess')}</Dialog.Title>
+        <Dialog.Title style={{ color: 'white' }}>
+          {i18n.t('resetProcess')}
+        </Dialog.Title>
         <Dialog.Content>
-          <Text>{i18n.t('areYouSureResetProcess')}</Text>
+          <Text style={{ color: 'white' }}>
+            {i18n.t('areYouSureResetProcess')}
+          </Text>
         </Dialog.Content>
         <Dialog.Actions>
           <View style={{ margin: 10 }}>
@@ -206,6 +210,7 @@ const Settings = () => {
                 dispatch(resetProcess({ userId: user.id }));
                 closeResetProcessDialog();
               }}
+              color={'#1B2331'}
               title={i18n.t('reset')}
             />
           </View>
