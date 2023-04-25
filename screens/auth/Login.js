@@ -40,7 +40,7 @@ const Login = ({ navigation }) => {
       password: password,
       lang: lang,
     };
-    dispatch(signIn(auth)).unwrap();
+    dispatch(signIn(auth));
   };
   const loginIcon = <Icon name="sign-in" color={'white'} size={30} />;
   const googleIcon = <Icon name="google" color={'white'} size={30} />;

@@ -28,7 +28,6 @@ const Result = ({ navigation, route }) => {
   const [detailDialog, setDetailDialog] = useState(false);
 
   useEffect(() => {
-    dispatch(getUserFromServer());
     dispatch(getUser());
   }, [dispatch]);
 

@@ -33,15 +33,16 @@ const ChangeLangPrefs = ({ onClose }) => {
           setActiveIndex((p) => p - 1);
         }}
         onFinish={() => {
-          console.log('On Finish çalıştı');
           dispatch(
             updateLang({
               userId: user.id,
               nativeLang: nativeLang,
               currentLang: currentLang,
             })
-          ).unwrap();
-          onClose();
+          );
+          if (onClose !== undefined) {
+            onClose();
+          }
         }}
       />
     </View>

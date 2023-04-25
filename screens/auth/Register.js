@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { register } from '../../redux/slices/authSlice';
 import { getLocales } from 'expo-localization';
 import { i18n } from '../../constants/langSupport';
+import Background from '../../components/background/Background';
 const Register = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -52,82 +53,86 @@ const Register = ({ navigation }) => {
     dispatch(register(user)).unwrap();
   };
   return (
-    <View style={styles.body}>
-      <View style={{ marginTop: 75 }}>
-        <LoginInput
-          placeHolder="Email"
-          secureTextEntry={false}
-          value={email}
-          inputHandler={emailChangeHandler}
-        />
-      </View>
+    <Background
+      component={
+        <View style={styles.body}>
+          <View style={{ marginTop: 75 }}>
+            <LoginInput
+              placeHolder="Email"
+              secureTextEntry={false}
+              value={email}
+              inputHandler={emailChangeHandler}
+            />
+          </View>
 
-      <View style={styles.personalContainer}>
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
+          <View style={styles.personalContainer}>
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <LoginInput
+                inputHandler={nameChangeHandler}
+                placeHolder={'Ad'}
+                value={name}
+              />
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <LoginInput
+                value={surname}
+                inputHandler={surnameChangeHandler}
+                placeHolder={'Soyad'}
+              />
+            </View>
+          </View>
+
           <LoginInput
-            inputHandler={nameChangeHandler}
-            placeHolder={'Ad'}
-            value={name}
+            secureTextEntry={true}
+            inputHandler={passwordChangeHandler}
+            value={password}
+            placeHolder={'Şifre'}
+          />
+          <LoginInput
+            secureTextEntry={true}
+            value={rePassword}
+            inputHandler={rePasswordHandler}
+            placeHolder={'Şifre Tekrar'}
+          />
+          <SignButton
+            onPress={handleRegister}
+            icon={registerIcon}
+            color={colors.sign_button}
+            title={i18n.t('register')}
+          />
+          <SignButton
+            icon={loginIcon}
+            color={colors.sign_button}
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+            title={'Zaten üye misin ? Giriş Yap'}
+          />
+
+          <SignButton
+            onPress={() => {
+              setEmail('abdullahsevmez@gmail.com');
+              setName('Abdullah');
+              setPassword('123456');
+              setRePassword('123456');
+              setSurname('Sevmez');
+            }}
+            icon={registerIcon}
+            color={colors.sign_button}
+            title={'Test Verisi Doldur'}
           />
         </View>
-
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <LoginInput
-            value={surname}
-            inputHandler={surnameChangeHandler}
-            placeHolder={'Soyad'}
-          />
-        </View>
-      </View>
-
-      <LoginInput
-        secureTextEntry={true}
-        inputHandler={passwordChangeHandler}
-        value={password}
-        placeHolder={'Şifre'}
-      />
-      <LoginInput
-        secureTextEntry={true}
-        value={rePassword}
-        inputHandler={rePasswordHandler}
-        placeHolder={'Şifre Tekrar'}
-      />
-      <SignButton
-        onPress={handleRegister}
-        icon={registerIcon}
-        color={colors.sign_button}
-        title={i18n.t('register')}
-      />
-      <SignButton
-        icon={loginIcon}
-        color={colors.sign_button}
-        onPress={() => {
-          navigation.navigate('Login');
-        }}
-        title={'Zaten üye misin ? Giriş Yap'}
-      />
-
-      <SignButton
-        onPress={() => {
-          setEmail('abdullahsevmez@gmail.com');
-          setName('Abdullah');
-          setPassword('123456');
-          setRePassword('123456');
-          setSurname('Sevmez');
-        }}
-        icon={registerIcon}
-        color={colors.sign_button}
-        title={'Test Verisi Doldur'}
-      />
-    </View>
+      }
+    />
   );
 };
 
@@ -135,9 +140,8 @@ export default Register;
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: colors.background,
     justifyContent: 'center',
-    flex: 1,
+    height: '100%',
     padding: 8,
     flexDirection: 'column',
     paddingTop: StatusBar.currentHeight,

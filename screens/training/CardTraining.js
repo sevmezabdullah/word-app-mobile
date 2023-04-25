@@ -26,7 +26,6 @@ const CardTraining = ({ route, navigation }) => {
   const category = useSelector((state) => state.category.category);
   const card = useSelector((state) => state.category.words);
   const user = useSelector((state) => state.userAuth.user);
-  console.log('🚀 ~ file: CardTraining.js:29 ~ CardTraining ~ user:', user);
 
   const wordLoading = useSelector((state) => state.category.wordLoading);
   const [exit, setExit] = useState(false);
@@ -35,13 +34,10 @@ const CardTraining = ({ route, navigation }) => {
   const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
   const [swipingKnown, setSwipingKnown] = useState(20);
-  let currentLang = user.currentLang ?? '';
-  let nativeLang = user.nativeLang ?? '';
+  const currentLang = useSelector((state) => state.userAuth.currentLang);
+  const nativeLang = useSelector((state) => state.userAuth.nativeLang);
   const [finished, setFinished] = useState(false);
   useEffect(() => {
-    currentLang = user.currentLang;
-    nativeLang = user.nativeLang;
-
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
   }, [dispatch, categoryId]);

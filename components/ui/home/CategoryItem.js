@@ -7,10 +7,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 const CategoryItem = ({ item, lang }) => {
-  const user = useSelector((state) => state.userAuth.user);
   const [titles, setTitles] = useState([]);
   const icon = <Icon name="trophy" color={'orange'} size={18} />;
   const cards = <Cards name="cards-outline" color={'black'} size={18} />;
+
+  const categoryAwardsIds = useSelector(
+    (state) => state.userAuth.categoryAwardsIds
+  );
 
   useEffect(() => {
     setTitles([]);
@@ -20,7 +23,7 @@ const CategoryItem = ({ item, lang }) => {
       }
     });
   }, [item]);
-  if (user.categoryAwardsIds !== undefined || user.categoryAwardsIds !== null)
+  if (categoryAwardsIds !== undefined || categoryAwardsIds !== null)
     return (
       <View style={styles.container}>
         <Card style={styles.card}>
@@ -36,9 +39,7 @@ const CategoryItem = ({ item, lang }) => {
             <View style={styles.row}>
               <View
                 style={{
-                  opacity: user.categoryAwardsIds.includes(item.awardId)
-                    ? 1
-                    : 0.2,
+                  opacity: categoryAwardsIds.includes(item.awardId) ? 1 : 0.2,
                 }}
               >
                 {icon}

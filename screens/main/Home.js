@@ -45,8 +45,6 @@ const Home = ({ navigation }) => {
 
   const fetchCategories = () => {
     if (user !== null) {
-      dispatch(initialize());
-
       dispatch(
         getCategoriesByLangCodes({
           nativeLang: user.nativeLang,
