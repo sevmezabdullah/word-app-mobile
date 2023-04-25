@@ -16,9 +16,6 @@ import {
   getUserFromServer,
 } from '../../redux/slices/authSlice';
 
-import { initialize } from '../../redux/slices/quizSlice';
-import { i18n } from '../../constants/langSupport';
-import { StatusBar } from 'expo-status-bar';
 import Background from '../../components/background/Background';
 
 const Home = ({ navigation }) => {
@@ -32,9 +29,6 @@ const Home = ({ navigation }) => {
 
   socket.on('online', (data) => {});
   useEffect(() => {
-    if (user === null) {
-      dispatch(getUser());
-    }
     fetchCategories();
     dispatch(getUserFromServer());
   }, []);
@@ -57,7 +51,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     if (user !== null) {
       const unsubscribe = navigation.addListener('focus', () => {
-        dispatch(getUserDeck({ userId: user.id }));
+        dispatch(getUserDeck());
       });
       return unsubscribe;
     }

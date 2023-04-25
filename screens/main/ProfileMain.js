@@ -10,6 +10,7 @@ import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
 import { useEffect } from 'react';
 import {
+  getUser,
   getUserAwards,
   getUserDailiyWordCount,
   getUserFromServer,
@@ -21,8 +22,14 @@ import Background from '../../components/background/Background';
 const ProfileMain = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.user);
-  const exp = useSelector((state) => state.userAuth.exp);
   const dailyWordCount = useSelector((state) => state.userAuth.dailiyWordCount);
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      dispatch(getUserFromServer());
+      dispatch(getUserAwards());
+      dispatch(getUserDailiyWordCount());
+    });
+  }, [dispatch]);
 
   const [selected, setSelected] = useState('award');
   const [targetWordDialog, setTargetWordDialog] = useState(false);
@@ -30,14 +37,6 @@ const ProfileMain = ({ navigation }) => {
   const closeTargetWordDialog = () => {
     setTargetWordDialog(false);
   };
-
-  useEffect(() => {
-    dispatch(getUserFromServer());
-  }, [dispatch]);
-  useEffect(() => {
-    dispatch(getUserAwards({ userId: user.id }));
-    dispatch(getUserDailiyWordCount({ userId: user.id }));
-  }, [dispatch, user]);
 
   if (user !== null)
     return (
@@ -178,6 +177,13 @@ const ProfileMain = ({ navigation }) => {
         }
       />
     );
+  else if (user === null) {
+    return (
+      <View>
+        <Text>Kullanıcı Yok</Text>
+      </View>
+    );
+  }
 };
 
 export default ProfileMain;

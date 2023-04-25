@@ -4,22 +4,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ToastAndroid } from 'react-native';
 import { emulatorUrls, localUrls, productionUrls } from '../../constants/uri';
 
-const AUTH_URL = emulatorUrls.AUTH_URL;
-const REGISTER_URL = emulatorUrls.REGISTER_URL;
-const LOGOUT_URL = emulatorUrls.LOGOUT_URL;
-const UPDATE_LANG = emulatorUrls.UPDATE_LANG;
-const ADD_WORD_USER = emulatorUrls.ADD_WORD_USER;
-const ADD_AWARD = emulatorUrls.ADD_AWARD;
-const GET_USER_DECK = emulatorUrls.GET_USER_DECK;
-const ADD_COMPLETED_QUIZ = emulatorUrls.ADD_COMPLETED_QUIZ;
-const RESET_PROCESS = emulatorUrls.RESET_PROCESS;
-const CREATE_REQUEST = emulatorUrls.CREATE_REQUEST;
-const INCREMENT_EXP = emulatorUrls.INCREMENT_EXP;
-const GET_USER_STAT = emulatorUrls.GET_USER_STAT;
-const GET_USER_AWARDS = emulatorUrls.GET_USER_AWARDS;
-const GET_USER_DAILY_WORD_COUNT = emulatorUrls.GET_USER_DAILY_WORD_COUNT;
-const CHANGE_USER_PASSWORD = emulatorUrls.CHANGE_USER_PASSWORD;
-const GET_USER_BY_ID = emulatorUrls.GET_USER_BY_ID;
+const AUTH_URL = localUrls.AUTH_URL;
+const REGISTER_URL = localUrls.REGISTER_URL;
+const LOGOUT_URL = localUrls.LOGOUT_URL;
+const UPDATE_LANG = localUrls.UPDATE_LANG;
+const ADD_WORD_USER = localUrls.ADD_WORD_USER;
+const ADD_AWARD = localUrls.ADD_AWARD;
+const GET_USER_DECK = localUrls.GET_USER_DECK;
+const ADD_COMPLETED_QUIZ = localUrls.ADD_COMPLETED_QUIZ;
+const RESET_PROCESS = localUrls.RESET_PROCESS;
+const CREATE_REQUEST = localUrls.CREATE_REQUEST;
+const INCREMENT_EXP = localUrls.INCREMENT_EXP;
+const GET_USER_STAT = localUrls.GET_USER_STAT;
+const GET_USER_AWARDS = localUrls.GET_USER_AWARDS;
+const GET_USER_DAILY_WORD_COUNT = localUrls.GET_USER_DAILY_WORD_COUNT;
+const CHANGE_USER_PASSWORD = localUrls.CHANGE_USER_PASSWORD;
+const GET_USER_BY_ID = localUrls.GET_USER_BY_ID;
 
 const initialState = {
   user: null,
@@ -50,18 +50,14 @@ const storeToken = async (token) => {
   }
 };
 
-const storeUser = async (user) => {
+const storeUser = async (key, data) => {
   try {
-    const jsonUser = JSON.stringify(user);
-    await AsyncStorage.setItem('user', jsonUser);
-  } catch (error) {}
+    const jsonData = JSON.stringify(data);
+    await AsyncStorage.setItem(key, jsonData);
+  } catch (error) {
+    console.log('🚀 ~ file: authSlice.js:58 ~ storeUser ~ error:', error);
+  }
 };
-
-export const getUser = createAsyncThunk('auth/getUser', async () => {
-  const userFromLocal = JSON.parse(await AsyncStorage.getItem('user'));
-  const user = await axios.get(GET_USER_BY_ID + userFromLocal.id);
-  return user;
-});
 
 export const incrementExp = createAsyncThunk(
   'auth/increment',
@@ -89,7 +85,7 @@ export const updateLang = createAsyncThunk(
   'auth/updateLang',
   async (userPref) => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-    userPref.userId = user.id;
+    userPref.userId = user._id;
 
     const response = await axios.put(UPDATE_LANG, userPref);
 
@@ -98,10 +94,10 @@ export const updateLang = createAsyncThunk(
 );
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
-
-  if (response.data.isVerify !== null || response.data.isVerify !== undefined) {
-    await AsyncStorage.setItem('email', authInfo.email);
-    storeUser(response.data);
+  const user = response.data;
+  if (user.isVerify !== null || user.isVerify !== undefined) {
+    storeUser('email', authInfo.email);
+    storeUser('user', user);
     return response.data;
   } else {
     return response.data;
@@ -120,7 +116,6 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 });
 
 export const register = createAsyncThunk('auth/register', async (user) => {
-  console.log('🚀 ~ file: authSlice.js:119 ~ register ~ user:', user);
   const response = await axios.post(REGISTER_URL, user);
   return response.data;
 });
@@ -137,7 +132,7 @@ export const addAwardtoUser = createAsyncThunk(
   'auth/addAward',
   async ({ awardId, userId }) => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const response = await axios.post(ADD_AWARD, { awardId, userId: user.id });
+    const response = await axios.post(ADD_AWARD, { awardId, userId: user._id });
     return response.data;
   }
 );
@@ -146,46 +141,42 @@ export const getUserFromServer = createAsyncThunk(
   'auth/getFromServer',
   async () => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const response = await axios.get(GET_USER_BY_ID + user.id);
+    const userdb = user;
+    const response = await axios.get(GET_USER_BY_ID + userdb.id);
+    storeUser('user', user.user);
     return response.data;
   }
 );
 
-export const resetProcess = createAsyncThunk(
-  'auth/resetProcess',
-  async ({ userId }) => {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const response = await axios.post(RESET_PROCESS, { userId: user.id });
-    return response.data;
-  }
-);
+export const resetProcess = createAsyncThunk('auth/resetProcess', async () => {
+  const user = JSON.parse(await AsyncStorage.getItem('user'));
+  const response = await axios.post(RESET_PROCESS, { userId: user._id });
+  return response.data;
+});
 export const getUserDailiyWordCount = createAsyncThunk(
   'auth/dailyWordCount',
-  async ({ userId }) => {
+  async () => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
 
-    const response = await axios.get(GET_USER_DAILY_WORD_COUNT + '/' + user.id);
+    const response = await axios.get(
+      GET_USER_DAILY_WORD_COUNT + '/' + user._id
+    );
 
     return response.data;
   }
 );
-export const getUserStat = createAsyncThunk(
-  'auth/userStat',
-  async ({ userId }) => {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const response = await axios.get(GET_USER_STAT + '/' + user.id);
-    return response.data;
-  }
-);
+export const getUserStat = createAsyncThunk('auth/userStat', async () => {
+  const user = JSON.parse(await AsyncStorage.getItem('user'));
+  const response = await axios.get(GET_USER_STAT + '/' + user._id);
+  return response.data;
+});
 
-export const getUserAwards = createAsyncThunk(
-  'auth/userAwards',
-  async ({ userId }) => {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const response = await axios.get(GET_USER_AWARDS + '/' + user.id);
-    return response.data;
-  }
-);
+export const getUserAwards = createAsyncThunk('auth/userAwards', async () => {
+  const user = JSON.parse(await AsyncStorage.getItem('user'));
+
+  const response = await axios.get(GET_USER_AWARDS + '/' + user.id);
+  return response.data;
+});
 export const completeQuiz = createAsyncThunk(
   'auth/completeQuiz',
   async ({ result, userId, quizId }) => {
@@ -202,7 +193,8 @@ export const getUserDeck = createAsyncThunk(
   'auth/getUserDeck',
   async ({ userId }) => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const response = await axios.get(GET_USER_DECK + '/' + user.id);
+    console.log('🚀 ~ file: authSlice.js:202 ~ user:', user);
+    const response = await axios.get(GET_USER_DECK + '/' + user._id);
 
     return response.data;
   }
@@ -285,14 +277,13 @@ const authSlice = createSlice({
         state.currentLang = action.payload.currentLang;
         state.nativeLang = action.payload.nativeLang;
       })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      })
+
       .addCase(incrementExp.fulfilled, (state, action) => {
         state.exp = action.payload;
       })
       .addCase(getUserDeck.fulfilled, (state, action) => {
-        state.user.categoryAwardsIds = action.payload.categoryAwardsIds;
+        state.categoryAwardsIds = action.categoryAwardsIds;
+        state.user.categoryAwardsIds = action.user.categoryAwardsIds;
       })
       .addCase(completeQuiz.fulfilled, (state, action) => {})
       .addCase(resetProcess.pending, (state, action) => {

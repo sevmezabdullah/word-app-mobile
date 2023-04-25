@@ -3,10 +3,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { emulatorUrls, localUrls } from '../../constants/uri';
-const CATEGORY_URL = emulatorUrls.GET_CATEGORIES;
-const GET_CATEGORY_ID = emulatorUrls.GET_BY_ID;
-const GET_WORDS_BY_CATEGORY_ID = emulatorUrls.GET_WORDS_BY_CATEGORY_ID;
-const GET_CATEGORIES_BY_LANGCODE = emulatorUrls.GET_CATEGORIES_BY_LANGCODE;
+const CATEGORY_URL = localUrls.GET_CATEGORIES;
+const GET_CATEGORY_ID = localUrls.GET_BY_ID;
+const GET_WORDS_BY_CATEGORY_ID = localUrls.GET_WORDS_BY_CATEGORY_ID;
+const GET_CATEGORIES_BY_LANGCODE = localUrls.GET_CATEGORIES_BY_LANGCODE;
 
 const initialState = {
   categories: [],
@@ -31,10 +31,14 @@ export const getCategories = createAsyncThunk('category/getAll', async () => {
 export const getCategoriesByLangCodes = createAsyncThunk(
   'category/getByLangCodes',
   async ({ nativeLang, currentLang }) => {
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
     const response = await axios.get(
-      GET_CATEGORIES_BY_LANGCODE + '/' + nativeLang + '/' + currentLang
+      GET_CATEGORIES_BY_LANGCODE +
+        '/' +
+        user.nativeLang +
+        '/' +
+        user.currentLang
     );
-
     return response.data;
   }
 );
