@@ -54,7 +54,6 @@ const storeToken = async (token) => {
 const storeUser = async (key, data) => {
   try {
     const jsonData = JSON.stringify(data);
-    console.log('🚀 ~ file: authSlice.js:57 ~ storeUser ~ jsonData:', jsonData);
 
     await AsyncStorage.setItem(key, jsonData);
   } catch (error) {
@@ -88,7 +87,7 @@ export const updateLang = createAsyncThunk(
   'auth/updateLang',
   async (userPref) => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-    userPref.userId = user._id;
+    userPref.userId = user.id;
 
     const response = await axios.put(UPDATE_LANG, userPref);
 
@@ -97,8 +96,8 @@ export const updateLang = createAsyncThunk(
 );
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
-  const user = response.data;
-  console.log('🚀 ~ file: authSlice.js:100 ~ signIn ~ user:', user);
+  const user = response.data.user;
+
   if (user.isVerify !== null || user.isVerify !== undefined) {
     storeUser('email', authInfo.email);
     storeUser('user', user);

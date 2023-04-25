@@ -17,6 +17,7 @@ import {
 } from '../../redux/slices/authSlice';
 
 import Background from '../../components/background/Background';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation }) => {
   const socket = io(socketURL);
@@ -29,16 +30,16 @@ const Home = ({ navigation }) => {
 
   socket.on('online', (data) => {});
   useEffect(() => {
-    fetchCategories();
-    dispatch(getUserFromServer());
+    navigation.addListener('focus', async () => {
+      dispatch(getUserFromServer());
+      await fetchCategories();
+    });
   }, []);
 
-  useEffect(() => {
-    fetchCategories();
-  }, [user]);
+  const fetchCategories = async () => {
+    const data = JSON.parse(await AsyncStorage.getItem('user'));
 
-  const fetchCategories = () => {
-    if (user !== null) {
+    if (data !== null) {
       dispatch(
         getCategoriesByLangCodes({
           nativeLang: user.nativeLang,
