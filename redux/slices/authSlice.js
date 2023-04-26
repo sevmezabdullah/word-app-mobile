@@ -289,7 +289,7 @@ const authSlice = createSlice({
       })
       .addCase(getUserDeck.fulfilled, (state, action) => {
         state.categoryAwardsIds = action.categoryAwardsIds;
-        state.user.categoryAwardsIds = action.user.categoryAwardsIds;
+        /* state.user.categoryAwardsIds = action.user.categoryAwardsIds; */
       })
       .addCase(completeQuiz.fulfilled, (state, action) => {})
       .addCase(resetProcess.pending, (state, action) => {

@@ -28,11 +28,11 @@ const Result = ({ navigation, route }) => {
   const [detailDialog, setDetailDialog] = useState(false);
 
   useEffect(() => {
-    dispatch(getUserFromServer());
+    /*     dispatch(getUserFromServer()); */
   }, [dispatch]);
 
   const complete = () => {
-    dispatch(
+    /*   dispatch(
       completeQuiz({
         quizId: quiz._id,
         userId: user.id,
@@ -46,9 +46,9 @@ const Result = ({ navigation, route }) => {
     );
 
     dispatch(incrementExp({ userId: user._id, exp: quiz.exp }));
-    dispatch(getUserDeck({ userId: user.id }));
-
+    dispatch(getUserDeck({ userId: user.id })); */
     /*   dispatch(initialize()); */
+    console.log('Quiz Completed');
   };
   return (
     <View style={styles.container}>
@@ -161,7 +161,7 @@ const Result = ({ navigation, route }) => {
           onPress={() => {
             complete();
             navigation.navigate('Tabs');
-            dispatch(initialize());
+            /*  dispatch(initialize()); */
           }}
           title="Tamamla"
         />

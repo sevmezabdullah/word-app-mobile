@@ -34,8 +34,8 @@ const CardTraining = ({ route, navigation }) => {
   const unKnownWords = useSelector((state) => state.word.unKnownWords);
   const [swipingUnknown, setSwipingUnknown] = useState(20);
   const [swipingKnown, setSwipingKnown] = useState(20);
-  const currentLang = useSelector((state) => state.userAuth.currentLang);
-  const nativeLang = useSelector((state) => state.userAuth.nativeLang);
+  /*   const currentLang = useSelector((state) => state.userAuth.currentLang);
+  const nativeLang = useSelector((state) => state.userAuth.nativeLang); */
   const [finished, setFinished] = useState(false);
   useEffect(() => {
     dispatch(getCategoryById(categoryId)).unwrap();
@@ -117,24 +117,25 @@ const CardTraining = ({ route, navigation }) => {
               renderCard={(card) => {
                 let tWord = '';
                 let tSentences = '';
-
                 let nWord = '';
                 let nSentences = '';
 
                 card.words.forEach((item) => {
-                  if (item.langCode === currentLang) {
+                  console.log(item);
+                  console.log('Hedef Dil', user);
+                  if (item.langCode === user.currentLang) {
                     tWord = item;
                   }
-                  if (item.langCode === nativeLang) {
+                  if (item.langCode === user.nativeLang) {
                     nWord = item;
                   }
                 });
 
                 card.sentences.forEach((item) => {
-                  if (item.langCode === currentLang) {
+                  if (item.langCode === user.currentLang) {
                     tSentences = item;
                   }
-                  if (item.langCode === nativeLang) {
+                  if (item.langCode === user.nativeLang) {
                     nSentences = item;
                   }
                 });
