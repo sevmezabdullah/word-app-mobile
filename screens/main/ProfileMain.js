@@ -10,7 +10,6 @@ import { useState } from 'react';
 import Awards from '../../components/ui/profile/Awards';
 import { useEffect } from 'react';
 import {
-  getUser,
   getUserAwards,
   getUserDailiyWordCount,
   getUserFromServer,
@@ -18,13 +17,22 @@ import {
 import * as Progress from 'react-native-progress';
 import { Dialog } from 'react-native-paper';
 import Background from '../../components/background/Background';
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
 
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const ProfileMain = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.user);
+  const getUserStatus = useSelector((state) => state.userAuth.getUserStatus);
+
   const dailyWordCount = useSelector((state) => state.userAuth.dailiyWordCount);
   useEffect(() => {
     navigation.addListener('focus', () => {
+      console.log(
+        '🚀 ~ file: ProfileMain.js:26 ~ ProfileMain ~ getUserStatus:',
+        getUserStatus
+      );
       dispatch(getUserFromServer());
       dispatch(getUserAwards());
       dispatch(getUserDailiyWordCount());
@@ -38,7 +46,7 @@ const ProfileMain = ({ navigation }) => {
     setTargetWordDialog(false);
   };
 
-  if (user !== null)
+  if (getUserStatus === 'fulfilled') {
     return (
       <Background
         component={
@@ -177,7 +185,7 @@ const ProfileMain = ({ navigation }) => {
         }
       />
     );
-  else if (user === null) {
+  } else if (getUserStatus === 'pending') {
     return (
       <View>
         <Text>Kullanıcı Yok</Text>

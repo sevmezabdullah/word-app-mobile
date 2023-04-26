@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import * as SecureStore from 'expo-secure-store';
 import { localUrls, emulatorUrls } from '../../constants/uri';
 const CATEGORY_URL = localUrls.GET_CATEGORIES;
 const GET_CATEGORY_ID = localUrls.GET_BY_ID;
@@ -17,7 +17,7 @@ const initialState = {
   wordLoading: 'idle',
 };
 export const getCategories = createAsyncThunk('category/getAll', async () => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await SecureStore.getItemAsync('token');
   const response = await axios.get(CATEGORY_URL, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -31,7 +31,8 @@ export const getCategories = createAsyncThunk('category/getAll', async () => {
 export const getCategoriesByLangCodes = createAsyncThunk(
   'category/getByLangCodes',
   async ({ nativeLang, currentLang }) => {
-    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const user = JSON.parse(await SecureStore.getItemAsync('user'));
+    console.log('🚀 ~ file: categorySlice.js:35 ~ user:', user);
     const response = await axios.get(
       GET_CATEGORIES_BY_LANGCODE +
         '/' +

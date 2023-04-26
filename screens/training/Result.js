@@ -32,9 +32,9 @@ const Result = ({ navigation, route }) => {
   }, [dispatch]);
 
   const complete = () => {
-    /*   dispatch(
+    dispatch(
       completeQuiz({
-        quizId: quiz._id,
+        quizId: quiz.id,
         userId: user.id,
         result: {
           correctCount: correctCount,
@@ -44,11 +44,9 @@ const Result = ({ navigation, route }) => {
         },
       })
     );
-
-    dispatch(incrementExp({ userId: user._id, exp: quiz.exp }));
-    dispatch(getUserDeck({ userId: user.id })); */
-    /*   dispatch(initialize()); */
-    console.log('Quiz Completed');
+    dispatch(getUserDeck());
+    dispatch(incrementExp({ userId: user.id, exp: quiz.exp }));
+    dispatch(initialize());
   };
   return (
     <View style={styles.container}>

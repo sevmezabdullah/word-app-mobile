@@ -29,9 +29,14 @@ const Home = ({ navigation }) => {
 
   socket.on('online', (data) => {});
   useEffect(() => {
-    fetchCategories();
-    dispatch(getUserFromServer());
-  }, []);
+    navigation.addListener('focus', () => {
+      if (user === null) {
+        dispatch(getUserFromServer());
+        fetchCategories();
+      }
+      dispatch(getUserDeck());
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     fetchCategories();
@@ -49,10 +54,11 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
+    navigation.addListener('focus', () => {
+      dispatch(getUserDeck());
+    });
     if (user !== null) {
-      const unsubscribe = navigation.addListener('focus', () => {
-        dispatch(getUserDeck());
-      });
+      const unsubscribe = navigation.addListener('focus', () => {});
       return unsubscribe;
     }
   }, []);

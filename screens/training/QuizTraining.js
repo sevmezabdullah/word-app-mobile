@@ -18,10 +18,7 @@ import QuestionCard from '../../components/ui/quiz/QuestionCard';
 import CardButton from '@paraboly/react-native-card-button';
 import { ActivityIndicator } from 'react-native-paper';
 import Dialog from 'react-native-dialog';
-import {
-  addAwardtoUser as addAwardUser,
-  addWordUser,
-} from '../../redux/slices/authSlice';
+import { addAwardtoUser, addWordUser } from '../../redux/slices/authSlice';
 import { i18n } from '../../constants/langSupport';
 const passQuestionDuration = 1000;
 
@@ -106,7 +103,7 @@ const QuizTraining = ({ navigation, route }) => {
           );
         });
         dispatch(
-          addAwardUser({
+          addAwardtoUser({
             awardId: category.awardId,
             userId: user.id,
           })

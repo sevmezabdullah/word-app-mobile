@@ -17,7 +17,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { addUnknownWord, resetArr } from '../../redux/slices/wordSlice';
 import { i18n } from '../../constants/langSupport';
 import FlipCard from 'react-native-flip-card';
-import { addKnownWords } from '../../redux/slices/quizSlice';
+import { addKnownWords, initialize } from '../../redux/slices/quizSlice';
 import { getUser, getUserFromServer } from '../../redux/slices/authSlice';
 
 const CardTraining = ({ route, navigation }) => {
@@ -40,6 +40,7 @@ const CardTraining = ({ route, navigation }) => {
   useEffect(() => {
     dispatch(getCategoryById(categoryId)).unwrap();
     dispatch(getWordsByCategoryId(categoryId)).unwrap();
+    dispatch(initialize());
   }, [dispatch, categoryId]);
 
   const addWord = (index, isRight) => {
@@ -207,7 +208,6 @@ const CardTraining = ({ route, navigation }) => {
                 <Dialog.Button
                   onPress={() => {
                     navigation.navigate('Tabs');
-
                     dispatch(resetArr());
                   }}
                   label="Kapat"
@@ -218,7 +218,6 @@ const CardTraining = ({ route, navigation }) => {
                     navigation.navigate('Quiz', {
                       quizId: category.quizId,
                       card: card,
-
                       user: user,
                       category: category,
                     });

@@ -146,23 +146,25 @@ const Settings = () => {
             }}
           >
             <TextInput
-              onChangeText={passwordChangeHandler}
+              onChangeText={(text) => setPassword(text)}
               secureTextEntry={true}
               placeholder={i18n.t('password')}
               style={styles.input}
+              value={password}
             />
             <TextInput
-              onChangeText={rePaswordHandler}
+              onChangeText={(text) => setRepassword(text)}
               secureTextEntry={true}
               placeholder={i18n.t('passwordAgain')}
               style={styles.input}
+              value={rePassword}
             />
           </View>
-          {password !== rePassword ? (
+          {/*   {password !== rePassword ? (
             <Text style={{ textAlign: 'left' }}>Şifreler aynı değil</Text>
           ) : (
             <View></View>
-          )}
+          )} */}
         </Dialog.Content>
         <Dialog.Actions>
           <View style={{ margin: 5 }}>
