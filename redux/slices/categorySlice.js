@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { emulatorUrls, localUrls } from '../../constants/uri';
+import { localUrls, emulatorUrls } from '../../constants/uri';
 const CATEGORY_URL = localUrls.GET_CATEGORIES;
 const GET_CATEGORY_ID = localUrls.GET_BY_ID;
 const GET_WORDS_BY_CATEGORY_ID = localUrls.GET_WORDS_BY_CATEGORY_ID;
