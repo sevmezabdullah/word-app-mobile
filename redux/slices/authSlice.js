@@ -23,6 +23,7 @@ const GET_USER_BY_ID = localUrls.GET_USER_BY_ID;
 
 const initialState = {
   user: null,
+  id: null,
   status: 'idle',
   token: null,
   message: '',
@@ -53,6 +54,8 @@ const storeToken = async (token) => {
 const storeUser = async (key, data) => {
   try {
     const jsonData = JSON.stringify(data);
+    console.log('🚀 ~ file: authSlice.js:57 ~ storeUser ~ jsonData:', jsonData);
+
     await AsyncStorage.setItem(key, jsonData);
   } catch (error) {
     console.log('🚀 ~ file: authSlice.js:58 ~ storeUser ~ error:', error);
@@ -95,6 +98,7 @@ export const updateLang = createAsyncThunk(
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
   const user = response.data;
+  console.log('🚀 ~ file: authSlice.js:100 ~ signIn ~ user:', user);
   if (user.isVerify !== null || user.isVerify !== undefined) {
     storeUser('email', authInfo.email);
     storeUser('user', user);
@@ -123,7 +127,11 @@ export const register = createAsyncThunk('auth/register', async (user) => {
 export const addWordUser = createAsyncThunk(
   'auth/addWord',
   async ({ knownWords, id }) => {
-    const response = await axios.post(ADD_WORD_USER, { knownWords, id });
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const response = await axios.post(ADD_WORD_USER, {
+      knownWords,
+      id: user._id,
+    });
     return response.data;
   }
 );
@@ -132,6 +140,7 @@ export const addAwardtoUser = createAsyncThunk(
   'auth/addAward',
   async ({ awardId, userId }) => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
+    console.log('🚀 ~ file: authSlice.js:135 ~ user:', user);
     const response = await axios.post(ADD_AWARD, { awardId, userId: user._id });
     return response.data;
   }
@@ -141,9 +150,9 @@ export const getUserFromServer = createAsyncThunk(
   'auth/getFromServer',
   async () => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-    const userdb = user;
-    const response = await axios.get(GET_USER_BY_ID + userdb.id);
-    storeUser('user', user.user);
+
+    const response = await axios.get(GET_USER_BY_ID + user.id);
+    storeUser('user', userdb);
     return response.data;
   }
 );
@@ -157,17 +166,14 @@ export const getUserDailiyWordCount = createAsyncThunk(
   'auth/dailyWordCount',
   async () => {
     const user = JSON.parse(await AsyncStorage.getItem('user'));
-
-    const response = await axios.get(
-      GET_USER_DAILY_WORD_COUNT + '/' + user._id
-    );
+    const response = await axios.get(GET_USER_DAILY_WORD_COUNT + '/' + user.id);
 
     return response.data;
   }
 );
 export const getUserStat = createAsyncThunk('auth/userStat', async () => {
   const user = JSON.parse(await AsyncStorage.getItem('user'));
-  const response = await axios.get(GET_USER_STAT + '/' + user._id);
+  const response = await axios.get(GET_USER_STAT + '/' + user.id);
   return response.data;
 });
 
