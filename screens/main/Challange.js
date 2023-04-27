@@ -25,7 +25,9 @@ const Challenge = ({ navigation }) => {
       navigation.navigate('Quiz', { difficulty: difficulty });
 
     if (quizType === 'timed')
-      navigation.navigate('TimedQuiz', { difficulty: difficulty });
+      navigation.navigate('TimedQuiz', {
+        difficulty: difficulty,
+      });
   };
   const [quizType, setQuizType] = useState('classic');
   return (
@@ -34,7 +36,7 @@ const Challenge = ({ navigation }) => {
         <View style={styles.container}>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: 'column',
               justifyContent: 'space-between',
               paddingLeft: 10,
             }}

@@ -15,7 +15,7 @@ import {
   getUserFromServer,
 } from '../../redux/slices/authSlice';
 import * as Progress from 'react-native-progress';
-import { Dialog } from 'react-native-paper';
+import { ActivityIndicator, Dialog } from 'react-native-paper';
 import Background from '../../components/background/Background';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,14 +25,9 @@ const ProfileMain = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userAuth.user);
   const getUserStatus = useSelector((state) => state.userAuth.getUserStatus);
-
   const dailyWordCount = useSelector((state) => state.userAuth.dailiyWordCount);
   useEffect(() => {
     navigation.addListener('focus', () => {
-      console.log(
-        '🚀 ~ file: ProfileMain.js:26 ~ ProfileMain ~ getUserStatus:',
-        getUserStatus
-      );
       dispatch(getUserFromServer());
       dispatch(getUserAwards());
       dispatch(getUserDailiyWordCount());
@@ -187,9 +182,21 @@ const ProfileMain = ({ navigation }) => {
     );
   } else if (getUserStatus === 'pending') {
     return (
-      <View>
-        <Text>Kullanıcı Yok</Text>
-      </View>
+      <Background
+        component={
+          <View style={{ height: '100%', flexDirection: 'column' }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: '50%',
+              }}
+            >
+              <ActivityIndicator color="white" />
+            </View>
+          </View>
+        }
+      />
     );
   }
 };

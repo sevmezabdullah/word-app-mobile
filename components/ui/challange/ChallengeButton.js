@@ -12,7 +12,7 @@ const ChallengeButton = ({ title, icon, onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.buttonContainer}>
-        <Card style={{ width: 150, height: 150 }}>
+        <Card style={{ width: 350, height: 150 }}>
           <View
             style={{
               alignItems: 'center',

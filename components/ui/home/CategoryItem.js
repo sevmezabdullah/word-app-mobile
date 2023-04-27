@@ -14,10 +14,6 @@ const CategoryItem = ({ item, lang }) => {
   const categoryAwardsIds = useSelector(
     (state) => state.userAuth.categoryAwardsIds
   );
-  console.log(
-    '🚀 ~ file: CategoryItem.js:17 ~ CategoryItem ~ categoryAwardsIds:',
-    categoryAwardsIds
-  );
 
   useEffect(() => {
     setTitles([]);

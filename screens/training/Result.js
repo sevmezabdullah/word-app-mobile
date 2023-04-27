@@ -47,6 +47,7 @@ const Result = ({ navigation, route }) => {
     dispatch(getUserDeck());
     dispatch(incrementExp({ userId: user.id, exp: quiz.exp }));
     dispatch(initialize());
+    dispatch(getUserDeck());
   };
   return (
     <View style={styles.container}>

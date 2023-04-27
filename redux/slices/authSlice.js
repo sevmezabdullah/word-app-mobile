@@ -76,9 +76,11 @@ export const incrementExp = createAsyncThunk(
 export const changePassword = createAsyncThunk(
   'auth/changePassword',
   async ({ userId, password }) => {
+    const user = JSON.parse(await SecureStore.getItemAsync('user'));
     const response = await axios.post(CHANGE_USER_PASSWORD, {
-      userId,
+      userId: user.id,
       password,
+      lang: user.nativeLang,
     });
     return response.data;
   }
@@ -88,7 +90,7 @@ export const updateLang = createAsyncThunk(
   'auth/updateLang',
   async (userPref) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
-    userPref.userId = user._id;
+    userPref.userId = user.id;
 
     const response = await axios.put(UPDATE_LANG, userPref);
 

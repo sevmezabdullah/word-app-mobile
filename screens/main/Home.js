@@ -31,9 +31,9 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     navigation.addListener('focus', () => {
       if (user === null) {
-        dispatch(getUserFromServer());
-        fetchCategories();
       }
+      dispatch(getUserFromServer());
+      fetchCategories();
       dispatch(getUserDeck());
     });
   }, [dispatch]);

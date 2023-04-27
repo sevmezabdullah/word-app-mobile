@@ -22,9 +22,9 @@ export const getQuizById = createAsyncThunk('quiz/byId', async (quizId) => {
 });
 export const getQuizByDifficulty = createAsyncThunk(
   'quiz/byDifficulty',
-  async ({ difficulty, currentLang, userId }) => {
+  async ({ difficulty, currentLang }) => {
     const response = await axios.get(
-      GET_QUIZ_BY_DIffICULTY + difficulty + '/' + currentLang + '/' + userId
+      GET_QUIZ_BY_DIffICULTY + difficulty + '/' + currentLang
     );
     return response.data;
   }

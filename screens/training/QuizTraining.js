@@ -18,7 +18,11 @@ import QuestionCard from '../../components/ui/quiz/QuestionCard';
 import CardButton from '@paraboly/react-native-card-button';
 import { ActivityIndicator } from 'react-native-paper';
 import Dialog from 'react-native-dialog';
-import { addAwardtoUser, addWordUser } from '../../redux/slices/authSlice';
+import {
+  addAwardtoUser,
+  addWordUser,
+  getUserFromServer,
+} from '../../redux/slices/authSlice';
 import { i18n } from '../../constants/langSupport';
 const passQuestionDuration = 1000;
 

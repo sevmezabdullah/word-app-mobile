@@ -31,14 +31,12 @@ export const getCategories = createAsyncThunk('category/getAll', async () => {
 export const getCategoriesByLangCodes = createAsyncThunk(
   'category/getByLangCodes',
   async ({ nativeLang, currentLang }) => {
-    const user = JSON.parse(await SecureStore.getItemAsync('user'));
-    console.log('🚀 ~ file: categorySlice.js:35 ~ user:', user);
+    /*  const user = JSON.parse(await SecureStore.getItemAsync('user'));
+     */
+    console.log(nativeLang);
+    console.log(currentLang);
     const response = await axios.get(
-      GET_CATEGORIES_BY_LANGCODE +
-        '/' +
-        user.nativeLang +
-        '/' +
-        user.currentLang
+      GET_CATEGORIES_BY_LANGCODE + '/' + nativeLang + '/' + currentLang
     );
     return response.data;
   }
