@@ -57,7 +57,7 @@ const TimedQuiz = ({ navigation, route }) => {
             {({ remainingTime }) => <Text>{remainingTime}</Text>}
           </CountdownCircleTimer>
         </View>
-
+        //
         <Button title="+" />
       </View>
 
