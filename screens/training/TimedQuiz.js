@@ -83,7 +83,7 @@ const TimedQuiz = ({ navigation, route }) => {
     </View>
   );
 };
-
+//
 export default TimedQuiz;
 
 const styles = StyleSheet.create({
