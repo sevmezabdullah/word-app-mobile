@@ -5,27 +5,72 @@ import LoginInput from '../../components/ui/auth/LoginInput';
 import ForgetPasswordText from '../../components/ui/auth/ForgetPasswordText';
 import SignButton from '../../components/ui/auth/SignButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { signIn } from '../../redux/slices/authSlice';
+import { googleSignIn, signIn } from '../../redux/slices/authSlice';
 import { getLocales } from 'expo-localization';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
 import { i18n } from '../../constants/langSupport';
 import Background from '../../components/background/Background';
+import { useEffect } from 'react';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-
-  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
+  const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState(null);
+
+  const googleToken = useSelector((state) => state.userAuth.googleToken);
   const status = useSelector((state) => state.userAuth.status);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      '890870231803-5fl351sdtcie804hd6o5cjobncf72n45.apps.googleusercontent.com',
+    webClientId:
+      '890870231803-jtq964b70t3r92uun5sjtb4pht7g62cs.apps.googleusercontent.com',
+  });
+  useEffect(() => {
+    if (response?.type === 'success') {
+      setToken(response.authentication.accessToken);
+      getUserInfo();
+    }
+  }, [response, token]);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await fetch(
+        'https://www.googleapis.com/userinfo/v2/me',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const user = await response.json();
+      if (user.error === null || user.error === undefined) {
+        setUserInfo(user);
+        dispatch(googleSignIn(user));
+      }
+    } catch (error) {
+      // Add your own error handler here
+      console.log(error);
+    }
+  };
+
   const emailChangeHandler = (email) => {
     setEmail(email);
   };
   const passwordChangeHandler = (password) => {
     setPassword(password);
+  };
+
+  const loginWithGoogle = async () => {
+    await promptAsync();
   };
 
   const handleRegister = () => {
@@ -40,6 +85,7 @@ const Login = ({ navigation }) => {
       password: password,
       lang: lang,
     };
+
     dispatch(signIn(auth));
   };
   const loginIcon = <Icon name="sign-in" color={'white'} size={30} />;
@@ -87,6 +133,7 @@ const Login = ({ navigation }) => {
             title={i18n.t('signInWithGoogleText')}
             icon={googleIcon}
             color={colors.sign_button}
+            onPress={loginWithGoogle}
           />
           <SignButton
             title={i18n.t('registerButtonText')}

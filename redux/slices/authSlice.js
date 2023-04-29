@@ -21,6 +21,7 @@ const GET_USER_AWARDS = localUrls.GET_USER_AWARDS;
 const GET_USER_DAILY_WORD_COUNT = localUrls.GET_USER_DAILY_WORD_COUNT;
 const CHANGE_USER_PASSWORD = localUrls.CHANGE_USER_PASSWORD;
 const GET_USER_BY_ID = localUrls.GET_USER_BY_ID;
+const GOOGLE_SIGN_IN = localUrls.GOOGLE_SIGN_IN;
 
 const initialState = {
   user: null,
@@ -40,6 +41,7 @@ const initialState = {
   nativeLang: '',
   categoryAwardsIds: [],
   getUserStatus: 'idle',
+  googleToken: null,
 };
 function showToast(message) {
   ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
@@ -117,7 +119,9 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   const response = await axios.post(LOGOUT_URL, {
     userEmail: email,
   });
-  await AsyncStorage.clear();
+  await SecureStore.deleteItemAsync('token');
+  await SecureStore.deleteItemAsync('user');
+  await SecureStore.deleteItemAsync('email');
   return response.data;
 });
 
@@ -172,6 +176,14 @@ export const getUserDailiyWordCount = createAsyncThunk(
     return response.data;
   }
 );
+export const googleSignIn = createAsyncThunk(
+  'auth/google',
+  async (userInfo) => {
+    console.log('🚀 ~ file: authSlice.js:181 ~ userInfo:', userInfo);
+    const response = await axios.post(GOOGLE_SIGN_IN, userInfo);
+    return response.data;
+  }
+);
 export const getUserStat = createAsyncThunk('auth/userStat', async () => {
   const user = JSON.parse(await SecureStore.getItemAsync('user'));
   const response = await axios.get(GET_USER_STAT + '/' + user.id);
@@ -222,13 +234,48 @@ export const createRequest = createAsyncThunk(
 const authSlice = createSlice({
   name: 'userAuth',
   initialState,
+  reducers: {
+    setToken(state, action) {
+      console.log(
+        '🚀 ~ file: authSlice.js:234 ~ setToken ~ action:',
+        action.payload
+      );
+      state.googleToken = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
+      .addCase(googleSignIn.fulfilled, (state, action) => {
+        if (action.payload.isLogged) {
+          if (action.payload !== null || action.payload !== undefined)
+            if (
+              action.payload.token !== undefined ||
+              action.payload.token !== null
+            ) {
+              state.token = action.payload.token;
+              state.isVerify = action.payload.isVerify;
+              state.user = action.payload;
+
+              state.message = action.payload.message;
+
+              if (!state.isVerify) {
+                state.token = null;
+              }
+              state.status = 'success';
+              storeToken(action.payload.token);
+              showToast(action.payload.message);
+            }
+        } else {
+          state.user = null;
+          state.token = null;
+          state.status = 'success';
+          showToast(action.payload.message);
+        }
+      })
       .addCase(signIn.pending, (state, action) => {
         state.status = 'loading';
       })
       .addCase(signIn.fulfilled, (state, action) => {
-        console.log(action.payload);
         if (action.payload.isLogged) {
           if (action.payload !== null || action.payload !== undefined)
             if (
@@ -348,4 +395,5 @@ const authSlice = createSlice({
 
 export const token = (state) => state.userAuth.token;
 export const message = (state) => state.userAuth.message;
+export const { setToken } = authSlice.actions;
 export default authSlice.reducer;
