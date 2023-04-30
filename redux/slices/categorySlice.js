@@ -33,8 +33,7 @@ export const getCategoriesByLangCodes = createAsyncThunk(
   async ({ nativeLang, currentLang }) => {
     /*  const user = JSON.parse(await SecureStore.getItemAsync('user'));
      */
-    console.log(nativeLang);
-    console.log(currentLang);
+
     const response = await axios.get(
       GET_CATEGORIES_BY_LANGCODE + '/' + nativeLang + '/' + currentLang
     );

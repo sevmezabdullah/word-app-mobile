@@ -68,7 +68,7 @@ export const incrementExp = createAsyncThunk(
   async ({ userId, exp }) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
     const response = await axios.post(INCREMENT_EXP, {
-      userId: user.id,
+      userId: user._id,
       exp: exp,
     });
     return response.data;
@@ -80,7 +80,7 @@ export const changePassword = createAsyncThunk(
   async ({ userId, password }) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
     const response = await axios.post(CHANGE_USER_PASSWORD, {
-      userId: user.id,
+      userId: user._id,
       password,
       lang: user.nativeLang,
     });
@@ -92,7 +92,7 @@ export const updateLang = createAsyncThunk(
   'auth/updateLang',
   async (userPref) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
-    userPref.userId = user.id;
+    userPref.userId = user._id;
 
     const response = await axios.put(UPDATE_LANG, userPref);
 
@@ -101,7 +101,7 @@ export const updateLang = createAsyncThunk(
 );
 export const signIn = createAsyncThunk('auth/signIn', async (authInfo) => {
   const response = await axios.post(AUTH_URL, authInfo);
-  const user = response.data;
+  const user = response.data.user;
 
   if (user.isVerify !== null || user.isVerify !== undefined) {
     storeUser('email', authInfo.email);
@@ -136,7 +136,7 @@ export const addWordUser = createAsyncThunk(
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
     const response = await axios.post(ADD_WORD_USER, {
       knownWords,
-      id: user.id,
+      id: user._id,
     });
     return response.data;
   }
@@ -146,7 +146,7 @@ export const addAwardtoUser = createAsyncThunk(
   'auth/addAward',
   async ({ awardId, userId }) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
-    const response = await axios.post(ADD_AWARD, { awardId, userId: user.id });
+    const response = await axios.post(ADD_AWARD, { awardId, userId: user._id });
     return response.data;
   }
 );
@@ -155,8 +155,7 @@ export const getUserFromServer = createAsyncThunk(
   'auth/getFromServer',
   async () => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
-
-    const response = await axios.get(GET_USER_BY_ID + user.id);
+    const response = await axios.get(GET_USER_BY_ID + user._id);
 
     return response.data;
   }
@@ -164,14 +163,16 @@ export const getUserFromServer = createAsyncThunk(
 
 export const resetProcess = createAsyncThunk('auth/resetProcess', async () => {
   const user = JSON.parse(await SecureStore.getItemAsync('user'));
-  const response = await axios.post(RESET_PROCESS, { userId: user.id });
+  const response = await axios.post(RESET_PROCESS, { userId: user._id });
   return response.data;
 });
 export const getUserDailiyWordCount = createAsyncThunk(
   'auth/dailyWordCount',
   async () => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
-    const response = await axios.get(GET_USER_DAILY_WORD_COUNT + '/' + user.id);
+    const response = await axios.get(
+      GET_USER_DAILY_WORD_COUNT + '/' + user._id
+    );
 
     return response.data;
   }
@@ -181,19 +182,20 @@ export const googleSignIn = createAsyncThunk(
   async (userInfo) => {
     console.log('🚀 ~ file: authSlice.js:181 ~ userInfo:', userInfo);
     const response = await axios.post(GOOGLE_SIGN_IN, userInfo);
+    storeUser('user', response.data.user);
     return response.data;
   }
 );
 export const getUserStat = createAsyncThunk('auth/userStat', async () => {
   const user = JSON.parse(await SecureStore.getItemAsync('user'));
-  const response = await axios.get(GET_USER_STAT + '/' + user.id);
+  const response = await axios.get(GET_USER_STAT + '/' + user._id);
   return response.data;
 });
 
 export const getUserAwards = createAsyncThunk('auth/userAwards', async () => {
   const user = JSON.parse(await SecureStore.getItemAsync('user'));
 
-  const response = await axios.get(GET_USER_AWARDS + '/' + user.id);
+  const response = await axios.get(GET_USER_AWARDS + '/' + user._id);
   return response.data;
 });
 export const completeQuiz = createAsyncThunk(
@@ -201,7 +203,7 @@ export const completeQuiz = createAsyncThunk(
   async ({ result, userId, quizId }) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
     const response = await axios.post(ADD_COMPLETED_QUIZ, {
-      userId: user.id,
+      userId: user._id,
       result,
       quizId,
     });
@@ -213,7 +215,7 @@ export const getUserDeck = createAsyncThunk(
   'auth/getUserDeck',
   async ({ userId }) => {
     const user = JSON.parse(await SecureStore.getItemAsync('user'));
-    const link = GET_USER_DECK + '/' + user.id;
+    const link = GET_USER_DECK + '/' + user._id;
     console.log(link);
 
     const response = await axios.get(GET_USER_DECK + '/' + user._id);
@@ -254,7 +256,7 @@ const authSlice = createSlice({
             ) {
               state.token = action.payload.token;
               state.isVerify = action.payload.isVerify;
-              state.user = action.payload;
+              state.user = action.payload.user;
 
               state.message = action.payload.message;
 
@@ -271,6 +273,9 @@ const authSlice = createSlice({
           state.status = 'success';
           showToast(action.payload.message);
         }
+      })
+      .addCase(googleSignIn.pending, (state, action) => {
+        state.status = 'loading';
       })
       .addCase(signIn.pending, (state, action) => {
         state.status = 'loading';
