@@ -10,7 +10,13 @@ const QuestionCard = ({ question }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.questionContainer}>
         <Card
-          style={{ width: '100%', height: 150, borderRadius: 15, padding: 10 }}
+          style={{
+            width: '100%',
+            height: 150,
+            borderRadius: 15,
+            padding: 10,
+            backgroundColor: 'white',
+          }}
         >
           <Text style={styles.paragraph}>{question}</Text>
         </Card>

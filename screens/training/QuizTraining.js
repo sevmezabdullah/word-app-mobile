@@ -34,6 +34,7 @@ const QuizTraining = ({ navigation, route }) => {
   const quiz = useSelector((state) => state.quiz.quiz);
   const status = useSelector((state) => state.quiz.status);
   const [exit, setExit] = useState(false);
+
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answerable, setAnswerable] = useState(true);
   const [answerColor, setAnswerColor] = useState({

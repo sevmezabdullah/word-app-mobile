@@ -158,7 +158,10 @@ const Result = ({ navigation, route }) => {
       >
         <Button
           onPress={() => {
-            complete();
+            if (userAnswers.length > 0) {
+              complete();
+            }
+
             navigation.navigate('Tabs');
             /*  dispatch(initialize()); */
           }}
