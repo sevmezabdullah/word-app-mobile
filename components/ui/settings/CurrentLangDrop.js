@@ -13,10 +13,13 @@ const CurrentLangDrop = ({ setCurrentLang }) => {
           defaultNull={defaultDropdown}
           placeholder={i18n.t('selectLang')}
           items={[
-            { label: '🇹🇷' + ' Turkish', value: 'tr' },
-            { label: '🇹🇷' + 'Deutsch', value: 'de' },
-            { label: 'French', value: 'fr' },
-            { label: 'English', value: 'gb' },
+            { label: '🇹🇷' + 'Turkish', value: 'tr' },
+            { label: '🇬🇧' + 'English', value: 'gb' },
+            { label: '🇩🇪' + 'Deutsch', value: 'de' },
+            { label: '🇫🇷' + 'Franch', value: 'fr' },
+            { label: '🇪🇸' + 'Spanish', value: 'es' },
+            { label: '🇨🇳' + 'Chinese', value: 'zh-cht' },
+            { label: '🇦🇪' + 'Arabic', value: 'ar' },
           ]}
           defaultIndex={0}
           containerStyle={{ height: 40 }}

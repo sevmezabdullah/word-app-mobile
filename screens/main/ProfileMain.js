@@ -105,7 +105,12 @@ const ProfileMain = ({ navigation }) => {
                 </Text>
               </View>
               <View style={{ alignSelf: 'center', margin: 10 }}>
-                <CountryFlag isoCode={user.currentLang} size={24} />
+                <CountryFlag
+                  isoCode={
+                    user.currentLang === 'zh-cht' ? 'cn' : user.currentLang
+                  }
+                  size={24}
+                />
               </View>
 
               <View style={{ alignSelf: 'center', margin: 4 }}>
